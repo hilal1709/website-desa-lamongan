@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Announcement {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model QuickService {
+  id        Int      @id @default(autoincrement())
+  title     String
+  icon      String
+  bgColor   String
+  link      String
+  order     Int      @default(0)
+}
+
+model News {
+  id         Int      @id @default(autoincrement())
+  title      String
+  slug       String   @unique
+  summary    String?
+  content    String?
+  category   String
+  categoryBg String?
+  image      String?
+  isHeadline Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Document {
+  id         Int      @id @default(autoincrement())
+  title      String
+  type       String
+  size       String
+  icon       String
+  fileUrl    String?
+  uploadedAt DateTime @default(now())
+}
+
+model Statistic {
+  id        Int      @id @default(autoincrement())
+  label     String
+  value     String
+  icon      String
+  color     String
+  order     Int      @default(0)
+}

@@ -1,0 +1,35 @@
+npm notice run website-desa-lamongan@0.1.0 npx
+npm notice run tsx prisma/seed.ts
+D:\website-desa-lamongan\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:390
+        throw new PrismaClientInitializationError(
+              ^
+
+PrismaClientInitializationError: PrismaClient was instantiated without any options. A driver adapter is required to connect to your database.
+
+Pass a driver adapter to the PrismaClient constructor, for example:
+
+  import { PrismaPg } from '@prisma/adapter-pg'
+  import { PrismaClient } from './generated/prisma/client'
+
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+  const prisma = new PrismaClient({ adapter })
+
+Learn more about driver adapters: https://pris.ly/d/driver-adapters
+
+If you use Prisma Accelerate instead of connecting to your database directly, pass `accelerateUrl` to the PrismaClient constructor instead of `adapter`.
+    at new t (D:\website-desa-lamongan\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:390:15)
+    at <anonymous> (D:\website-desa-lamongan\prisma\seed.ts:4:16)
+    at Object.<anonymous> (D:\website-desa-lamongan\prisma\seed.ts:93:6)
+    at Module._compile (node:internal/modules/cjs/loader:1854:14)
+    at Object.transformer (D:\website-desa-lamongan\node_modules\tsx\dist\register-CptX03bE.cjs:9:3252)
+    at Module.load (node:internal/modules/cjs/loader:1577:32)
+    at Module._load (node:internal/modules/cjs/loader:1379:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at loadCJSModuleWithModuleLoad (node:internal/modules/esm/translators:326:3)
+    at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:231:7) {
+  clientVersion: '7.9.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+
+Node.js v24.17.0
