@@ -1,0 +1,3 @@
+import { StatusBadge } from "./status-badge"
+interface Row { title: string; meta: string; status?: string }
+export function DataTable({ rows }: { rows: Row[] }) { return <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white"><div className="grid grid-cols-[1fr_auto] bg-slate-50 px-5 py-4 text-xs font-bold uppercase tracking-wider text-slate-500"><span>Informasi</span><span>Status</span></div>{rows.map(row => <div key={row.title} className="grid grid-cols-[1fr_auto] items-center gap-4 border-t px-5 py-4"><div><p className="font-bold text-slate-800">{row.title}</p><p className="mt-1 text-sm text-slate-500">{row.meta}</p></div>{row.status && <StatusBadge>{row.status}</StatusBadge>}</div>)}</div> }
