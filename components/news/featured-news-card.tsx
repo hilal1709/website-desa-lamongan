@@ -1,0 +1,8 @@
+import Link from "next/link"
+import { ArrowRight, CalendarDays } from "lucide-react"
+import type { NewsArticle } from "@/types"
+import { formatNewsDate } from "./news-card"
+
+export function FeaturedNewsCard({ article }: { article: NewsArticle }) {
+  return <article className="group relative min-h-[420px] overflow-hidden rounded-2xl bg-emerald-950 shadow-lg sm:min-h-[500px]">{article.image_url ? <img src={article.image_url} alt="" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105"/> : <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-700"/>}<div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/55 to-transparent"/><div className="relative flex min-h-[420px] max-w-4xl flex-col justify-end p-6 text-white sm:min-h-[500px] sm:p-9"><div className="flex items-center gap-3 text-sm text-white/85"><span className="rounded bg-emerald-700 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white">Berita utama</span><span className="flex items-center gap-1.5"><CalendarDays size={14}/>{formatNewsDate(article.created_at)}</span></div><h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">{article.title}</h2><p className="mt-4 line-clamp-3 max-w-3xl leading-7 text-slate-200">{article.excerpt || "Ikuti kabar dan program terbaru dari Pemerintah Desa Kedungrejo."}</p><Link href={`/berita/${article.slug}`} className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-bold text-emerald-950 transition hover:bg-emerald-100">Baca berita <ArrowRight size={17}/></Link></div></article>
+}

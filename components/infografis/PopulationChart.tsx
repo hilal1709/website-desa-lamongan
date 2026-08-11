@@ -1,0 +1,3 @@
+"use client"
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+export function PopulationChart({ data }: { data: { dusun: string; total_population: number }[] }) { return <div className="h-80"><ResponsiveContainer width="100%" height="100%"><BarChart data={data} margin={{ left: -18 }}><XAxis dataKey="dusun" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#64748b" }}/><YAxis tickLine={false} axisLine={false}/><Tooltip/><Bar dataKey="total_population" name="Penduduk" fill="#2563eb" radius={[10, 10, 2, 2]}/></BarChart></ResponsiveContainer></div> }
