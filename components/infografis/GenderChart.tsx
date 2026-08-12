@@ -1,0 +1,3 @@
+"use client"
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts"
+export function GenderChart({ male, female }: { male: number; female: number }) { const data = [{ name: "Laki-laki", value: male, color: "#2563eb" }, { name: "Perempuan", value: female, color: "#059669" }]; return <div className="h-80"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={data} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="80%" paddingAngle={4}>{data.map((item) => <Cell key={item.name} fill={item.color}/>)}</Pie><Tooltip/></PieChart></ResponsiveContainer></div> }

@@ -1,0 +1,3 @@
+"use client"
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+export function TrendChart({ data }: { data: { year: number; total_population: number }[] }) { return <div className="h-80"><ResponsiveContainer width="100%" height="100%"><LineChart data={data}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="year" tickLine={false} axisLine={false}/><YAxis tickLine={false} axisLine={false}/><Tooltip/><Line type="monotone" dataKey="total_population" name="Penduduk" stroke="#2563eb" strokeWidth={3} dot={{ r: 5 }}/></LineChart></ResponsiveContainer></div> }

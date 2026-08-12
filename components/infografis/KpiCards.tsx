@@ -1,0 +1,3 @@
+import { House, Users, UserRound } from "lucide-react"
+import { StatCard } from "./stat-card"
+export function KpiCards({ population, households, male, female }: { population: number; households: number; male: number; female: number }) { return <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"><StatCard label="Total Penduduk" value={population} icon={Users}/><StatCard label="Total Kepala Keluarga" value={households} icon={House} tone="emerald"/><StatCard label="Laki-laki" value={male} icon={UserRound}/><StatCard label="Perempuan" value={female} icon={UserRound} tone="emerald"/></section> }

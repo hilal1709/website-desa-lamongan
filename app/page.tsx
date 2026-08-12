@@ -1,43 +1,5 @@
-import NotificationBanner from "./components/NotificationBanner";
-import QuickServices from "./components/QuickServices";
-import NewsSection from "./components/NewsSection";
-import DocumentList from "./components/DocumentList";
-import SidebarStats from "./components/SidebarStats";
-import WeatherWidget from "./components/WeatherWidget";
-import MapWidget from "./components/MapWidget";
-import { prisma } from "./lib/prisma";
-
-export const dynamic = "force-dynamic";
-
-export default async function Home() {
-    const [announcement, services, news, documents, stats] = await Promise.all([
-        prisma.announcement.findFirst({
-            where: { isActive: true },
-            orderBy: { createdAt: "desc" },
-        }),
-        prisma.quickService.findMany({ orderBy: { order: "asc" } }),
-        prisma.news.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
-        prisma.document.findMany({ orderBy: { uploadedAt: "desc" }, take: 5 }),
-        prisma.statistic.findMany({ orderBy: { order: "asc" } }),
-    ]);
-
-    return (
-        <div className="flex flex-col w-full">
-            <NotificationBanner announcement={announcement} />
-            <QuickServices services={services} />
-
-            <div className="max-w-container-max mx-auto px-md lg:px-lg grid grid-cols-1 lg:grid-cols-12 gap-lg mb-xl w-full">
-                <div className="lg:col-span-8 flex flex-col gap-lg">
-                    <NewsSection news={news} />
-                    <DocumentList documents={documents} />
-                </div>
-
-                <aside className="lg:col-span-4 flex flex-col gap-lg">
-                    <SidebarStats stats={stats} />
-                    <WeatherWidget />
-                    <MapWidget />
-                </aside>
-            </div>
-        </div>
-    );
-}
+import Link from "next/link"; import { ArrowRight, Building2, FileText, HeartPulse, Landmark, Users, Wifi, Sprout, MessageCircle } from "lucide-react"; import { SectionHeading } from "@/components/ui/section-heading"; import { ServiceCard } from "@/components/home/service-card"; import { NewsCard } from "@/components/home/news-card"; import type { NewsItem, Service, Stat } from "@/types"
+const stats: Stat[] = [{label:"Penduduk",value:"4.862",detail:"Jiwa terdata",icon:Users},{label:"Kepala Keluarga",value:"1.548",detail:"Keluarga",icon:Building2},{label:"Layanan bulan ini",value:"248",detail:"Pengajuan",icon:FileText},{label:"Dusun",value:"5",detail:"Wilayah",icon:Landmark}];
+const services: Service[] = [{title:"Surat Keterangan",description:"Pengantar, domisili, dan kebutuhan administrasi lainnya.",href:"/layanan",icon:FileText,tone:"blue"},{title:"Layanan Kependudukan",description:"Informasi KTP, KK, akta kelahiran, dan pindah datang.",href:"/layanan",icon:Users,tone:"emerald"},{title:"Aduan Warga",description:"Sampaikan masalah lingkungan dan pelayanan.",href:"/aduan",icon:MessageCircle,tone:"amber"},{title:"Peta & Data Desa",description:"Akses data terbuka dan potensi wilayah desa.",href:"/data-desa",icon:Landmark,tone:"blue"}];
+const news: NewsItem[] = [{title:"Musrenbangdes 2025: Warga Sepakati Prioritas Jalan Tani dan UMKM",category:"Pembangunan",date:"20 Agustus 2025",image:"https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",excerpt:"Musyawarah desa menghadirkan perwakilan seluruh dusun untuk menyusun agenda pembangunan bersama."},{title:"Pelatihan Pupuk Organik untuk Kelompok Tani Maju",category:"Pertanian",date:"18 Agustus 2025",image:"https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?auto=format&fit=crop&w=900&q=80",excerpt:""},{title:"Posyandu Serentak Hadir di Lima Dusun",category:"Kesehatan",date:"16 Agustus 2025",image:"https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80",excerpt:""}];
+export default function Home(){return <><section className="relative isolate flex min-h-[780px] items-end overflow-hidden bg-slate-950 pb-16 pt-32 text-white"><img src="/images/dorr.jpg" alt="Hamparan sawah Desa Kedungrejo" className="absolute inset-0 -z-20 size-full object-cover opacity-70"/><div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent"/><div className="mx-auto w-full max-w-7xl px-5"><div className="max-w-3xl"><p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[.16em] backdrop-blur"><span className="size-2 rounded-full bg-emerald-400"/> Desa Pintar Kedungrejo</p><h1 className="mt-7 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">Desa bertumbuh,<br/><span className="text-emerald-300">warga terhubung.</span></h1><p className="mt-6 max-w-xl text-lg leading-8 text-slate-200">Portal digital Desa Kedungrejo untuk pelayanan yang mudah, informasi yang terbuka, dan masa depan yang lebih baik.</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/layanan" className="inline-flex min-h-13 items-center gap-2 rounded-2xl bg-white px-6 py-3 font-bold text-slate-900 transition hover:bg-emerald-300">Mulai layanan <ArrowRight size={18}/></Link><Link href="/profil" className="inline-flex min-h-13 items-center rounded-2xl border border-white/30 bg-white/10 px-6 py-3 font-bold backdrop-blur transition hover:bg-white/20">Jelajahi desa</Link></div></div></div></section><section className="relative z-10 -mt-8 mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-200 shadow-2xl shadow-slate-900/10 md:grid-cols-4">{stats.map(s=>{const Icon=s.icon;return <div key={s.label} className="bg-white p-5 sm:p-7"><Icon className="text-emerald-600" size={21}/><p className="mt-4 text-3xl font-bold text-slate-900">{s.value}</p><p className="mt-1 text-sm font-bold text-slate-700">{s.label}</p><p className="text-xs text-slate-400">{s.detail}</p></div>})}</section><section className="mx-auto max-w-7xl px-5 py-24"><SectionHeading eyebrow="Layanan publik" title="Urus keperluan tanpa berbelit." description="Akses layanan dasar desa melalui satu pintu digital." href="/layanan"/><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{services.map(s=><ServiceCard key={s.title} service={s}/>)}</div></section><section className="bg-slate-50 py-24"><div className="mx-auto max-w-7xl px-5"><SectionHeading eyebrow="Desa digital" title="Semua informasi, lebih dekat." description="Layanan terintegrasi untuk warga, dari data terbuka hingga kesehatan keluarga."/><div className="grid gap-5 md:grid-cols-3">{[[Wifi,"Layanan Digital","Pengajuan administrasi, pantau status, dan akses dokumen publik secara praktis.","/layanan-digital"],[HeartPulse,"Dashboard Stunting","Pantau tumbuh kembang anak dan program kesehatan desa.","/stunting"],[Sprout,"Potensi Desa","Kenali produk unggulan, pertanian, dan ekonomi kreatif Kedungrejo.","/profil"]].map(([Icon,title,desc,href])=>{const I=Icon as typeof Wifi;return <Link key={title as string} href={href as string} className="rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-7 text-white transition hover:-translate-y-1 even:from-emerald-600 even:to-emerald-800"><I size={30}/><h3 className="mt-12 text-xl font-bold">{title as string}</h3><p className="mt-3 text-sm leading-6 text-white/75">{desc as string}</p><span className="mt-8 inline-block text-sm font-bold">Buka fitur →</span></Link>})}</div></div></section><section className="mx-auto max-w-7xl px-5 py-24"><SectionHeading eyebrow="Kabar desa" title="Cerita baik dari Kedungrejo." href="/berita"/><div className="grid gap-5 md:grid-cols-4">{news.map((n,i)=><NewsCard item={n} featured={i===0} key={n.title}/>)}</div></section><section className="mx-auto max-w-7xl px-5 pb-24"><div className="grid gap-4 md:grid-cols-4 md:grid-rows-2"><div className="relative min-h-64 overflow-hidden rounded-3xl md:col-span-2 md:row-span-2"><img className="size-full object-cover" alt="" src="https://images.unsplash.com/photo-1566408666840-7b7e5a5d6e4e?auto=format&fit=crop&w=1200&q=80"/><span className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-xs font-bold text-slate-800 backdrop-blur">Sawah Kedungrejo</span></div>{["https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1577775136829-ff4bb2cc7d75?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=700&q=80"].map((src,i)=><div className="min-h-36 overflow-hidden rounded-3xl" key={src}><img className="size-full object-cover transition hover:scale-105" src={src} alt={`Galeri desa ${i+1}`}/></div>)}</div></section><section className="mx-auto mb-24 max-w-7xl px-5"><div className="relative overflow-hidden rounded-[2rem] bg-slate-900 px-7 py-14 text-center text-white sm:px-14"><div className="absolute -right-20 -top-20 size-64 rounded-full bg-blue-600/50 blur-3xl"/><div className="relative"><p className="text-sm font-bold uppercase tracking-[.18em] text-emerald-400">Partisipasi warga</p><h2 className="mt-4 text-3xl font-bold sm:text-4xl">Suara Anda membuat desa lebih baik.</h2><p className="mx-auto mt-4 max-w-xl text-slate-300">Laporkan masalah, berikan usulan, dan pantau tindak lanjutnya.</p><Link href="/aduan" className="mt-7 inline-flex rounded-2xl bg-emerald-500 px-6 py-3 font-bold transition hover:bg-emerald-400">Sampaikan aduan</Link></div></div></section></>}

@@ -1,0 +1,3 @@
+export default function LoadingBerita() {
+  return <div className="animate-pulse"><div className="h-72 bg-slate-100"/><div className="mx-auto max-w-7xl px-5 py-16"><div className="h-5 w-32 rounded bg-slate-200"/><div className="mt-5 h-[420px] rounded-2xl bg-slate-200"/><div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, index) => <div key={index} className="overflow-hidden rounded-xl border border-slate-100"><div className="aspect-video bg-slate-200"/><div className="space-y-3 p-5"><div className="h-4 w-24 rounded bg-slate-200"/><div className="h-5 rounded bg-slate-200"/><div className="h-5 w-4/5 rounded bg-slate-200"/></div></div>)}</div></div></div>
+}

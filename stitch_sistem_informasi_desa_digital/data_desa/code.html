@@ -1,0 +1,413 @@
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"tertiary-fixed-dim":"#ffb4ab","on-secondary-fixed-variant":"#0039b5","surface-container-lowest":"#ffffff","inverse-primary":"#8bd79b","on-background":"#191c1e","surface-bright":"#f7f9fb","secondary-fixed":"#dce1ff","on-secondary-container":"#fffbff","on-primary-fixed-variant":"#005226","on-tertiary":"#ffffff","on-secondary-fixed":"#001551","inverse-surface":"#2d3133","on-tertiary-fixed":"#410002","on-primary-fixed":"#00210b","surface-tint":"#1f6c3a","on-error":"#ffffff","on-error-container":"#93000a","on-tertiary-container":"#ffbfb8","on-surface-variant":"#404940","error-container":"#ffdad6","secondary-fixed-dim":"#b7c4ff","secondary-container":"#4069f2","background":"#f7f9fb","tertiary":"#88000a","primary":"#004c22","surface-container-highest":"#e0e3e5","surface-dim":"#d8dadc","secondary":"#1d4ed8","on-tertiary-fixed-variant":"#93000b","primary-fixed":"#a6f4b5","primary-container":"#166534","primary-fixed-dim":"#8bd79b","outline-variant":"#bfc9bd","inverse-on-surface":"#eff1f3","surface-variant":"#e0e3e5","on-secondary":"#ffffff","surface-container-high":"#e6e8ea","tertiary-fixed":"#ffdad6","tertiary-container":"#b40011","on-surface":"#191c1e","outline":"#707a6f","surface-container-low":"#f2f4f6","on-primary-container":"#93e0a2","error":"#ba1a1a","on-primary":"#ffffff","surface":"#f7f9fb","surface-container":"#eceef0"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"lg":"24px","xs":"4px","sm":"8px","gutter":"24px","container-max":"1280px","unit":"8px","margin-mobile":"16px","xl":"32px","md":"16px"},"fontFamily":{"headline-md":["Inter"],"label-sm":["Inter"],"headline-lg":["Inter"],"label-md":["Inter"],"body-md":["Inter"],"headline-lg-mobile":["Inter"],"body-sm":["Inter"],"headline-xl":["Inter"],"body-lg":["Inter"]},"fontSize":{"headline-md":["20px",{"lineHeight":"28px","fontWeight":"600"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"500"}],"headline-lg":["28px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"600"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"30px","fontWeight":"700"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-xl":["36px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/></head><body class="bg-background font-body-md text-on-surface"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-container-max mx-auto px-md lg:px-lg flex items-center justify-between gap-md"><div class="flex items-center gap-sm"><img alt="Logo Pemerintah Desa" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3FEEQtX8xPcctZToJc9wl2eZp93jm24pkBS_k6KgmtLj9b6zZLksW_dMmo1yDMWGzjHUzZzW9pql10091GqErgpLTIlGHifvmWaZgrJtAzmqQ2xCTDPtHfh9qZAt0m5qg471YU8sI5EmhfiRSB2SP-tYfEWf3-UPf9z1y4Vdcu1qXdM2crBynEjREDOshDfj1C4u4p0ERSlmBPtsCE769JWkUKlv9_JHZLT8LDDtMfHCoMr4wpnCqtA"/><span class="hidden lg:block font-headline-md text-primary leading-tight">Sistem Informasi Desa</span></div><nav class="hidden xl:flex items-center gap-md h-full" data-active-classes="text-primary font-label-md border-b-2 border-primary"><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="home" href="#">Home</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="profile-desa" href="#">Profile</a><a aria-current="page" class="transition-colors py-1 text-primary font-label-md border-b-2 border-primary" data-path="data-desa" href="#">Data</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="berita" href="#">Berita</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="arsip-digital" href="#">Arsip</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="layanan-publik" href="#">Layanan</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="portal-aduan" href="#">Aduan</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="dashboard-stunting" href="#">Stunting</a><a class="text-label-md text-on-surface-variant hover:text-primary transition-colors py-1" data-path="kontak" href="#">Kontak</a></nav><div class="flex items-center gap-sm"><button class="p-sm text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">search</span></button><div class="flex items-center gap-xs pl-sm border-l border-outline-variant"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX_YReUu9Lswa_eeLupOzBuhUKP78XAFk6WuIN5FBaygxnCC9ft6yngdNZFSbqHjOhpB8dqk6Zcz1z_JsttVHR32MsR7DqWYOZgcxTgD3-ypAWhB15cCb67sPc1yBfBNOnrgXr2INZkWMo_5SfolRAtG8xCptNAkodtO8WXjm_3bKe3BzKbSkhKlj-sVB3iGgpOtCevBGdFJQ73TfGqg5XfUZrTMDMRbevkWKTBlhRxkJp5A1ryGuz-A"/><span class="hidden sm:block text-label-sm text-on-surface">Pengunjung</span></div></div></div></header><main class="w-full pt-16"><div class="flex flex-col w-full">
+<!-- Header / Summary Stats -->
+<section class="max-w-container-max mx-auto px-md lg:px-lg w-full pt-lg pb-xl">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md mb-xl">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary mb-xs">Statistik Desa</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Data komprehensif demografi, wilayah, dan pembangunan untuk mendukung transparansi informasi publik. Pembaruan terakhir: <span class="font-label-md text-label-md text-on-surface">September 2024</span>.</p>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-lg h-[40px] rounded-lg shadow-sm hover:shadow-md hover:bg-primary-container transition-all flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">download</span>
+        Unduh Laporan
+      </button>
+</div>
+<!-- Key Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Metric Card 1 -->
+<div class="bg-surface-container p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex items-center gap-sm mb-sm relative z-10">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Total Penduduk</span>
+</div>
+<div class="relative z-10">
+<span class="font-headline-xl text-headline-xl text-on-surface block">4,258</span>
+<div class="flex items-center gap-xs mt-xs text-primary">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-label-sm text-label-sm">+2.4% dari tahun lalu</span>
+</div>
+</div>
+</div>
+<!-- Metric Card 2 -->
+<div class="bg-surface-container p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex items-center gap-sm mb-sm relative z-10">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined">map</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Luas Wilayah</span>
+</div>
+<div class="relative z-10">
+<span class="font-headline-xl text-headline-xl text-on-surface block">345 <span class="text-headline-md font-headline-md text-on-surface-variant">Ha</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mt-xs mt-xs">Wilayah Administratif</span>
+</div>
+</div>
+<!-- Metric Card 3 -->
+<div class="bg-surface-container p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex items-center gap-sm mb-sm relative z-10">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined">home_work</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Jumlah KK</span>
+</div>
+<div class="relative z-10">
+<span class="font-headline-xl text-headline-xl text-on-surface block">1,124</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mt-xs">Kepala Keluarga</span>
+</div>
+</div>
+<!-- Metric Card 4 -->
+<div class="bg-surface-container p-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex items-center gap-sm mb-sm relative z-10">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Indeks Desa</span>
+</div>
+<div class="relative z-10">
+<span class="font-headline-xl text-headline-xl text-on-surface block">Maju</span>
+<div class="flex items-center gap-xs mt-xs text-primary">
+<span class="font-label-sm text-label-sm">Skor: 0.7845</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Split Panel Layout for Deep Data -->
+<section class="max-w-container-max mx-auto px-md lg:px-lg w-full pb-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Main Content / Tables (Left - 8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Population Table Section -->
+<div class="bg-surface-container rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-lg pb-md">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Kependudukan</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rincian demografi penduduk berdasarkan jenis kelamin dan kategori usia.</p>
+</div>
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-body-sm text-body-sm border-collapse min-w-[600px]">
+<thead class="bg-surface text-on-surface-variant font-label-md text-label-md">
+<tr>
+<th class="py-sm px-md font-normal">Kategori</th>
+<th class="py-sm px-md font-normal text-right">Laki-laki</th>
+<th class="py-sm px-md font-normal text-right">Perempuan</th>
+<th class="py-sm px-md font-normal text-right">Total</th>
+<th class="py-sm px-md font-normal text-right">Persentase</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<tr class="bg-surface-container-low hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant font-label-md text-label-md">Penduduk Total</td>
+<td class="py-md px-md border-b border-surface-variant text-right">2,145</td>
+<td class="py-md px-md border-b border-surface-variant text-right">2,113</td>
+<td class="py-md px-md border-b border-surface-variant text-right font-label-md text-label-md">4,258</td>
+<td class="py-md px-md border-b border-surface-variant text-right">
+<div class="flex items-center justify-end gap-xs">
+                      100%
+                      <div class="w-16 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary rounded-full"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant text-on-surface-variant">Balita (0-4 thn)</td>
+<td class="py-md px-md border-b border-surface-variant text-right">185</td>
+<td class="py-md px-md border-b border-surface-variant text-right">172</td>
+<td class="py-md px-md border-b border-surface-variant text-right font-label-md text-label-md">357</td>
+<td class="py-md px-md border-b border-surface-variant text-right">
+<div class="flex items-center justify-end gap-xs">
+                      8.4%
+                      <div class="w-16 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[8.4%] h-full bg-primary/70 rounded-full"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant text-on-surface-variant">Anak (5-14 thn)</td>
+<td class="py-md px-md border-b border-surface-variant text-right">340</td>
+<td class="py-md px-md border-b border-surface-variant text-right">325</td>
+<td class="py-md px-md border-b border-surface-variant text-right font-label-md text-label-md">665</td>
+<td class="py-md px-md border-b border-surface-variant text-right">
+<div class="flex items-center justify-end gap-xs">
+                      15.6%
+                      <div class="w-16 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[15.6%] h-full bg-primary/70 rounded-full"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant text-on-surface-variant">Produktif (15-64 thn)</td>
+<td class="py-md px-md border-b border-surface-variant text-right">1,410</td>
+<td class="py-md px-md border-b border-surface-variant text-right">1,402</td>
+<td class="py-md px-md border-b border-surface-variant text-right font-label-md text-label-md">2,812</td>
+<td class="py-md px-md border-b border-surface-variant text-right">
+<div class="flex items-center justify-end gap-xs">
+                      66.0%
+                      <div class="w-16 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[66%] h-full bg-primary/70 rounded-full"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface transition-colors group">
+<td class="py-md px-md text-on-surface-variant">Lansia (>64 thn)</td>
+<td class="py-md px-md text-right">210</td>
+<td class="py-md px-md text-right">214</td>
+<td class="py-md px-md text-right font-label-md text-label-md">424</td>
+<td class="py-md px-md text-right">
+<div class="flex items-center justify-end gap-xs">
+                      10.0%
+                      <div class="w-16 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[10%] h-full bg-primary/70 rounded-full"></div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md bg-surface border-t border-surface-variant flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Menampilkan 5 entri</span>
+<div class="flex gap-xs">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors disabled:opacity-50" disabled=""><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Occupation and Education Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Education Distribution -->
+<div class="bg-surface-container rounded-xl shadow-sm p-lg flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Tingkat Pendidikan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Status pendidikan terakhir warga.</p>
+<div class="flex-1 flex flex-col gap-md justify-center">
+<!-- Bar Chart implementation via HTML/CSS -->
+<div class="flex flex-col gap-sm">
+<div class="flex flex-col gap-xs group">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">Tamat SD/Sederajat</span>
+<span class="text-on-surface-variant">32%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-primary rounded-full group-hover:bg-primary-container transition-colors w-[32%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs group">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">SLTP/Sederajat</span>
+<span class="text-on-surface-variant">28%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-primary rounded-full group-hover:bg-primary-container transition-colors w-[28%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs group">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">SLTA/Sederajat</span>
+<span class="text-on-surface-variant">25%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-primary rounded-full group-hover:bg-primary-container transition-colors w-[25%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs group">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">Diploma/Sarjana</span>
+<span class="text-on-surface-variant">10%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-primary rounded-full group-hover:bg-primary-container transition-colors w-[10%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs group">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">Tidak/Belum Sekolah</span>
+<span class="text-on-surface-variant">5%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-surface-tint rounded-full group-hover:bg-primary-container transition-colors w-[5%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Religion Distribution -->
+<div class="bg-surface-container rounded-xl shadow-sm p-lg flex flex-col relative overflow-hidden">
+<div class="absolute -bottom-8 -right-8 opacity-5">
+<span class="material-symbols-outlined text-[180px]">auto_graph</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs relative z-10">Agama</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md relative z-10">Sebaran pemeluk agama.</p>
+<div class="flex-1 flex flex-col justify-center relative z-10">
+<ul class="flex flex-col gap-sm">
+<li class="flex items-center justify-between p-sm bg-surface rounded-lg">
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Islam</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">98.5%</span>
+</li>
+<li class="flex items-center justify-between p-sm hover:bg-surface/50 rounded-lg transition-colors">
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Kristen</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">1.2%</span>
+</li>
+<li class="flex items-center justify-between p-sm hover:bg-surface/50 rounded-lg transition-colors">
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Lainnya</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">0.3%</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Occupation Table -->
+<div class="bg-surface-container rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-lg pb-md">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Pekerjaan Utama</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Distribusi mata pencaharian penduduk produktif.</p>
+</div>
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-body-sm text-body-sm border-collapse min-w-[500px]">
+<thead class="bg-surface text-on-surface-variant font-label-md text-label-md">
+<tr>
+<th class="py-sm px-md font-normal w-1/2">Sektor Pekerjaan</th>
+<th class="py-sm px-md font-normal text-right">Jumlah (Jiwa)</th>
+<th class="py-sm px-md font-normal text-right">Trend</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<tr class="bg-surface-container-low hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant font-label-md text-label-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-surface-tint text-[20px]">agriculture</span>
+                    Petani / Pekebun
+                  </td>
+<td class="py-md px-md border-b border-surface-variant text-right font-label-md text-label-md">845</td>
+<td class="py-md px-md border-b border-surface-variant text-right text-primary">
+<span class="material-symbols-outlined text-[18px]">trending_flat</span>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">storefront</span>
+                    Pedagang / Wiraswasta
+                  </td>
+<td class="py-md px-md border-b border-surface-variant text-right">432</td>
+<td class="py-md px-md border-b border-surface-variant text-right text-primary">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface transition-colors group">
+<td class="py-md px-md border-b border-surface-variant text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">work</span>
+                    Karyawan Swasta
+                  </td>
+<td class="py-md px-md border-b border-surface-variant text-right">315</td>
+<td class="py-md px-md border-b border-surface-variant text-right text-primary">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors group">
+<td class="py-md px-md text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">account_balance</span>
+                    PNS / TNI / Polri
+                  </td>
+<td class="py-md px-md text-right">112</td>
+<td class="py-md px-md text-right text-outline">
+<span class="material-symbols-outlined text-[18px]">trending_flat</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Sidebar / Map & Development (Right - 4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Map Widget -->
+<div class="bg-surface-container rounded-xl shadow-sm p-md flex flex-col group">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs px-sm">Peta Wilayah</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md px-sm">Batas administratif desa.</p>
+<div class="w-full h-64 rounded-lg overflow-hidden relative shadow-sm">
+<div class="w-full h-full bg-cover bg-center" data-alt="Satellite map view of an Indonesian village showing clear agricultural lands, small residential clusters, a central main road, and green boundaries. Minimalistic and professional map style." data-location="Desa Makmur, Indonesia" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBRvC-f63xUP3h9yrcD8SL8rNSRC1iugLVtry4SE9NJJCjnvYRCKBq7a_ywMdrDP7XJreFTHlSq7ybkvw_gg3PFSc4L8tsYq3ML_bLybPnB__K774piVWdGZXQByi5ke79gG3GZbMBxCU6PbQiCmEdz3FFUd_PI1h3nxMjlwsMVRQIcA-JoG6OlMqovrazrXrkDQeoiKd7Oxli2aPk1thfwF2Iry8RIGx_zxeIwP_IH0FGV6sm0Q4cj3A')"></div>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-md text-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-on-primary text-[32px] mb-xs">open_in_new</span>
+<span class="font-label-md text-label-md text-on-primary">Buka di Peta Tata Ruang</span>
+</div>
+</div>
+<div class="mt-md px-sm grid grid-cols-2 gap-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Pemukiman</span>
+<span class="font-label-md text-label-md text-on-surface">45 Ha</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Pertanian</span>
+<span class="font-label-md text-label-md text-on-surface">250 Ha</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Fasum</span>
+<span class="font-label-md text-label-md text-on-surface">15 Ha</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Hutan/Lain</span>
+<span class="font-label-md text-label-md text-on-surface">35 Ha</span>
+</div>
+</div>
+</div>
+<!-- Development Status Widget -->
+<div class="bg-surface-container rounded-xl shadow-sm p-lg flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Status Pembangunan</h3>
+<div class="flex items-center gap-md mb-md p-md bg-surface rounded-lg">
+<svg class="w-16 h-16 text-primary transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="85, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div>
+<span class="font-headline-lg text-headline-lg text-on-surface block leading-none mb-xs">85%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Realisasi APBDes 2024</span>
+</div>
+</div>
+<div class="flex flex-col gap-md">
+<div class="flex gap-sm items-start">
+<span class="material-symbols-outlined text-primary text-[20px] mt-xs">check_circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Infrastruktur Jalan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pengecoran jalan dusun 1-3 selesai.</span>
+</div>
+</div>
+<div class="flex gap-sm items-start">
+<span class="material-symbols-outlined text-primary text-[20px] mt-xs">check_circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Pemberdayaan UMKM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pelatihan digital marketing tahap 2.</span>
+</div>
+</div>
+<div class="flex gap-sm items-start opacity-70">
+<span class="material-symbols-outlined text-outline text-[20px] mt-xs">pending</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Saluran Irigasi</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dalam proses pengerjaan (60%).</span>
+</div>
+</div>
+</div>
+<button class="mt-md w-full bg-surface-container-low border border-outline-variant text-primary font-label-md text-label-md py-sm rounded-lg hover:bg-surface-variant transition-colors">
+            Lihat Laporan Lengkap
+          </button>
+</div>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container py-xl"><div class="max-w-container-max mx-auto px-lg grid grid-cols-1 md:grid-cols-3 gap-xl"><div class="flex flex-col gap-sm"><div class="flex items-center gap-sm"><img alt="Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3FEEQtX8xPcctZToJc9wl2eZp93jm24pkBS_k6KgmtLj9b6zZLksW_dMmo1yDMWGzjHUzZzW9pql10091GqErgpLTIlGHifvmWaZgrJtAzmqQ2xCTDPtHfh9qZAt0m5qg471YU8sI5EmhfiRSB2SP-tYfEWf3-UPf9z1y4Vdcu1qXdM2crBynEjREDOshDfj1C4u4p0ERSlmBPtsCE769JWkUKlv9_JHZLT8LDDtMfHCoMr4wpnCqtA"/><div class="flex flex-col"><span class="font-headline-md text-primary">Pemerintah Desa</span><span class="text-label-sm text-on-surface-variant">Sistem Informasi Digital Terpadu</span></div></div><p class="text-body-sm text-on-surface-variant mt-sm">Mewujudkan tata kelola desa yang transparan, akuntabel, dan melayani masyarakat dengan sepenuh hati melalui teknologi informasi.</p></div><div class="flex flex-col gap-sm"><span class="font-label-md text-on-surface">Navigasi Cepat</span><div class="grid grid-cols-2 gap-xs"><a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="home" href="#">Beranda</a><a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="layanan-publik" href="#">Layanan Publik</a><a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="data-desa" href="#">Statistik Desa</a><a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="berita" href="#">Kabar Desa</a><a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="portal-aduan" href="#">Lapor Aduan</a><a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="admin-dashboard" href="#">Panel Admin</a></div></div><div class="flex flex-col gap-sm"><span class="font-label-md text-on-surface">Kontak Kami</span><div class="flex items-start gap-sm text-body-sm text-on-surface-variant"><span class="material-symbols-outlined text-sm">location_on</span><span>Jl. Raya Desa No. 01, Kecamatan Sejahtera, Kabupaten Makmur</span></div><div class="flex items-center gap-sm text-body-sm text-on-surface-variant"><span class="material-symbols-outlined text-sm">mail</span><span>admin@desa-digital.go.id</span></div></div></div><div class="max-w-container-max mx-auto px-lg mt-xl pt-lg border-t border-outline-variant text-center text-label-sm text-on-surface-variant">© 2024 Pemerintah Desa. All rights reserved. Dikembangkan untuk transparansi publik.</div></footer></body></html>
