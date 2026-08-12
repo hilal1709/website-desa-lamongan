@@ -1,3 +1,88 @@
-import { PageHero } from "@/components/ui/page-hero"; import { MapPin, Target, Users, Trees } from "lucide-react"
-const team=["Budi Santoso, S.E. — Kepala Desa","Siti Aminah — Sekretaris Desa","Ahmad Ridwan — Kaur Keuangan","Nurhayati — Kaur Tata Usaha"];
-export default function Profil(){return <><PageHero eyebrow="Tentang kami" title="Desa Sejahtera, Mandiri, dan Berbudaya." description="Kedungrejo adalah desa yang tumbuh dengan semangat gotong royong, berakar pada pertanian dan terbuka terhadap inovasi."/><div className="mx-auto max-w-7xl px-5 py-20"><div className="grid gap-12 lg:grid-cols-[1.2fr_.8fr]"><div><p className="text-sm font-bold uppercase tracking-wider text-emerald-600">Sejarah Desa</p><h2 className="mt-3 text-3xl font-bold text-slate-900">Tumbuh bersama sejak 1928.</h2><p className="mt-5 leading-8 text-slate-600">Desa Kedungrejo berkembang dari permukiman agraris yang dikelilingi persawahan subur. Hari ini, desa kami memadukan kearifan lokal dengan tata kelola digital untuk memberikan hidup yang lebih baik bagi setiap keluarga.</p><div className="mt-8 grid gap-4 sm:grid-cols-3">{[[Target,"Visi","Desa maju dan mandiri"],[Users,"4.862","Warga bertetangga"],[Trees,"72 ha","Lahan produktif"]].map(([I,n,d])=>{const Icon=I as typeof Target;return <div className="rounded-3xl bg-slate-50 p-5"><Icon className="text-emerald-600"/><p className="mt-4 font-bold text-slate-900">{n as string}</p><p className="text-sm text-slate-500">{d as string}</p></div>})}</div></div><div className="rounded-3xl bg-gradient-to-br from-blue-600 to-emerald-600 p-8 text-white"><MapPin/><h2 className="mt-12 text-2xl font-bold">Arah pembangunan</h2><p className="mt-4 leading-7 text-white/80">Membangun pelayanan prima, ekonomi yang produktif, lingkungan lestari, dan masyarakat yang sehat.</p></div></div><section className="mt-20"><p className="text-sm font-bold uppercase tracking-wider text-emerald-600">Pemerintahan</p><h2 className="mt-3 text-3xl font-bold text-slate-900">Perangkat Desa</h2><div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{team.map((name,i)=><div key={name} className="rounded-3xl border bg-white p-6"><div className="grid size-14 place-items-center rounded-2xl bg-blue-50 font-bold text-blue-600">0{i+1}</div><p className="mt-5 font-bold text-slate-900">{name.split(" — ")[0]}</p><p className="mt-1 text-sm text-slate-500">{name.split(" — ")[1]}</p></div>)}</div></section></div></>}
+import { MapPin, Target, Trees, Users, type LucideIcon } from "lucide-react"
+
+import { PageHero } from "@/components/ui/page-hero"
+import { getCmsPage } from "@/lib/cms-pages"
+
+const team = [
+  "Budi Santoso, S.E. — Kepala Desa",
+  "Siti Aminah — Sekretaris Desa",
+  "Ahmad Ridwan — Kaur Keuangan",
+  "Nurhayati — Kaur Tata Usaha",
+]
+
+const statCards: { icon: LucideIcon; title: string; description: string }[] = [
+  { icon: Target, title: "Visi", description: "Desa maju dan mandiri" },
+  { icon: Users, title: "4.862", description: "Warga bertetangga" },
+  { icon: Trees, title: "72 ha", description: "Lahan produktif" },
+]
+
+export const dynamic = "force-dynamic"
+
+export default async function Profil() {
+  const hero = await getCmsPage("profil")
+
+  return (
+    <>
+      <PageHero
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        image={hero.image}
+        imagePosition={hero.imagePosition}
+      />
+
+      <div className="mx-auto max-w-7xl px-5 py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Sejarah Desa</p>
+            <h2 className="mt-3 text-3xl font-black text-slate-900">Tumbuh bersama sejak 1928.</h2>
+            <p className="mt-5 text-base leading-8 text-slate-600">
+              Desa Kedungrejo berkembang dari permukiman agraris yang dikelilingi persawahan subur. Hari ini,
+              desa kami memadukan kearifan lokal dengan tata kelola digital untuk memberikan hidup yang lebih baik bagi setiap keluarga.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {statCards.map(({ icon: Icon, title, description }) => (
+                <div key={title} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+                  <Icon className="text-emerald-600" />
+                  <p className="mt-4 font-black text-slate-900">{title}</p>
+                  <p className="mt-1 text-sm text-slate-500">{description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[32px] bg-green-800 p-8 text-white shadow-lg">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+              <MapPin className="h-5 w-5" />
+            </div>
+            <h2 className="mt-10 text-2xl font-black">Arah pembangunan</h2>
+            <p className="mt-4 leading-7 text-white/90">
+              Membangun pelayanan prima, ekonomi yang produktif, lingkungan lestari, dan masyarakat yang sehat.
+            </p>
+
+            <div className="mt-8 rounded-2xl border border-white/20 bg-white/5 p-4 text-sm text-white/85">
+              “Gotong royong menjadi fondasi utama pembangunan Desa Kedungrejo yang modern.”
+            </div>
+          </div>
+        </div>
+
+        <section className="mt-20">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Pemerintahan</p>
+          <h2 className="mt-3 text-3xl font-black text-slate-900">Perangkat Desa</h2>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {team.map((name, index) => (
+              <div key={name} className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 font-black text-emerald-700">
+                  0{index + 1}
+                </div>
+                <p className="mt-4 font-semibold text-slate-900">{name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </>
+  )
+}

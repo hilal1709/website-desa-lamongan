@@ -17,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={inter.className}><SiteShell>{children}</SiteShell></body>
+      <body className={`${inter.className} bg-background text-foreground antialiased`}>
+        <SiteShell>{children}</SiteShell>
+      </body>
     </html>
   )
 }

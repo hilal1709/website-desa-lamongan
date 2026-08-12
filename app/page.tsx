@@ -1,5 +1,133 @@
-import Link from "next/link"; import { ArrowRight, Building2, FileText, HeartPulse, Landmark, Users, Wifi, Sprout, MessageCircle } from "lucide-react"; import { SectionHeading } from "@/components/ui/section-heading"; import { ServiceCard } from "@/components/home/service-card"; import { NewsCard } from "@/components/home/news-card"; import type { NewsItem, Service, Stat } from "@/types"
-const stats: Stat[] = [{label:"Penduduk",value:"4.862",detail:"Jiwa terdata",icon:Users},{label:"Kepala Keluarga",value:"1.548",detail:"Keluarga",icon:Building2},{label:"Layanan bulan ini",value:"248",detail:"Pengajuan",icon:FileText},{label:"Dusun",value:"5",detail:"Wilayah",icon:Landmark}];
-const services: Service[] = [{title:"Surat Keterangan",description:"Pengantar, domisili, dan kebutuhan administrasi lainnya.",href:"/layanan",icon:FileText,tone:"blue"},{title:"Layanan Kependudukan",description:"Informasi KTP, KK, akta kelahiran, dan pindah datang.",href:"/layanan",icon:Users,tone:"emerald"},{title:"Aduan Warga",description:"Sampaikan masalah lingkungan dan pelayanan.",href:"/aduan",icon:MessageCircle,tone:"amber"},{title:"Peta & Data Desa",description:"Akses data terbuka dan potensi wilayah desa.",href:"/data-desa",icon:Landmark,tone:"blue"}];
-const news: NewsItem[] = [{title:"Musrenbangdes 2025: Warga Sepakati Prioritas Jalan Tani dan UMKM",category:"Pembangunan",date:"20 Agustus 2025",image:"https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",excerpt:"Musyawarah desa menghadirkan perwakilan seluruh dusun untuk menyusun agenda pembangunan bersama."},{title:"Pelatihan Pupuk Organik untuk Kelompok Tani Maju",category:"Pertanian",date:"18 Agustus 2025",image:"https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?auto=format&fit=crop&w=900&q=80",excerpt:""},{title:"Posyandu Serentak Hadir di Lima Dusun",category:"Kesehatan",date:"16 Agustus 2025",image:"https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80",excerpt:""}];
-export default function Home(){return <><section className="relative isolate flex min-h-[780px] items-end overflow-hidden bg-slate-950 pb-16 pt-32 text-white"><img src="/images/dorr.jpg" alt="Hamparan sawah Desa Kedungrejo" className="absolute inset-0 -z-20 size-full object-cover opacity-70"/><div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent"/><div className="mx-auto w-full max-w-7xl px-5"><div className="max-w-3xl"><p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[.16em] backdrop-blur"><span className="size-2 rounded-full bg-emerald-400"/> Desa Pintar Kedungrejo</p><h1 className="mt-7 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">Desa bertumbuh,<br/><span className="text-emerald-300">warga terhubung.</span></h1><p className="mt-6 max-w-xl text-lg leading-8 text-slate-200">Portal digital Desa Kedungrejo untuk pelayanan yang mudah, informasi yang terbuka, dan masa depan yang lebih baik.</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/layanan" className="inline-flex min-h-13 items-center gap-2 rounded-2xl bg-white px-6 py-3 font-bold text-slate-900 transition hover:bg-emerald-300">Mulai layanan <ArrowRight size={18}/></Link><Link href="/profil" className="inline-flex min-h-13 items-center rounded-2xl border border-white/30 bg-white/10 px-6 py-3 font-bold backdrop-blur transition hover:bg-white/20">Jelajahi desa</Link></div></div></div></section><section className="relative z-10 -mt-8 mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-200 shadow-2xl shadow-slate-900/10 md:grid-cols-4">{stats.map(s=>{const Icon=s.icon;return <div key={s.label} className="bg-white p-5 sm:p-7"><Icon className="text-emerald-600" size={21}/><p className="mt-4 text-3xl font-bold text-slate-900">{s.value}</p><p className="mt-1 text-sm font-bold text-slate-700">{s.label}</p><p className="text-xs text-slate-400">{s.detail}</p></div>})}</section><section className="mx-auto max-w-7xl px-5 py-24"><SectionHeading eyebrow="Layanan publik" title="Urus keperluan tanpa berbelit." description="Akses layanan dasar desa melalui satu pintu digital." href="/layanan"/><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{services.map(s=><ServiceCard key={s.title} service={s}/>)}</div></section><section className="bg-slate-50 py-24"><div className="mx-auto max-w-7xl px-5"><SectionHeading eyebrow="Desa digital" title="Semua informasi, lebih dekat." description="Layanan terintegrasi untuk warga, dari data terbuka hingga kesehatan keluarga."/><div className="grid gap-5 md:grid-cols-3">{[[Wifi,"Layanan Digital","Pengajuan administrasi, pantau status, dan akses dokumen publik secara praktis.","/layanan-digital"],[HeartPulse,"Dashboard Stunting","Pantau tumbuh kembang anak dan program kesehatan desa.","/stunting"],[Sprout,"Potensi Desa","Kenali produk unggulan, pertanian, dan ekonomi kreatif Kedungrejo.","/profil"]].map(([Icon,title,desc,href])=>{const I=Icon as typeof Wifi;return <Link key={title as string} href={href as string} className="rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-7 text-white transition hover:-translate-y-1 even:from-emerald-600 even:to-emerald-800"><I size={30}/><h3 className="mt-12 text-xl font-bold">{title as string}</h3><p className="mt-3 text-sm leading-6 text-white/75">{desc as string}</p><span className="mt-8 inline-block text-sm font-bold">Buka fitur →</span></Link>})}</div></div></section><section className="mx-auto max-w-7xl px-5 py-24"><SectionHeading eyebrow="Kabar desa" title="Cerita baik dari Kedungrejo." href="/berita"/><div className="grid gap-5 md:grid-cols-4">{news.map((n,i)=><NewsCard item={n} featured={i===0} key={n.title}/>)}</div></section><section className="mx-auto max-w-7xl px-5 pb-24"><div className="grid gap-4 md:grid-cols-4 md:grid-rows-2"><div className="relative min-h-64 overflow-hidden rounded-3xl md:col-span-2 md:row-span-2"><img className="size-full object-cover" alt="" src="https://images.unsplash.com/photo-1566408666840-7b7e5a5d6e4e?auto=format&fit=crop&w=1200&q=80"/><span className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-xs font-bold text-slate-800 backdrop-blur">Sawah Kedungrejo</span></div>{["https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1577775136829-ff4bb2cc7d75?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=700&q=80","https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=700&q=80"].map((src,i)=><div className="min-h-36 overflow-hidden rounded-3xl" key={src}><img className="size-full object-cover transition hover:scale-105" src={src} alt={`Galeri desa ${i+1}`}/></div>)}</div></section><section className="mx-auto mb-24 max-w-7xl px-5"><div className="relative overflow-hidden rounded-[2rem] bg-slate-900 px-7 py-14 text-center text-white sm:px-14"><div className="absolute -right-20 -top-20 size-64 rounded-full bg-blue-600/50 blur-3xl"/><div className="relative"><p className="text-sm font-bold uppercase tracking-[.18em] text-emerald-400">Partisipasi warga</p><h2 className="mt-4 text-3xl font-bold sm:text-4xl">Suara Anda membuat desa lebih baik.</h2><p className="mx-auto mt-4 max-w-xl text-slate-300">Laporkan masalah, berikan usulan, dan pantau tindak lanjutnya.</p><Link href="/aduan" className="mt-7 inline-flex rounded-2xl bg-emerald-500 px-6 py-3 font-bold transition hover:bg-emerald-400">Sampaikan aduan</Link></div></div></section></>}
+﻿import Link from "next/link"
+import { Building2, FileText, Landmark, MessageCircle, Users } from "lucide-react"
+
+import { AnimatedHero } from "@/components/home/animated-hero"
+import { NewsCard } from "@/components/home/news-card"
+import { ServiceCard } from "@/components/home/service-card"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SectionHeading } from "@/components/ui/section-heading"
+import { getCmsPage } from "@/lib/cms-pages"
+import type { NewsItem, Service, Stat } from "@/types"
+
+const statIcons = [Users, Building2, FileText, Landmark]
+const serviceIcons = [FileText, Users, MessageCircle, Landmark]
+const serviceTones: Service["tone"][] = ["blue", "emerald", "amber", "blue"]
+
+export const dynamic = "force-dynamic"
+
+export default async function Home() {
+  const hero = await getCmsPage("home")
+  const section = (key: string) => hero.sections.find((item) => item.key === key)
+  const statsSection = section("stats")
+  const servicesSection = section("services")
+  const digitalSection = section("digital")
+  const newsSection = section("news")
+  const ctaSection = section("cta")
+
+  const stats: Stat[] = (statsSection?.items ?? []).map((item, index) => ({
+    label: item.title,
+    value: item.value ?? "",
+    detail: item.detail ?? "",
+    icon: statIcons[index] ?? Users,
+  }))
+
+  const services: Service[] = (servicesSection?.items ?? []).map((item, index) => ({
+    title: item.title,
+    description: item.description ?? "",
+    href: item.href ?? "/layanan",
+    icon: serviceIcons[index] ?? FileText,
+    tone: serviceTones[index] ?? "emerald",
+  }))
+
+  const news: NewsItem[] = (newsSection?.items ?? []).map((item) => ({
+    title: item.title,
+    category: item.category ?? "Berita",
+    date: item.date ?? "",
+    image: item.image ?? "/images/dorr.jpg",
+    excerpt: item.description ?? "",
+  }))
+
+  return (
+    <>
+      <div className="-mt-[88px]">
+        <AnimatedHero content={hero} />
+      </div>
+
+      <div className="bg-[#f3f7f3]">
+        <section className="relative z-10 -mt-4 mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-[24px] bg-slate-200 shadow-xl shadow-slate-900/10 md:grid-cols-4">
+          {stats.map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div key={stat.label} className="bg-[#f8fbf9] p-5 sm:p-6">
+                <Icon className="text-emerald-700" size={21} />
+                <p className="mt-4 text-3xl font-black text-slate-900">{stat.value}</p>
+                <p className="mt-1 text-sm font-bold text-slate-700">{stat.label}</p>
+                <p className="mt-1 text-sm text-slate-500">{stat.detail}</p>
+              </div>
+            )
+          })}
+        </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-12 sm:py-16">
+        <SectionHeading eyebrow={servicesSection?.eyebrow ?? ""} title={servicesSection?.title ?? ""} description={servicesSection?.description} href={servicesSection?.href} action={servicesSection?.action} />
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {services.map((service) => (
+            <ServiceCard key={service.title} service={service} />
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-50 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-5">
+          <SectionHeading eyebrow={digitalSection?.eyebrow ?? ""} title={digitalSection?.title ?? ""} description={digitalSection?.description} href={digitalSection?.href} action={digitalSection?.action} />
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            {(digitalSection?.items ?? []).map((item, index) => (
+              <Card key={item.title} className="overflow-hidden border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <CardHeader>
+                  <div className="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-lg font-black text-emerald-700">
+                    0{index + 1}
+                  </div>
+                  <CardTitle className="text-xl text-slate-900">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm leading-6 text-slate-500">{item.description}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:py-20">
+        <SectionHeading eyebrow={newsSection?.eyebrow ?? ""} title={newsSection?.title ?? ""} description={newsSection?.description} href={newsSection?.href} action={newsSection?.action} />
+        <div className="grid gap-5 md:grid-cols-3">
+          {news.map((item, index) => (
+            <NewsCard key={item.title} item={item} featured={index === 0} />
+          ))}
+        </div>
+      </section>
+
+        <section className="mx-auto max-w-7xl px-5 pb-20">
+          <Card className="overflow-hidden border-emerald-100 bg-gradient-to-r from-emerald-50 via-white to-sky-50">
+            <CardContent className="flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">{ctaSection?.eyebrow}</p>
+                <h3 className="mt-2 text-3xl font-black text-slate-900">{ctaSection?.title}</h3>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Button asChild variant="default">
+                  <Link href="/layanan">Layanan desa</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link href="/aduan">Kirim aspirasi</Link>
+                </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+      </div>
+    </>
+  )
+}

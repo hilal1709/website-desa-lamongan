@@ -1,3 +1,16 @@
-import { BarChart3 } from "lucide-react"
+import { PageHero } from "@/components/ui/page-hero"
+import { getCmsPage } from "@/lib/cms-pages"
 
-export function Hero() { return <section className="relative overflow-hidden bg-slate-950 px-5 py-16 text-white sm:py-20"><div className="absolute -right-24 -top-24 size-96 rounded-full bg-blue-500/30 blur-3xl"/><div className="absolute -bottom-32 left-1/4 size-80 rounded-full bg-emerald-500/25 blur-3xl"/><div className="relative mx-auto max-w-7xl"><p className="flex items-center gap-2 text-sm font-bold uppercase tracking-[.18em] text-emerald-300"><BarChart3 size={17}/> Data terbuka desa</p><h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">Infografis Desa Kedungrejo</h1><p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">Gambaran kependudukan dan potensi desa yang ringkas, transparan, dan mudah dipahami.</p></div></section> }
+export async function Hero() {
+  const hero = await getCmsPage("infografis")
+
+  return (
+    <PageHero
+      eyebrow={hero.eyebrow}
+      title={hero.title}
+      description={hero.description}
+      image={hero.image}
+      imagePosition={hero.imagePosition}
+    />
+  )
+}
