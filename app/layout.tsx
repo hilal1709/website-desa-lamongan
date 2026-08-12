@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Desa Kedungrejo",
   description: "Website resmi Desa Kedungrejo",
+  icons: {
+    icon: "/images/logokedungrejo.jpeg",
+  },
 }
 
 export default function RootLayout({
