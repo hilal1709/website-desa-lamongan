@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useLayoutEffect } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import gsap from "gsap"
 
 export function ScrollToTop() {
   const pathname = usePathname()
+  const animationRef = useRef<gsap.core.Tween | null>(null)
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
@@ -20,13 +21,25 @@ export function ScrollToTop() {
     requestAnimationFrame(resetScroll)
     const timer = window.setTimeout(resetScroll, 120)
 
-    gsap.fromTo(
-      "main",
-      { opacity: 0.96 },
-      { opacity: 1, duration: 0.35, ease: "power2.out" },
-    )
+    // Add a small delay to avoid hydration mismatch
+    const animationTimer = window.setTimeout(() => {
+      const main = document.querySelector("main")
+      if (main && !animationRef.current?.isActive()) {
+        animationRef.current = gsap.fromTo(
+          main,
+          { opacity: 0.96 },
+          { opacity: 1, duration: 0.35, ease: "power2.out" },
+        )
+      }
+    }, 50)
 
-    return () => window.clearTimeout(timer)
+    return () => {
+      window.clearTimeout(timer)
+      window.clearTimeout(animationTimer)
+      if (animationRef.current) {
+        animationRef.current.kill()
+      }
+    }
   }, [pathname])
 
   return null

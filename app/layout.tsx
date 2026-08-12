@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   title: "Desa Kedungrejo",
   description: "Website resmi Desa Kedungrejo",
   icons: {
-    icon: "/images/logokedungrejo.jpeg",
+    icon: [
+      {
+        url: "/images/logokedungrejo.png",
+        type: "image/png",
+      },
+    ],
   },
 }
 

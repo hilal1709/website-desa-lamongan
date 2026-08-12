@@ -91,7 +91,7 @@ export default function Admin() {
           </div>
         </aside>
 
-        <main className="min-w-0">
+        <main className="min-w-0" suppressHydrationWarning>
           <div className="px-1 py-2">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Dashboard CMS</p>
             <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">

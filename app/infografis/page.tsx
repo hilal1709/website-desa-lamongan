@@ -12,7 +12,7 @@ export default async function InfografisPage() {
     return (
       <>
         <Hero />
-        <main className="bg-slate-50 px-5 py-10 sm:py-14">
+        <main className="bg-slate-50 px-5 py-10 sm:py-14" suppressHydrationWarning>
           <div className="mx-auto max-w-7xl">
             <InfoBanner />
             <InfographicDashboard
@@ -39,7 +39,7 @@ export default async function InfografisPage() {
   return (
     <>
       <Hero />
-      <main className="bg-slate-50 px-5 py-10 sm:py-14">
+      <main className="bg-slate-50 px-5 py-10 sm:py-14" suppressHydrationWarning>
         <div className="mx-auto max-w-7xl">
           <InfoBanner />
           <InfographicDashboard
