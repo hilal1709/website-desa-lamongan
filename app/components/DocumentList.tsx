@@ -1,4 +1,4 @@
-import type { Document } from "@prisma/client";
+import type { Document } from "@/generated/prisma/client";
 import { formatDateId } from "../lib/format";
 
 type Props = {

@@ -1,4 +1,4 @@
-import type { Announcement } from "@prisma/client";
+import type { Announcement } from "@/generated/prisma/client";
 
 type Props = {
     announcement: Announcement | null;

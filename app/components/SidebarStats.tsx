@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Statistic } from "@prisma/client";
+import type { Statistic } from "@/generated/prisma/client";
 
 type Props = {
     stats: Statistic[];

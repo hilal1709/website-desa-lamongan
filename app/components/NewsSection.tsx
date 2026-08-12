@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { News } from "@prisma/client";
+import type { News } from "@/generated/prisma/client";
 import { formatDateId } from "../lib/format";
 
 type Props = {

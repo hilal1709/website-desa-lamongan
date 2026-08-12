@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { QuickService } from "@prisma/client";
+import type { QuickService } from "@/generated/prisma/client";
 
 type Props = {
     services: QuickService[];
