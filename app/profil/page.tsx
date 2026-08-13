@@ -2,6 +2,7 @@ import { MapPin, Target, Trees, Users, type LucideIcon } from "lucide-react"
 
 import { PageHero } from "@/components/ui/page-hero"
 import { getCmsPage } from "@/lib/cms-pages"
+import { VillageMap } from "@/components/profil/village-map"
 
 const team = [
   "Budi Santoso, S.E. — Kepala Desa",
@@ -82,6 +83,8 @@ export default async function Profil() {
             ))}
           </div>
         </section>
+
+        <VillageMap />
       </div>
     </>
   )

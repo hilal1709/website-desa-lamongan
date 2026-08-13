@@ -13,12 +13,43 @@ const informationLinks = [
   { label: "Peta Lokasi Bencana", href: "/data-desa" },
 ]
 
+const profileLinks = [
+  { label: "Profil Desa", href: "/profil" },
+  { label: "Struktur Perangkat Desa", href: "/profil/struktur-perangkat-desa" },
+]
+
 const navigation = [
   { label: "Beranda", href: "/" },
-  { label: "Profil Desa", href: "/profil" },
+  // Profil Desa will be a dropdown now
   { label: "Layanan", href: "/layanan" },
   { label: "Kontak", href: "/aduan" },
 ]
+
+function formatTanggalIndonesia() {
+  const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+  const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+  const now = new Date()
+  return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`
+}
+
+function TopBar() {
+  const [tanggal, setTanggal] = useState("")
+  useEffect(() => { setTanggal(formatTanggalIndonesia()) }, [])
+  return (
+    <div className="bg-slate-800 text-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 lg:px-8">
+        <p className="text-[11px] font-medium tracking-wide text-slate-300">
+          Portal Resmi Desa Kedungrejo – Kecamatan Solokuro – Kabupaten Lamongan
+        </p>
+        {tanggal && (
+          <p className="hidden text-[11px] font-medium text-slate-300 sm:block">
+            {tanggal}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -36,8 +67,9 @@ export function Navbar() {
     return null
   }
 
-  const active = (href: string) => (href === "/" ? pathname === href : pathname.startsWith(href))
+  const active = (href: string) => (href === "/" ? pathname === href : pathname.startsWith(href.split("#")[0]))
   const informationActive = informationLinks.some((item) => active(item.href))
+  const profileActive = profileLinks.some((item) => active(item.href))
 
   const linkClass = (isActive: boolean) =>
     `relative rounded-full px-3 py-2 text-sm font-semibold transition-all duration-200 ${
@@ -47,7 +79,9 @@ export function Navbar() {
     }`
 
   return (
-    <header className="sticky top-0 z-50 bg-transparent px-4 pb-0 pt-4">
+    <header className={`sticky top-0 z-50 transition-all duration-300`}>
+      <TopBar/>
+      <div className="bg-transparent px-4 pb-0 pt-4">
       <div className="mx-auto max-w-[1400px]">
         <div
           className={`flex items-center justify-between rounded-full border border-[#b8d8c5]/80 bg-[#dfece1]/75 px-3 py-2 shadow-lg shadow-emerald-900/5 backdrop-blur-sm transition-all duration-300 ${
@@ -72,11 +106,34 @@ export function Navbar() {
           </Link>
 
           <nav className="hidden flex-1 items-center justify-center gap-3 lg:flex">
-            {navigation.slice(0, 2).map((item) => (
+            {navigation.slice(0, 1).map((item) => (
               <Link key={item.href} href={item.href} className={linkClass(active(item.href))}>
                 {item.label}
               </Link>
             ))}
+
+            <div className="group relative">
+              <Link href="/profil" className={`${linkClass(profileActive)} flex items-center gap-1`} aria-haspopup="true">
+                Profil Desa
+                <ChevronDown size={15} className="transition-transform duration-200 group-hover:rotate-180" />
+              </Link>
+
+              <div className="invisible absolute left-1/2 top-[50px] w-64 -translate-x-1/2 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl shadow-slate-900/10 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                {profileLinks.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`block rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                      active(item.href)
+                        ? "bg-emerald-50 text-emerald-800"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
             <div className="group relative">
               <button className={`${linkClass(informationActive)} flex items-center gap-1`} aria-haspopup="true">
@@ -101,7 +158,7 @@ export function Navbar() {
               </div>
             </div>
 
-            {navigation.slice(2).map((item) => (
+            {navigation.slice(1).map((item) => (
               <Link key={item.href} href={item.href} className={linkClass(active(item.href))}>
                 {item.label}
               </Link>
@@ -126,7 +183,7 @@ export function Navbar() {
 
         {open && (
           <nav className="mt-3 rounded-3xl border border-slate-200 bg-white/90 p-3 shadow-xl shadow-slate-900/5 backdrop-blur-xl lg:hidden">
-            {navigation.map((item) => (
+            {navigation.slice(0, 1).map((item) => (
               <Link
                 onClick={() => setOpen(false)}
                 key={item.href}
@@ -138,6 +195,22 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+            
+            <div className="mt-2 rounded-2xl border border-slate-100 bg-slate-50 p-2">
+              <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Profil</p>
+              {profileLinks.map((item) => (
+                <Link
+                  onClick={() => setOpen(false)}
+                  key={item.label}
+                  href={item.href}
+                  className={`block rounded-xl px-3 py-2.5 text-sm font-medium ${
+                    active(item.href) ? "bg-emerald-50 text-emerald-800" : "text-slate-600"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
 
             <div className="mt-2 rounded-2xl border border-slate-100 bg-slate-50 p-2">
               <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Informasi</p>
@@ -154,8 +227,22 @@ export function Navbar() {
                 </Link>
               ))}
             </div>
+
+            {navigation.slice(1).map((item) => (
+              <Link
+                onClick={() => setOpen(false)}
+                key={item.href}
+                href={item.href}
+                className={`block rounded-2xl px-3 py-3 text-sm font-semibold ${
+                  active(item.href) ? "bg-emerald-50 text-emerald-800" : "text-slate-700"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
         )}
+      </div>
       </div>
     </header>
   )
