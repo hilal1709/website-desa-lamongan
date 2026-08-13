@@ -25,62 +25,8 @@ const navigation = [
   { label: "Kontak", href: "/aduan" },
 ]
 
-function formatTanggalIndonesia() {
-  const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
-  const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
-  const now = new Date()
-  return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`
-}
-
-function TopBar() {
-  const [tanggal, setTanggal] = useState("")
-  useEffect(() => { setTanggal(formatTanggalIndonesia()) }, [])
-  return (
-    <div className="bg-slate-800 text-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 lg:px-8">
-        <p className="text-[11px] font-medium tracking-wide text-slate-300">
-          Portal Resmi Desa Kedungrejo – Kecamatan Solokuro – Kabupaten Lamongan
-        </p>
-        {tanggal && (
-          <p className="hidden text-[11px] font-medium text-slate-300 sm:block">
-            {tanggal}
-          </p>
-        )}
-      </div>
-    </div>
-  )
-}
-
-export function Navbar() {
-  const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const pathname = usePathname()
-
-  useEffect(() => {
-    const listener = () => setScrolled(window.scrollY > 12)
-    listener()
-    window.addEventListener("scroll", listener)
-    return () => window.removeEventListener("scroll", listener)
-  }, [])
-
-  if (pathname.startsWith("/admin")) {
-    return null
-  }
-
-  const active = (href: string) => (href === "/" ? pathname === href : pathname.startsWith(href.split("#")[0]))
-  const informationActive = informationLinks.some((item) => active(item.href))
-  const profileActive = profileLinks.some((item) => active(item.href))
-
-  const linkClass = (isActive: boolean) =>
-    `relative rounded-full px-3 py-2 text-sm font-semibold transition-all duration-200 ${
-      isActive
-        ? "bg-[#dff5e8] text-[#0f3b2f] shadow-sm ring-1 ring-emerald-200"
-        : "text-[#214b3d] hover:bg-[#e9f6ee] hover:text-[#0f3b2f]"
-    }`
-
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300`}>
-      <TopBar/>
       <div className="bg-transparent px-4 pb-0 pt-4">
       <div className="mx-auto max-w-[1400px]">
         <div
