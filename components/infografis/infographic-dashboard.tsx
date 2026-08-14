@@ -18,7 +18,8 @@ import {
   Calendar,
   CheckCircle2,
   Sparkles,
-  Award
+  Award,
+  Layers
 } from "lucide-react"
 
 import { AgeChart } from "./AgeChart"
@@ -29,6 +30,7 @@ import { GenderChart } from "./GenderChart"
 import { OccupationChart } from "./OccupationChart"
 import { PopulationChart } from "./PopulationChart"
 import { TrendChart } from "./TrendChart"
+import { PyramidChart } from "./PyramidChart"
 import type { AgeGroupStat, EducationStat, InfographicStat, OccupationStat, PopulationTrend } from "@/types"
 
 type Props = {
@@ -54,7 +56,7 @@ const occupationNames = [
 
 const numberFormatter = new Intl.NumberFormat("id-ID")
 
-// DEFAULT AUTHENTIC DATA FOR KEDUNGREJO (When Supabase DB is not populated)
+// DEFAULT AUTHENTIC DATA FOR KEDUNGREJO
 const defaultRecords: InfographicStat[] = [
   { id: "1", year: 2026, dusun: "Dusun Topang", total_population: 1240, total_households: 395, male: 625, female: 615, created_at: "" },
   { id: "2", year: 2026, dusun: "Dusun Karangpilang", total_population: 1180, total_households: 380, male: 595, female: 585, created_at: "" },
@@ -137,7 +139,6 @@ export function InfographicDashboard({
   occupations: rawOccupations,
   trends: rawTrends
 }: Props) {
-  // Use DB data if populated, otherwise fallback smoothly to default Kedungrejo data
   const records = rawRecords.length ? rawRecords : defaultRecords
   const ages = rawAges.length ? rawAges : defaultAges
   const education = rawEducation.length ? rawEducation : defaultEducation
@@ -182,7 +183,6 @@ export function InfographicDashboard({
 
   const visibleTrends = [...trends].sort((a, b) => a.year - b.year)
 
-  // Calculations for Elder-Friendly High Contrast Percentages
   const malePercentage = totals.population > 0 ? ((totals.male / totals.population) * 100).toFixed(1) : "50.4"
   const femalePercentage = totals.population > 0 ? ((totals.female / totals.population) * 100).toFixed(1) : "49.6"
 
@@ -245,7 +245,7 @@ export function InfographicDashboard({
         </div>
       </div>
 
-      {/* KARTU KPI UTAMA (SANGAT MUDAH DIBACA ORANG TUA) */}
+      {/* KARTU KPI UTAMA */}
       <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Penduduk Card */}
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-emerald-300">
@@ -312,39 +312,15 @@ export function InfographicDashboard({
         </div>
       </section>
 
-      {/* INDIKATOR RASIO GENDER BAR (JELAS & MUDAH DIPAHAMI) */}
-      <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-3">
-          <div>
-            <h3 className="font-bold text-slate-900">Keseimbangan Jenis Kelamin Warga</h3>
-            <p className="text-xs text-slate-500">Perbandingan persentase Laki-laki dan Perempuan di Desa Kedungrejo</p>
-          </div>
-          <div className="flex items-center gap-4 text-xs font-bold">
-            <span className="flex items-center gap-1.5 text-blue-700">
-              <span className="h-3 w-3 rounded-full bg-blue-600"></span> Laki-laki ({malePercentage}%)
-            </span>
-            <span className="flex items-center gap-1.5 text-emerald-700">
-              <span className="h-3 w-3 rounded-full bg-emerald-600"></span> Perempuan ({femalePercentage}%)
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-4 overflow-hidden rounded-2xl bg-slate-100 p-1">
-          <div className="flex h-6 overflow-hidden rounded-xl">
-            <div
-              style={{ width: `${malePercentage}%` }}
-              className="flex items-center justify-center bg-blue-600 text-[11px] font-extrabold text-white transition-all duration-500"
-            >
-              {malePercentage}% Laki-laki
-            </div>
-            <div
-              style={{ width: `${femalePercentage}%` }}
-              className="flex items-center justify-center bg-emerald-600 text-[11px] font-extrabold text-white transition-all duration-500"
-            >
-              {femalePercentage}% Perempuan
-            </div>
-          </div>
-        </div>
+      {/* PIRAMIDA PENDUDUK VISUALIZATION (NEWLY ADDED) */}
+      <div className="mt-8">
+        <CardContainer
+          title="Piramida Penduduk Desa Kedungrejo"
+          description="Grafik struktur komposisi umur dan jenis kelamin warga (Laki-laki vs Perempuan)."
+          badge="Struktur Demografi"
+        >
+          <PyramidChart />
+        </CardContainer>
       </div>
 
       {/* GRAFIK DUSUN & GENDER */}
@@ -368,7 +344,7 @@ export function InfographicDashboard({
       {/* KELOMPOK USIA & TINGKAT PENDIDIKAN */}
       <div className="mt-8 grid gap-7 lg:grid-cols-2">
         <CardContainer
-          title="Kelompok Usia Warga"
+          title="Kelompok Usia Warga Ringkas"
           description="Pembagian warga berdasarkan kelompok umur (Balita, Usia Sekolah, Produktif, Lansia)."
         >
           <AgeChart data={ageData} />
