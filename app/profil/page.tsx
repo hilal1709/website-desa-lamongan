@@ -1,15 +1,9 @@
-import { MapPin, Target, Trees, Users, type LucideIcon } from "lucide-react"
+import Link from "next/link"
+import { MapPin, Target, Trees, Users, ArrowRight, Building2, type LucideIcon } from "lucide-react"
 
 import { PageHero } from "@/components/ui/page-hero"
 import { getCmsPage } from "@/lib/cms-pages"
 import { VillageMap } from "@/components/profil/village-map"
-
-const team = [
-  "Budi Santoso, S.E. — Kepala Desa",
-  "Siti Aminah — Sekretaris Desa",
-  "Ahmad Ridwan — Kaur Keuangan",
-  "Nurhayati — Kaur Tata Usaha",
-]
 
 const statCards: { icon: LucideIcon; title: string; description: string }[] = [
   { icon: Target, title: "Visi", description: "Desa maju dan mandiri" },
@@ -68,21 +62,28 @@ export default async function Profil() {
           </div>
         </div>
 
-        <section className="mt-20">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Pemerintahan</p>
-          <h2 className="mt-3 text-3xl font-black text-slate-900">Perangkat Desa</h2>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((name, index) => (
-              <div key={name} className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 font-black text-emerald-700">
-                  0{index + 1}
-                </div>
-                <p className="mt-4 font-semibold text-slate-900">{name}</p>
-              </div>
-            ))}
+        {/* Section Perangkat Desa CTA */}
+        <div className="my-16 rounded-[32px] border border-emerald-200 bg-gradient-to-br from-emerald-50 via-teal-50/50 to-white p-8 shadow-sm sm:p-10">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3.5 py-1 text-xs font-bold text-emerald-800">
+                <Building2 className="h-3.5 w-3.5" />
+                Pemerintahan Desa
+              </span>
+              <h3 className="text-2xl font-black text-slate-900 sm:text-3xl">Struktur Organisasi & Perangkat Desa</h3>
+              <p className="max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                Lihat susunan lengkap Kepala Desa, Sekretaris Desa, BPD, para Kaur & Kasi, hingga Kepala Dusun di Desa Kedungrejo.
+              </p>
+            </div>
+            <Link
+              href="/profil/struktur-perangkat-desa"
+              className="inline-flex items-center justify-center gap-2.5 rounded-2xl bg-emerald-700 px-6 py-4 font-bold text-white shadow-lg shadow-emerald-700/20 transition hover:bg-emerald-800 hover:shadow-xl"
+            >
+              <span>Lihat Struktur Perangkat</span>
+              <ArrowRight className="h-5 w-5" />
+            </Link>
           </div>
-        </section>
+        </div>
 
         <VillageMap />
       </div>
