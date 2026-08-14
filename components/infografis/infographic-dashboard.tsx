@@ -63,35 +63,35 @@ const defaultRecords: InfographicStat[] = [
 ]
 
 const defaultAges: AgeGroupStat[] = [
-  { id: "a1", year: 2026, dusun: "Dusun Topang", age_group: "0-5", total: 320, created_at: "" },
-  { id: "a2", year: 2026, dusun: "Dusun Topang", age_group: "6-17", total: 950, created_at: "" },
-  { id: "a3", year: 2026, dusun: "Dusun Topang", age_group: "18-35", total: 1480, created_at: "" },
-  { id: "a4", year: 2026, dusun: "Dusun Topang", age_group: "36-59", total: 1420, created_at: "" },
-  { id: "a5", year: 2026, dusun: "Dusun Topang", age_group: "60+", total: 692, created_at: "" },
+  { id: "a1", year: 2026, dusun: "Dusun Topang", age_group: "0-5", total: 320 },
+  { id: "a2", year: 2026, dusun: "Dusun Topang", age_group: "6-17", total: 950 },
+  { id: "a3", year: 2026, dusun: "Dusun Topang", age_group: "18-35", total: 1480 },
+  { id: "a4", year: 2026, dusun: "Dusun Topang", age_group: "36-59", total: 1420 },
+  { id: "a5", year: 2026, dusun: "Dusun Topang", age_group: "60+", total: 692 },
 ]
 
 const defaultEducation: EducationStat[] = [
-  { id: "e1", year: 2026, dusun: "Dusun Topang", education_level: "SD", total: 1250, created_at: "" },
-  { id: "e2", year: 2026, dusun: "Dusun Topang", education_level: "SMP", total: 1420, created_at: "" },
-  { id: "e3", year: 2026, dusun: "Dusun Topang", education_level: "SMA", total: 1650, created_at: "" },
-  { id: "e4", year: 2026, dusun: "Dusun Topang", education_level: "Perguruan Tinggi", total: 542, created_at: "" },
+  { id: "e1", year: 2026, dusun: "Dusun Topang", education_level: "SD", total: 1250 },
+  { id: "e2", year: 2026, dusun: "Dusun Topang", education_level: "SMP", total: 1420 },
+  { id: "e3", year: 2026, dusun: "Dusun Topang", education_level: "SMA", total: 1650 },
+  { id: "e4", year: 2026, dusun: "Dusun Topang", education_level: "Perguruan Tinggi", total: 542 },
 ]
 
 const defaultOccupations: OccupationStat[] = [
-  { id: "o1", year: 2026, dusun: "Dusun Topang", occupation: "Petani", total: 1850, created_at: "" },
-  { id: "o2", year: 2026, dusun: "Dusun Topang", occupation: "UMKM/Wirausaha", total: 980, created_at: "" },
-  { id: "o3", year: 2026, dusun: "Dusun Topang", occupation: "Karyawan Swasta", total: 820, created_at: "" },
-  { id: "o4", year: 2026, dusun: "Dusun Topang", occupation: "PNS/ASN", total: 145, created_at: "" },
-  { id: "o5", year: 2026, dusun: "Dusun Topang", occupation: "Guru/Tenaga Pendidikan", total: 165, created_at: "" },
-  { id: "o6", year: 2026, dusun: "Dusun Topang", occupation: "Perangkat Desa", total: 13, created_at: "" },
-  { id: "o7", year: 2026, dusun: "Dusun Topang", occupation: "Pelajar/Mahasiswa", total: 890, created_at: "" },
+  { id: "o1", year: 2026, dusun: "Dusun Topang", occupation: "Petani", total: 1850 },
+  { id: "o2", year: 2026, dusun: "Dusun Topang", occupation: "UMKM/Wirausaha", total: 980 },
+  { id: "o3", year: 2026, dusun: "Dusun Topang", occupation: "Karyawan Swasta", total: 820 },
+  { id: "o4", year: 2026, dusun: "Dusun Topang", occupation: "PNS/ASN", total: 145 },
+  { id: "o5", year: 2026, dusun: "Dusun Topang", occupation: "Guru/Tenaga Pendidikan", total: 165 },
+  { id: "o6", year: 2026, dusun: "Dusun Topang", occupation: "Perangkat Desa", total: 13 },
+  { id: "o7", year: 2026, dusun: "Dusun Topang", occupation: "Pelajar/Mahasiswa", total: 890 },
 ]
 
 const defaultTrends: PopulationTrend[] = [
-  { id: "t1", year: 2023, total_population: 4680, growth_rate: 1.2, created_at: "" },
-  { id: "t2", year: 2024, total_population: 4740, growth_rate: 1.3, created_at: "" },
-  { id: "t3", year: 2025, total_population: 4805, growth_rate: 1.4, created_at: "" },
-  { id: "t4", year: 2026, total_population: 4862, growth_rate: 1.2, created_at: "" },
+  { id: "t1", year: 2023, total_population: 4680 },
+  { id: "t2", year: 2024, total_population: 4740 },
+  { id: "t3", year: 2025, total_population: 4805 },
+  { id: "t4", year: 2026, total_population: 4862 },
 ]
 
 function summarize<T extends { total: number }>(rows: T[], field: keyof T, labels: string[]) {
