@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { PageHero } from "@/components/ui/page-hero"
 import {
   Users,
@@ -174,7 +173,8 @@ const officialsData: Official[] = [
 ]
 
 export default function StrukturPerangkatDesaPage() {
-  const [viewMode, setViewMode] = useState<"tree" | "image" | "grid">("tree")
+  // Default View Mode is set to 'image' (Bagan Foto Resmi) first as requested
+  const [viewMode, setViewMode] = useState<"image" | "tree" | "grid">("image")
   const [selectedGroup, setSelectedGroup] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -230,19 +230,8 @@ export default function StrukturPerangkatDesaPage() {
 
         {/* Navigation & Controls */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-6">
-          {/* View Mode Buttons */}
+          {/* View Mode Buttons (Bagan Foto Resmi First) */}
           <div className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-slate-200 bg-slate-100 p-1.5 shadow-inner">
-            <button
-              onClick={() => setViewMode("tree")}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all ${
-                viewMode === "tree"
-                  ? "bg-white text-emerald-800 shadow-md shadow-slate-900/5"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <GitFork className="h-4 w-4" />
-              <span>Bagan Hirarki</span>
-            </button>
             <button
               onClick={() => setViewMode("image")}
               className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all ${
@@ -254,6 +243,19 @@ export default function StrukturPerangkatDesaPage() {
               <ImageIcon className="h-4 w-4" />
               <span>Bagan Foto Resmi</span>
             </button>
+
+            <button
+              onClick={() => setViewMode("tree")}
+              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all ${
+                viewMode === "tree"
+                  ? "bg-white text-emerald-800 shadow-md shadow-slate-900/5"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <GitFork className="h-4 w-4" />
+              <span>Bagan Hirarki Interaktif</span>
+            </button>
+
             <button
               onClick={() => setViewMode("grid")}
               className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all ${
@@ -263,11 +265,11 @@ export default function StrukturPerangkatDesaPage() {
               }`}
             >
               <LayoutGrid className="h-4 w-4" />
-              <span>Daftar Kartu</span>
+              <span>Daftar Kartu Pejabat</span>
             </button>
           </div>
 
-          {/* Search Box (Active in Grid mode or all) */}
+          {/* Search Box (Active in Grid mode) */}
           {viewMode === "grid" && (
             <div className="relative min-w-[220px] flex-1 sm:flex-none">
               <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -282,7 +284,68 @@ export default function StrukturPerangkatDesaPage() {
           )}
         </div>
 
-        {/* VIEW 1: ORGANIZATIONAL TREE DIAGRAM */}
+        {/* VIEW 1: BAGAN GAMBAR FOTO RESMI (PRIORITIZED DEFAULT) */}
+        {viewMode === "image" && (
+          <div className="mx-auto max-w-5xl space-y-6">
+            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+              {/* Card Header Bar */}
+              <div className="flex flex-col gap-4 border-b border-slate-100 bg-slate-50/80 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-emerald-100 text-emerald-800">
+                    <ImageIcon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-slate-900">Bagan Dokumen Resmi SOTK</h3>
+                    <p className="text-xs font-medium text-slate-500">Pemerintah Desa Kedungrejo, Kec. Modo, Kab. Lamongan</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-emerald-800"
+                  >
+                    <Maximize2 className="h-4 w-4" />
+                    <span>Perbesar Gambar</span>
+                  </button>
+                  <a
+                    href="/images/struktur-organisasi.png"
+                    download="Struktur-Organisasi-Desa-Kedungrejo.png"
+                    className="inline-flex items-center gap-2 rounded-2xl bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-800"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Unduh Gambar</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Card Body - Image Display */}
+              <div className="relative group cursor-pointer bg-slate-900/5 p-4 sm:p-8" onClick={() => setIsModalOpen(true)}>
+                <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-inner">
+                  <img
+                    src="/images/struktur-organisasi.png"
+                    alt="Struktur Organisasi dan Tata Kerja Pemerintah Desa Kedungrejo"
+                    className="w-full h-auto object-contain transition duration-300 group-hover:scale-[1.01]"
+                  />
+                  {/* Hover Overlay Hint */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-slate-900/40 opacity-0 backdrop-blur-[2px] transition duration-300 group-hover:opacity-100">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2.5 text-sm font-bold text-slate-900 shadow-xl">
+                      <Eye className="h-4 w-4 text-emerald-600" />
+                      <span>Klik untuk memperbesar tampilan full</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Footer */}
+              <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-center text-xs text-slate-500">
+                Dokumen visual bagan SOTK Pemerintah Desa Kedungrejo resmi sesuai penetapan struktur kepemimpinan desa.
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* VIEW 2: ORGANIZATIONAL TREE DIAGRAM */}
         {viewMode === "tree" && (
           <div className="space-y-12 py-4">
             {/* Level 1: Kades & BPD */}
@@ -559,67 +622,6 @@ export default function StrukturPerangkatDesaPage() {
                     Pemimpin kewilayahan Dusun Gabang, membina gotong royong dan pelayanan warga tingkat dusun.
                   </p>
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* VIEW 2: BAGAN GAMBAR FOTO RESMI (OFFICIAL DIAGRAM CARD) */}
-        {viewMode === "image" && (
-          <div className="mx-auto max-w-5xl space-y-6">
-            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
-              {/* Card Header Bar */}
-              <div className="flex flex-col gap-4 border-b border-slate-100 bg-slate-50/80 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-                <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-emerald-100 text-emerald-800">
-                    <ImageIcon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-extrabold text-slate-900">Bagan Dokumen Resmi SOTK</h3>
-                    <p className="text-xs font-medium text-slate-500">Pemerintah Desa Kedungrejo, Kec. Modo, Kab. Lamongan</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-emerald-800"
-                  >
-                    <Maximize2 className="h-4 w-4" />
-                    <span>Perbesar Gambar</span>
-                  </button>
-                  <a
-                    href="/images/struktur-organisasi.png"
-                    download="Struktur-Organisasi-Desa-Kedungrejo.png"
-                    className="inline-flex items-center gap-2 rounded-2xl bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-800"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Unduh Gambar</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Card Body - Image Display */}
-              <div className="relative group cursor-pointer bg-slate-900/5 p-4 sm:p-8" onClick={() => setIsModalOpen(true)}>
-                <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-inner">
-                  <img
-                    src="/images/struktur-organisasi.png"
-                    alt="Struktur Organisasi dan Tata Kerja Pemerintah Desa Kedungrejo"
-                    className="w-full h-auto object-contain transition duration-300 group-hover:scale-[1.01]"
-                  />
-                  {/* Hover Overlay Hint */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-slate-900/40 opacity-0 backdrop-blur-[2px] transition duration-300 group-hover:opacity-100">
-                    <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2.5 text-sm font-bold text-slate-900 shadow-xl">
-                      <Eye className="h-4 w-4 text-emerald-600" />
-                      <span>Klik untuk memperbesar tampilan full</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-center text-xs text-slate-500">
-                Dokumen visual bagan SOTK Pemerintah Desa Kedungrejo resmi sesuai penetapan struktur kepemimpinan desa.
               </div>
             </div>
           </div>
