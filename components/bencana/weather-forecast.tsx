@@ -31,7 +31,7 @@ export function WeatherForecast({
       try {
         // Open-Meteo API for Modo / Kedungrejo GPS (-7.1705, 111.9742)
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=-7.1705&longitude=111.9742&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&timezone=Asia%2FJakarta&forecast_days=${period}`
+          `https://api.open-meteo.com/v1/forecast?latitude=-7.1571&longitude=112.1593&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&timezone=Asia%2FJakarta&forecast_days=${period}`
         )
         const data = await response.json()
 

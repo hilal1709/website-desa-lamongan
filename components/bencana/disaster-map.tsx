@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { MapPin, AlertTriangle, ShieldCheck, Info, Navigation, Building2, Home } from "lucide-react"
+import { MapPin } from "lucide-react"
 
-// Dynamic import for Leaflet to avoid SSR issues in Next.js
 export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "bahaya" }) {
   const [isClient, setIsClient] = useState(false)
   const [filterType, setFilterType] = useState<"all" | "evakuasi" | "rawan" | "posko">("all")
+  const [tileType, setTileType] = useState<"street" | "satellite">("street")
 
   useEffect(() => {
     setIsClient(true)
@@ -27,18 +27,31 @@ export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "ba
   const L = require("leaflet")
   import("leaflet/dist/leaflet.css")
 
-  return <LeafletMapContainer riskLevel={riskLevel} filterType={filterType} setFilterType={setFilterType} L={L} />
+  return (
+    <LeafletMapContainer
+      riskLevel={riskLevel}
+      filterType={filterType}
+      setFilterType={setFilterType}
+      tileType={tileType}
+      setTileType={setTileType}
+      L={L}
+    />
+  )
 }
 
 function LeafletMapContainer({
   riskLevel,
   filterType,
   setFilterType,
+  tileType,
+  setTileType,
   L
 }: {
   riskLevel: "aman" | "waspada" | "bahaya"
   filterType: "all" | "evakuasi" | "rawan" | "posko"
   setFilterType: (val: "all" | "evakuasi" | "rawan" | "posko") => void
+  tileType: "street" | "satellite"
+  setTileType: (val: "street" | "satellite") => void
   L: any
 }) {
   useEffect(() => {
@@ -58,68 +71,76 @@ function LeafletMapContainer({
       return
     }
 
-    const kedungrejoCenter: [number, number] = [-7.1705, 111.9742]
+    // Exact Coordinates matching village profile: Desa Kedungrejo, Kec. Modo, Kab. Lamongan (-7.1571, 112.1593)
+    const kedungrejoCenter: [number, number] = [-7.1571, 112.1593]
     const map = L.map("kedungrejo-disaster-map", {
       center: kedungrejoCenter,
-      zoom: 14,
-      zoomControl: true
+      zoom: 15,
+      zoomControl: true,
+      scrollWheelZoom: false
     })
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map)
+    if (tileType === "satellite") {
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        attribution: "Tiles &copy; Esri"
+      }).addTo(map)
+    } else {
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map)
+    }
 
-    // Disaster points & Locations
+    // Disaster points & Locations in Kedungrejo Modo Lamongan
     const locations = [
       {
         name: "Balai Desa Kedungrejo (Posko Utama)",
-        coords: [-7.1705, 111.9742],
+        coords: [-7.1571, 112.1593],
         type: "posko",
-        desc: "Pusat Koordinasi Penanggulangan Bencana & Pengungsian Utama Desa",
+        desc: "Pusat Koordinasi Penanggulangan Bencana & Pengungsian Utama Desa Kedungrejo",
         color: "#059669"
       },
       {
         name: "Titik Evakuasi 1 - SDN Kedungrejo",
-        coords: [-7.168, 111.972],
+        coords: [-7.1555, 112.1575],
         type: "evakuasi",
         desc: "Lokasi Pengungsian Sementara & Dapur Umum Warga Dusun Topang",
         color: "#2563eb"
       },
       {
-        name: "Titik Evakuasi 2 - Lapangan Karangpilang",
-        coords: [-7.173, 111.978],
+        name: "Titik Evakuasi 2 - Lapangan Desa Kedungrejo",
+        coords: [-7.1585, 112.1610],
         type: "evakuasi",
         desc: "Posko Darurat & Penampungan Logistik Dusun Karangpilang",
         color: "#2563eb"
       },
       {
         name: "Zona Rawan Genangan Dusun Gabang",
-        coords: [-7.176, 111.97],
+        coords: [-7.1600, 112.1550],
         type: "rawan",
-        desc: "Wilayah dataran rendah dekat persawahan — Rawan genangan luapan air hujan lebat",
+        desc: "Wilayah dataran rendah persawahan — Rawan genangan air hujan lebat",
         color: "#dc2626"
       },
       {
         name: "Zona Rawan Genangan Dusun Dopok Sambi",
-        coords: [-7.165, 111.977],
+        coords: [-7.1530, 112.1620],
         type: "rawan",
         desc: "Area alur anak sungai — Waspada luapan saat hujan deras berturut-turut",
         color: "#d97706"
       },
       {
-        name: "Puskesmas Pembantu / Poskesdes Modo",
-        coords: [-7.171, 111.976],
+        name: "Poskesdes Kedungrejo / Pustu Modo",
+        coords: [-7.1565, 112.1600],
         type: "posko",
-        desc: "Layanan Pertolongan Pertama & Kesehatan Darurat Bencana",
+        desc: "Layanan Pertolongan Pertama & Kesehatan Darurat Bencana Desa",
         color: "#16a34a"
       }
     ]
 
     // Custom Icon Generator
-    const createCustomIcon = (color: string, label: string) =>
+    const createCustomIcon = (color: string) =>
       L.divIcon({
         className: "custom-leaflet-marker",
-        html: `<div style="background-color: ${color}; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; items-center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">📍</div>`,
+        html: `<div style="background-color: ${color}; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">📍</div>`,
         iconSize: [32, 32],
         iconAnchor: [16, 32]
       })
@@ -130,15 +151,15 @@ function LeafletMapContainer({
       color: riskCircleColor,
       fillColor: riskCircleColor,
       fillOpacity: 0.18,
-      radius: 1200
-    }).addTo(map).bindPopup(`<b>Zona Pemantauan Bencana Kedungrejo</b><br>Status Wilayah: <span style="text-transform: uppercase; font-weight: bold; color: ${riskCircleColor}">${riskLevel}</span>`)
+      radius: 900
+    }).addTo(map).bindPopup(`<b>Zona Pemantauan Desa Kedungrejo</b><br>Kecamatan Modo, Kabupaten Lamongan<br>Status: <span style="text-transform: uppercase; font-weight: bold; color: ${riskCircleColor}">${riskLevel}</span>`)
 
     // Filter & Add Markers
     locations.forEach((loc) => {
       if (filterType !== "all" && loc.type !== filterType) return
 
       const marker = L.marker(loc.coords as [number, number], {
-        icon: createCustomIcon(loc.color, loc.name)
+        icon: createCustomIcon(loc.color)
       }).addTo(map)
 
       marker.bindPopup(`
@@ -146,7 +167,7 @@ function LeafletMapContainer({
           <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 800; color: #0f172a;">${loc.name}</h4>
           <p style="margin: 0; font-size: 12px; color: #475569; line-height: 1.4;">${loc.desc}</p>
           <div style="margin-top: 8px; font-size: 11px; font-weight: 700; color: ${loc.color};">
-            Koordinat: ${loc.coords[0]}, ${loc.coords[1]}
+            Kedungrejo, Modo (-7.1571, 112.1593)
           </div>
         </div>
       `)
@@ -155,13 +176,15 @@ function LeafletMapContainer({
     return () => {
       map.remove()
     }
-  }, [riskLevel, filterType, L])
+  }, [riskLevel, filterType, tileType, L])
+
+  const googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=Desa+Kedungrejo+Kecamatan+Modo+Kabupaten+Lamongan"
 
   return (
     <div className="space-y-4">
       {/* Map Filter Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-black uppercase tracking-wider text-slate-500">Filter Marker:</span>
           <div className="flex flex-wrap gap-1.5">
             <button
@@ -194,36 +217,51 @@ function LeafletMapContainer({
                 filterType === "posko" ? "bg-emerald-700 text-white" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
               }`}
             >
-              🏢 Posko & Kesehatan
+              🏢 Posko Desa & Kesehatan
             </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
-          <MapPin className="h-4 w-4 text-emerald-600" />
-          <span>Kecamatan Modo, Kab. Lamongan</span>
+        <div className="flex items-center gap-2">
+          {/* Layer switcher */}
+          <button
+            onClick={() => setTileType(tileType === "street" ? "satellite" : "street")}
+            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100"
+          >
+            {tileType === "street" ? "🛰️ Tampilan Satelit" : "🗺️ Tampilan Peta Peta Jalan"}
+          </button>
+
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-extrabold text-white shadow-sm transition hover:bg-emerald-700"
+          >
+            <MapPin className="h-3.5 w-3.5" />
+            <span>Google Maps</span>
+          </a>
         </div>
       </div>
 
-      {/* Map Canvas */}
-      <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-md">
-        <div id="kedungrejo-disaster-map" className="h-[460px] w-full z-0" />
+      {/* Map Canvas Container */}
+      <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-lg">
+        <div id="kedungrejo-disaster-map" className="h-[480px] w-full z-0" />
 
         {/* Floating Legend Overlay */}
         <div className="absolute bottom-4 left-4 z-[400] max-w-xs rounded-2xl border border-slate-200/90 bg-white/95 p-3.5 shadow-lg backdrop-blur-md">
-          <p className="text-[11px] font-black uppercase tracking-wider text-slate-400">Keterangan Peta</p>
+          <p className="text-[11px] font-black uppercase tracking-wider text-slate-400">Peta Desa Kedungrejo (Modo, Lamongan)</p>
           <div className="mt-2 space-y-1.5 text-xs font-bold text-slate-700">
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-emerald-600"></span>
-              <span>Posko Utama Balai Desa</span>
+              <span>Balai Desa / Posko Utama</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-blue-600"></span>
-              <span>Jalur & Titik Evakuasi</span>
+              <span>Jalur & Titik Evakuasi Warga</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-rose-600"></span>
-              <span>Wilayah Rawan Luapan Air</span>
+              <span>Wilayah Rawan Genangan Air</span>
             </div>
           </div>
         </div>
