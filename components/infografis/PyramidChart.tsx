@@ -49,39 +49,39 @@ export function PyramidChart({ customData }: { customData?: PyramidAgeData[] }) 
   const grandTotal = totalMale + totalFemale
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Legend & Summary Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-        <div className="flex items-center gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50/80 p-3.5 sm:p-4">
+        <div className="flex flex-wrap items-center gap-4 text-xs font-extrabold">
           <div className="flex items-center gap-2">
             <span className="h-3.5 w-3.5 rounded-sm bg-blue-600"></span>
-            <span className="text-xs font-extrabold text-blue-950">
+            <span className="text-blue-950">
               Laki-Laki ({new Intl.NumberFormat("id-ID").format(totalMale)} Jiwa)
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className="h-3.5 w-3.5 rounded-sm bg-emerald-600"></span>
-            <span className="text-xs font-extrabold text-emerald-950">
+            <span className="text-emerald-950">
               Perempuan ({new Intl.NumberFormat("id-ID").format(totalFemale)} Jiwa)
             </span>
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="text-left sm:text-right border-t border-slate-200/60 pt-2 sm:border-0 sm:pt-0">
           <span className="text-xs font-bold text-slate-500">Total Terdata: </span>
-          <span className="text-sm font-black text-slate-900">
+          <span className="text-xs sm:text-sm font-black text-slate-900">
             {new Intl.NumberFormat("id-ID").format(grandTotal)} Jiwa
           </span>
         </div>
       </div>
 
-      {/* Pyramid Visual Container */}
-      <div className="space-y-1.5 py-2">
+      {/* Pyramid Visual Container (Fully Responsive Layout) */}
+      <div className="space-y-1 py-1 overflow-x-auto">
         {/* Header Label Row */}
-        <div className="grid grid-cols-[1fr_80px_1fr] text-xs font-bold uppercase tracking-wider text-slate-400 text-center pb-2 border-b border-slate-100">
-          <div className="text-right pr-4">← Laki-Laki</div>
-          <div>Rentang Usia</div>
-          <div className="text-left pl-4">Perempuan →</div>
+        <div className="grid grid-cols-[1fr_64px_1fr] sm:grid-cols-[1fr_80px_1fr] text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 text-center pb-2 border-b border-slate-100 min-w-[280px]">
+          <div className="text-right pr-2 sm:pr-4">← Laki-Laki</div>
+          <div>Usia</div>
+          <div className="text-left pl-2 sm:pl-4">Perempuan →</div>
         </div>
 
         {/* Rows (From Older at top to Younger at bottom) */}
@@ -95,22 +95,22 @@ export function PyramidChart({ customData }: { customData?: PyramidAgeData[] }) 
               key={row.range}
               onMouseEnter={() => setHoveredRange(row.range)}
               onMouseLeave={() => setHoveredRange(null)}
-              className={`grid grid-cols-[1fr_80px_1fr] items-center rounded-lg px-1 py-1 transition ${
+              className={`grid grid-cols-[1fr_64px_1fr] sm:grid-cols-[1fr_80px_1fr] items-center rounded-lg px-0.5 py-0.5 sm:py-1 transition min-w-[280px] ${
                 isHovered ? "bg-slate-100/90" : "hover:bg-slate-50"
               }`}
             >
               {/* Male Bar (Right aligned to center axis) */}
-              <div className="flex items-center justify-end pr-3">
-                <span className="mr-2 text-[11px] font-extrabold text-slate-700">
+              <div className="flex items-center justify-end pr-1.5 sm:pr-3">
+                <span className="mr-1 sm:mr-2 text-[10px] sm:text-[11px] font-extrabold text-slate-700">
                   {new Intl.NumberFormat("id-ID").format(row.male)}
                 </span>
-                <div className="h-6 w-full max-w-[280px] bg-slate-100 rounded-l-md overflow-hidden flex justify-end">
+                <div className="h-5 sm:h-6 w-full max-w-[220px] sm:max-w-[280px] bg-slate-100 rounded-l-md overflow-hidden flex justify-end">
                   <div
                     style={{ width: `${malePercent}%` }}
-                    className="h-full bg-blue-600 rounded-l-md transition-all duration-300 flex items-center justify-start pl-1.5"
+                    className="h-full bg-blue-600 rounded-l-md transition-all duration-300 flex items-center justify-start pl-1"
                   >
-                    {malePercent > 35 && (
-                      <span className="text-[10px] font-black text-white">
+                    {malePercent > 40 && (
+                      <span className="text-[9px] sm:text-[10px] font-black text-white">
                         {row.male}
                       </span>
                     )}
@@ -121,7 +121,7 @@ export function PyramidChart({ customData }: { customData?: PyramidAgeData[] }) 
               {/* Age Label Axis */}
               <div className="text-center">
                 <span
-                  className={`inline-block rounded-md px-2 py-0.5 text-xs font-black transition ${
+                  className={`inline-block rounded-md px-1 sm:px-2 py-0.5 text-[10px] sm:text-xs font-black transition ${
                     isHovered
                       ? "bg-slate-900 text-white"
                       : "bg-slate-200/80 text-slate-700"
@@ -132,20 +132,20 @@ export function PyramidChart({ customData }: { customData?: PyramidAgeData[] }) 
               </div>
 
               {/* Female Bar (Left aligned from center axis) */}
-              <div className="flex items-center justify-start pl-3">
-                <div className="h-6 w-full max-w-[280px] bg-slate-100 rounded-r-md overflow-hidden flex justify-start">
+              <div className="flex items-center justify-start pl-1.5 sm:pl-3">
+                <div className="h-5 sm:h-6 w-full max-w-[220px] sm:max-w-[280px] bg-slate-100 rounded-r-md overflow-hidden flex justify-start">
                   <div
                     style={{ width: `${femalePercent}%` }}
-                    className="h-full bg-emerald-600 rounded-r-md transition-all duration-300 flex items-center justify-end pr-1.5"
+                    className="h-full bg-emerald-600 rounded-r-md transition-all duration-300 flex items-center justify-end pr-1"
                   >
-                    {femalePercent > 35 && (
-                      <span className="text-[10px] font-black text-white">
+                    {femalePercent > 40 && (
+                      <span className="text-[9px] sm:text-[10px] font-black text-white">
                         {row.female}
                       </span>
                     )}
                   </div>
                 </div>
-                <span className="ml-2 text-[11px] font-extrabold text-slate-700">
+                <span className="ml-1 sm:mr-2 text-[10px] sm:text-[11px] font-extrabold text-slate-700">
                   {new Intl.NumberFormat("id-ID").format(row.female)}
                 </span>
               </div>
@@ -154,8 +154,8 @@ export function PyramidChart({ customData }: { customData?: PyramidAgeData[] }) 
         })}
       </div>
 
-      <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-4 text-center text-xs text-slate-500">
-        📌 <b>Cara Membaca Piramida Penduduk:</b> Grafik kiri biru menunjukkan jumlah warga laki-laki, sedangkan kanan hijau menunjukkan warga perempuan per kelompok usia 5 tahunan.
+      <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-3 sm:p-4 text-center text-xs text-slate-500">
+        📌 <b>Cara Membaca Piramida Penduduk:</b> Grafik kiri biru menunjukkan warga laki-laki, sedangkan kanan hijau menunjukkan warga perempuan per kelompok usia 5 tahunan.
       </div>
     </div>
   )

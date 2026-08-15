@@ -366,6 +366,16 @@ export function InfographicDashboard({
         </CardContainer>
       </div>
 
+      {/* POTENSI EKONOMI DESA */}
+      <div className="mt-8">
+        <SectionHeader
+          tag="Ekonomi Desa"
+          title="Sektor Penggerak Ekonomi Kedungrejo"
+          subtitle="Empat pilar pekerjaan utama penyokong kehidupan masyarakat desa."
+        />
+        <EconomicCards values={economic} />
+      </div>
+
       {/* MATA PENCAHARIAN & PEKERJAAN */}
       <div className="mt-8">
         <CardContainer
@@ -376,15 +386,6 @@ export function InfographicDashboard({
         </CardContainer>
       </div>
 
-      {/* POTENSI EKONOMI DESA */}
-      <div className="mt-8">
-        <SectionHeader
-          tag="Ekonomi Desa"
-          title="Sektor Penggerak Ekonomi Kedungrejo"
-          subtitle="Empat pilar pekerjaan utama penyokong kehidupan masyarakat desa."
-        />
-        <EconomicCards values={economic} />
-      </div>
 
       {/* TREN PERUMBAHAN PENDIDIK PER TAHUN */}
       <div className="mt-8">
