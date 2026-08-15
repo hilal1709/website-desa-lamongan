@@ -4,18 +4,19 @@ import { useState } from "react"
 import { PageHero } from "@/components/ui/page-hero"
 import { DisasterMap } from "@/components/bencana/disaster-map"
 import { WeatherForecast } from "@/components/bencana/weather-forecast"
+import { FarmingClimatePredictor } from "@/components/bencana/farming-climate-predictor"
 import { EmergencyAssistance } from "@/components/bencana/emergency-assistance"
-import { ShieldCheck, MapPin, AlertCircle, Phone } from "lucide-react"
 
 export default function PetaBencanaPage() {
   const [riskLevel, setRiskLevel] = useState<"aman" | "waspada" | "bahaya">("aman")
+  const [precipitationSum, setPrecipitationSum] = useState<number>(12.5)
 
   return (
     <>
       <PageHero
-        eyebrow="INFORMASI WESBITE DESA"
-        title="Peta Lokasi Bencana & Cuaca Kedungrejo"
-        description="Pantau prakiraan curah hujan real-time BMKG, peta titik rawan genangan, jalur evakuasi darurat, dan akses bantuan pertanian warga."
+        eyebrow="INFORMASI DIGITAL DESA"
+        title="Peta Bencana & Kalender Iklim Kedungrejo"
+        description="Pantau prakiraan cuaca otomatis BMKG, panduan masa tanam/jemur gabah petani, peta titik evakuasi, serta akses bantuan bibit padi."
         image="/images/profil.jpeg"
         imagePosition="right"
       />
@@ -26,20 +27,29 @@ export default function PetaBencanaPage() {
           <WeatherForecast onRiskChange={setRiskLevel} />
         </section>
 
-        {/* SECTION 2: INTERACTIVE DISASTER MAP */}
+        {/* SECTION 2: FARMER CLIMATE PREDICTOR & DAILY LIFE RECOMMENDATIONS */}
+        <section>
+          <FarmingClimatePredictor
+            precipitationSum={precipitationSum}
+            weatherCode={61}
+            riskLevel={riskLevel}
+          />
+        </section>
+
+        {/* SECTION 3: INTERACTIVE DISASTER MAP */}
         <section className="space-y-4">
           <div className="flex flex-col gap-1 border-b border-slate-200 pb-4">
             <span className="text-xs font-black uppercase tracking-widest text-emerald-700">PETA WILAYAH INTERAKTIF</span>
             <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Peta Titik Rawan & Posko Evakuasi</h2>
             <p className="text-sm font-medium text-slate-500">
-              Gunakan peta bawah untuk melihat lokasi shelter pengungsian, posko kesehatan, dan titik rawan genangan air di Kedungrejo.
+              Peta interaktif wilayah Kedungrejo (Kecamatan Modo, Kab. Lamongan) untuk memantau posko evakuasi dan titik genangan air.
             </p>
           </div>
 
           <DisasterMap riskLevel={riskLevel} />
         </section>
 
-        {/* SECTION 3: EMERGENCY FARMER ASSISTANCE & BOTTOM SERVICE CARDS GRID */}
+        {/* SECTION 4: EMERGENCY FARMER ASSISTANCE & BOTTOM SERVICE CARDS GRID */}
         <section>
           <EmergencyAssistance riskLevel={riskLevel} />
         </section>
