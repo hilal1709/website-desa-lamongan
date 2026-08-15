@@ -10,7 +10,7 @@ const informationLinks = [
   { label: "Berita", href: "/berita" },
   { label: "Infografis Desa", href: "/infografis" },
   { label: "Data Rekam Medis", href: "/stunting" },
-  { label: "Peta Lokasi Bencana", href: "/data-desa" },
+  { label: "Peta Lokasi Bencana", href: "/peta-bencana" },
 ]
 
 const profileLinks = [
