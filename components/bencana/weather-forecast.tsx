@@ -14,9 +14,11 @@ export interface WeatherDay {
 }
 
 export function WeatherForecast({
-  onRiskChange
+  onRiskChange,
+  onWeatherUpdate
 }: {
   onRiskChange: (level: "aman" | "waspada" | "bahaya") => void
+  onWeatherUpdate?: (data: { risk: "aman" | "waspada" | "bahaya"; precipitationToday: number; weatherCode: number }) => void
 }) {
   const [days, setDays] = useState<WeatherDay[]>([])
   const [loading, setLoading] = useState(true)
@@ -64,6 +66,13 @@ export function WeatherForecast({
 
           setCurrentRisk(risk)
           onRiskChange(risk)
+          if (onWeatherUpdate && parsedDays.length > 0) {
+            onWeatherUpdate({
+              risk,
+              precipitationToday: parsedDays[0].precipitation,
+              weatherCode: parsedDays[0].weatherCode
+            })
+          }
         }
       } catch (err) {
         console.error("Failed to fetch weather data:", err)

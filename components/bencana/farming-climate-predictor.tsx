@@ -1,6 +1,7 @@
 "use client"
 
-import { Sprout, Sun, CloudRain, ShieldCheck, AlertCircle, Info, Calendar, Sparkles, CheckCircle2, ChevronRight } from "lucide-react"
+import { useState } from "react"
+import { Sprout, Sun, CloudRain, ShieldCheck, AlertCircle, Info, Calendar, Sparkles, CheckCircle2, Sliders, Play } from "lucide-react"
 
 type ClimateProps = {
   precipitationSum: number
@@ -8,17 +9,20 @@ type ClimateProps = {
   riskLevel: "aman" | "waspada" | "bahaya"
 }
 
-export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLevel }: ClimateProps) {
+export function FarmingClimatePredictor({ precipitationSum: initialRain, weatherCode, riskLevel }: ClimateProps) {
+  const [simulatedRain, setSimulatedRain] = useState<number | null>(null)
+  const activeRain = simulatedRain !== null ? simulatedRain : initialRain
+
   // Determine farming & daily life recommendations based on rain precipitation
   const getFarmingStatus = () => {
-    if (precipitationSum > 50) {
+    if (activeRain >= 50) {
       return {
         planting: { label: "Waspada Luapan", status: "waspada", color: "bg-rose-50 text-rose-800 border-rose-200", icon: CloudRain, desc: "Curah hujan sangat tinggi (>50mm). Hindari tanam bibit muda yang rawan hanyut." },
         drying: { label: "Tidak Disarankan", status: "bahaya", color: "bg-rose-50 text-rose-800 border-rose-200", icon: CloudRain, desc: "Potensi hujan lebat. Amankan gabah & hasil panen ke dalam lumbung tertutup." },
         residential: { label: "Siaga Genangan", status: "bahaya", color: "bg-rose-100 text-rose-900 border-rose-300", icon: AlertCircle, desc: "Waspada genangan air di kawasan persawahan & alur sungai dusun." }
       }
     }
-    if (precipitationSum > 15) {
+    if (activeRain >= 15) {
       return {
         planting: { label: "Sangat Cocok Olah Tanah", status: "cocok", color: "bg-emerald-50 text-emerald-800 border-emerald-200", icon: Sprout, desc: "Pasokan air memadai (15-50mm). Sangat baik untuk pembajakan sawah & olah lahan MT 1/2." },
         drying: { label: "Jemur Waspada", status: "waspada", color: "bg-amber-50 text-amber-800 border-amber-200", icon: Sun, desc: "Gunakan alas jemur cepat gulung. Potensi hujan ringan di siang/sore hari." },
@@ -55,10 +59,61 @@ export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLev
         </div>
       </div>
 
+      {/* LIVE AUTOMATION TESTING SIMULATOR BAR */}
+      <div className="rounded-3xl border border-emerald-200 bg-emerald-50/60 p-4 sm:p-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-emerald-700 text-white">
+            <Sliders className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-xs font-black uppercase text-emerald-950">Uji Otomatisasi Status (Testing Simulator)</p>
+            <p className="text-xs text-emerald-900/80 font-medium">
+              Curah Hujan Terdeteksi: <b>{activeRain} mm/hari</b> {simulatedRain !== null && "(Mode Simulasi Testing)"}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setSimulatedRain(0)}
+            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
+              activeRain === 0 ? "bg-emerald-800 text-white" : "bg-white text-emerald-900 border border-emerald-200 hover:bg-emerald-100"
+            }`}
+          >
+            ☀️ 0 mm (Cerah)
+          </button>
+          <button
+            onClick={() => setSimulatedRain(25)}
+            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
+              activeRain === 25 ? "bg-amber-600 text-white" : "bg-white text-amber-900 border border-amber-200 hover:bg-amber-100"
+            }`}
+          >
+            🌧️ 25 mm (Hujan Sedang)
+          </button>
+          <button
+            onClick={() => setSimulatedRain(60)}
+            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
+              activeRain === 60 ? "bg-rose-700 text-white" : "bg-white text-rose-900 border border-rose-200 hover:bg-rose-100"
+            }`}
+          >
+            ⛈️ 60 mm (Hujan Lebat)
+          </button>
+
+          {simulatedRain !== null && (
+            <button
+              onClick={() => setSimulatedRain(null)}
+              className="rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800"
+            >
+              Reset ke Realtime API
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* 3 Main Actionable Recommendation Cards (Elder Friendly) */}
       <div className="grid gap-5 sm:grid-cols-3">
         {/* Card 1: Masa Tanam Padi */}
-        <div className={`rounded-3xl border p-6 shadow-sm transition hover:-translate-y-1 ${recommendations.planting.color}`}>
+        <div className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.planting.color}`}>
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider opacity-75">FASE PERTANIAN</span>
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/80 shadow-sm backdrop-blur-sm">
@@ -76,7 +131,7 @@ export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLev
         </div>
 
         {/* Card 2: Penjemuran Gabah & Hasil Panen */}
-        <div className={`rounded-3xl border p-6 shadow-sm transition hover:-translate-y-1 ${recommendations.drying.color}`}>
+        <div className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.drying.color}`}>
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider opacity-75">PANEN & GABAH</span>
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/80 shadow-sm backdrop-blur-sm">
@@ -94,7 +149,7 @@ export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLev
         </div>
 
         {/* Card 3: Keselamatan Pemukiman */}
-        <div className={`rounded-3xl border p-6 shadow-sm transition hover:-translate-y-1 ${recommendations.residential.color}`}>
+        <div className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.residential.color}`}>
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider opacity-75">PEMUKIMAN DESA</span>
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/80 shadow-sm backdrop-blur-sm">

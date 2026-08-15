@@ -9,7 +9,13 @@ import { EmergencyAssistance } from "@/components/bencana/emergency-assistance"
 
 export default function PetaBencanaPage() {
   const [riskLevel, setRiskLevel] = useState<"aman" | "waspada" | "bahaya">("aman")
-  const [precipitationSum, setPrecipitationSum] = useState<number>(12.5)
+  const [precipitationToday, setPrecipitationToday] = useState<number>(12.5)
+  const [weatherCode, setWeatherCode] = useState<number>(61)
+
+  const handleWeatherUpdate = (data: { risk: "aman" | "waspada" | "bahaya"; precipitationToday: number; weatherCode: number }) => {
+    setPrecipitationToday(data.precipitationToday)
+    setWeatherCode(data.weatherCode)
+  }
 
   return (
     <>
@@ -24,14 +30,14 @@ export default function PetaBencanaPage() {
       <div className="mx-auto max-w-7xl px-5 py-12 space-y-12">
         {/* SECTION 1: WEATHER FORECAST & REALTIME RISK ALERT */}
         <section>
-          <WeatherForecast onRiskChange={setRiskLevel} />
+          <WeatherForecast onRiskChange={setRiskLevel} onWeatherUpdate={handleWeatherUpdate} />
         </section>
 
         {/* SECTION 2: FARMER CLIMATE PREDICTOR & DAILY LIFE RECOMMENDATIONS */}
         <section>
           <FarmingClimatePredictor
-            precipitationSum={precipitationSum}
-            weatherCode={61}
+            precipitationSum={precipitationToday}
+            weatherCode={weatherCode}
             riskLevel={riskLevel}
           />
         </section>
