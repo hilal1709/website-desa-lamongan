@@ -1,5 +1,4 @@
 import { Hero } from "@/components/infografis/Hero"
-import { InfoBanner } from "@/components/infografis/InfoBanner"
 import { InfographicDashboard } from "@/components/infografis/infographic-dashboard"
 import { supabase } from "@/lib/supabase/client"
 import type { AgeGroupStat, EducationStat, InfographicStat, OccupationStat, PopulationTrend } from "@/types"
@@ -14,7 +13,6 @@ export default async function InfografisPage() {
         <Hero />
         <main className="bg-slate-50 px-5 py-10 sm:py-14" suppressHydrationWarning>
           <div className="mx-auto max-w-7xl">
-            <InfoBanner />
             <InfographicDashboard
               records={[]}
               ages={[]}
@@ -41,7 +39,6 @@ export default async function InfografisPage() {
       <Hero />
       <main className="bg-slate-50 px-5 py-10 sm:py-14" suppressHydrationWarning>
         <div className="mx-auto max-w-7xl">
-          <InfoBanner />
           <InfographicDashboard
             records={(statsResult.data ?? []) as InfographicStat[]}
             ages={(ageResult.data ?? []) as AgeGroupStat[]}

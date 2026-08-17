@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
+import Link from "next/link"
 import { Save } from "lucide-react"
 import type { CmsPageContent } from "@/lib/cms-pages"
 import { CmsImageUpload } from "@/components/admin/cms-image-upload"
@@ -211,6 +212,12 @@ export function CmsPageEditor() {
                   </div>
                 </div>
               ) : null}
+            </div>
+          ) : page.slug === "berita" ? (
+            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+              <p className="text-sm font-bold text-emerald-950">Artikel berita dikelola terpisah.</p>
+              <p className="mt-1 text-sm leading-6 text-emerald-800">Halaman ini hanya mengatur tampilan hero. Untuk menambah, edit, hapus artikel, atau kategori, gunakan Kelola Berita.</p>
+              <Link href="/admin/berita" className="mt-4 inline-flex rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-800">Buka Kelola Berita</Link>
             </div>
           ) : (
             <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5 text-sm font-semibold text-slate-500">

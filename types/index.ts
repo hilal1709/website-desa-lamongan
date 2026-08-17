@@ -11,6 +11,7 @@ export interface NewsArticle {
   excerpt: string | null
   content: string | null
   image_url: string | null
+  category?: string
   published: boolean
   created_at: string
 }

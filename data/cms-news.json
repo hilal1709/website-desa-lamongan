@@ -1,0 +1,29 @@
+{
+  "categories": [
+    "Uji Coba"
+  ],
+  "articles": [
+    {
+      "id": "86e296f1-f229-4e82-b79b-2aa81f5c8efc",
+      "title": "awwk",
+      "slug": "awwk",
+      "excerpt": "hh",
+      "content": "adfa",
+      "image": "/uploads/cms/37903936-2144-4d5e-bffc-3b88fbd8b9e9.jpg",
+      "category": "Uji Coba",
+      "published": true,
+      "createdAt": "2026-08-17T10:35:43.533Z"
+    },
+    {
+      "id": "ef47163d-8cf1-4d96-b980-62a98aaeb67a",
+      "title": "TIKNO haha",
+      "slug": "tikno-haha",
+      "excerpt": "dosen ",
+      "content": "gak tau\n\n![gojo](/uploads/cms/c46a1513-cadd-48fa-9784-c38b2ad614c8.jpg)",
+      "image": "/uploads/cms/646f93a3-0689-4d80-af12-dd8fa96cd57f.jpg",
+      "category": "Uji Coba",
+      "published": true,
+      "createdAt": "2026-08-17T10:33:27.753Z"
+    }
+  ]
+}

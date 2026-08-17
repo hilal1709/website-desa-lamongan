@@ -4,15 +4,11 @@ import { useEffect, useState } from "react"
 import {
   LoaderCircle,
   Save,
-  FileSpreadsheet,
-  Upload,
   Download,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   HelpCircle,
-  Building2,
-  FileCheck
+  Building2
 } from "lucide-react"
 import { supabase } from "@/lib/supabase/client"
 import { Toast } from "@/components/ui/toast"
@@ -40,7 +36,6 @@ const inputClass =
   "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100 font-semibold"
 
 export function InfographicForm() {
-  const [inputMode, setInputMode] = useState<"quick" | "excel">("quick")
   const [form, setForm] = useState({
     year: String(new Date().getFullYear()),
     dusun: "",
@@ -55,8 +50,6 @@ export function InfographicForm() {
 
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null)
-  const [excelFile, setExcelFile] = useState<File | null>(null)
-  const [isProcessingExcel, setIsProcessingExcel] = useState(false)
 
   const field = (key: "population" | "households" | "male" | "female", value: string) =>
     setForm((current) => ({ ...current, [key]: value }))
@@ -97,46 +90,6 @@ export function InfographicForm() {
       active = false
     }
   }, [form.year, form.dusun])
-
-  // Demo Autofill for Admin ease of testing
-  const autofillDemoData = () => {
-    setForm({
-      year: "2026",
-      dusun: "Dusun Topang",
-      population: "1240",
-      households: "395",
-      male: "625",
-      female: "615",
-      ages: { "0-5": "320", "6-17": "950", "18-35": "1480", "36-59": "1420", "60+": "692" },
-      education: { SD: "1250", SMP: "1420", SMA: "1650", "Perguruan Tinggi": "542" },
-      occupations: {
-        Petani: "1850",
-        "UMKM/Wirausaha": "980",
-        "Karyawan Swasta": "820",
-        "PNS/ASN": "145",
-        "Guru/Tenaga Pendidikan": "165",
-        "Perangkat Desa": "13",
-        "Pelajar/Mahasiswa": "890",
-        "Belum/Tidak Bekerja": "300"
-      }
-    })
-    setToast({ message: "Data contoh Kedungrejo berhasil diisikan otomatis ke form.", variant: "success" })
-  }
-
-  // Handle Excel Upload Mocking & Parsing
-  const handleExcelUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setExcelFile(file)
-    setIsProcessingExcel(true)
-
-    // Simulate reading Excel file with 1s timer
-    setTimeout(() => {
-      autofillDemoData()
-      setIsProcessingExcel(false)
-      setToast({ message: `File "${file.name}" berhasil dibaca dan data terisi otomatis!`, variant: "success" })
-    }, 1200)
-  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -251,73 +204,6 @@ export function InfographicForm() {
   return (
     <div className="space-y-6">
       {/* MODE SELECTOR BANNER */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div>
-          <h3 className="font-extrabold text-slate-900">Pilih Metode Input Data Admin</h3>
-          <p className="text-xs font-medium text-slate-500">Pilih cara tercepat yang paling nyaman untuk Anda</p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setInputMode("quick")}
-            className={`flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-extrabold transition ${
-              inputMode === "quick"
-                ? "bg-emerald-800 text-white shadow-md shadow-emerald-900/10"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            }`}
-          >
-            <FileCheck className="h-4 w-4" />
-            <span>Form Input Ringkas</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setInputMode("excel")}
-            className={`flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-extrabold transition ${
-              inputMode === "excel"
-                ? "bg-emerald-800 text-white shadow-md shadow-emerald-900/10"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            }`}
-          >
-            <FileSpreadsheet className="h-4 w-4" />
-            <span>Upload File Excel (.xlsx)</span>
-          </button>
-        </div>
-      </div>
-
-      {/* EXCEL UPLOAD SECTION (IF EXCEL MODE ACTIVE) */}
-      {inputMode === "excel" && (
-        <div className="rounded-3xl border-2 border-dashed border-emerald-300 bg-emerald-50/40 p-8 text-center space-y-4">
-          <div className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-emerald-100 text-emerald-800">
-            <FileSpreadsheet className="h-7 w-7" />
-          </div>
-          <div>
-            <h3 className="text-lg font-black text-slate-900">Impor Data Sekaligus Dari File Excel</h3>
-            <p className="max-w-md mx-auto mt-1 text-xs text-slate-600 leading-relaxed">
-              Upload file Excel monografi / laporan kependudukan desa. Sistem akan otomatis mengisi form tanpa Anda perlu mengetik manual.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <label className="inline-flex items-center gap-2 rounded-2xl bg-emerald-700 px-6 py-3 text-xs font-extrabold text-white shadow-md transition hover:bg-emerald-800 cursor-pointer">
-              {isProcessingExcel ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-              <span>{isProcessingExcel ? "Membaca Excel..." : "Pilih & Upload File Excel"}</span>
-              <input type="file" accept=".xlsx, .xls, .csv" onChange={handleExcelUpload} className="hidden" />
-            </label>
-
-            <button
-              type="button"
-              onClick={autofillDemoData}
-              className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-5 py-3 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-100"
-            >
-              <Sparkles className="h-4 w-4 text-amber-500" />
-              <span>Isi Contoh Data Kedungrejo (1 Klik)</span>
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* MAIN FORM */}
       <form onSubmit={submit} className="space-y-6 rounded-3xl bg-white p-6 shadow-sm border border-slate-200/90 sm:p-8">
         <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -326,14 +212,6 @@ export function InfographicForm() {
             <p className="text-xs font-medium text-slate-500">Pilih Dusun dan Tahun yang akan dimasukkan atau diperbarui.</p>
           </div>
 
-          <button
-            type="button"
-            onClick={autofillDemoData}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-            <span>Isi Otomatis Data</span>
-          </button>
         </div>
 
         {/* Basic Header Fields */}
