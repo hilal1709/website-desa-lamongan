@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useLayoutEffect, useRef } from "react"
 
 interface PageHeroProps {
@@ -47,14 +48,14 @@ export function PageHero({
   }, [])
 
   return (
-    <section ref={root} className="relative -mt-[88px] flex min-h-[520px] items-center overflow-hidden bg-[#071b1d] px-5 pb-16 pt-[156px] text-white sm:min-h-[600px] sm:pb-20 sm:pt-[168px] lg:min-h-[640px]">
-      <img src={image} alt="" className="page-hero-image absolute inset-0 h-full w-full object-cover" style={{ objectPosition: imagePosition }} />
+    <section ref={root} className="relative -mt-[88px] flex min-h-[480px] items-center overflow-hidden bg-[#071b1d] px-4 pb-12 pt-[144px] text-white sm:min-h-[600px] sm:px-6 sm:pb-20 sm:pt-[168px] lg:min-h-[640px] lg:px-8">
+      <Image src={image} alt="" fill priority sizes="100vw" className="page-hero-image object-cover" style={{ objectPosition: imagePosition }} />
       <div className="page-hero-overlay absolute inset-0 bg-[linear-gradient(90deg,rgba(4,18,15,0.76),rgba(8,34,23,0.56),rgba(8,36,19,0.42)),linear-gradient(180deg,rgba(5,24,18,0.22),rgba(5,24,18,0.3)_42%,rgba(5,24,18,0.7))]" />
 
       <div className="relative mx-auto max-w-7xl">
-        <p className="page-hero-eyebrow text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">{eyebrow}</p>
-        <h1 className="page-hero-title mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">{title}</h1>
-        <p className="page-hero-description mt-5 max-w-2xl text-lg leading-8 text-slate-300">{description}</p>
+        <p className="page-hero-eyebrow text-xs font-bold uppercase tracking-[0.16em] text-emerald-300 sm:text-sm sm:tracking-[0.2em]">{eyebrow}</p>
+        <h1 className="page-hero-title mt-3 max-w-3xl text-3xl font-black tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">{title}</h1>
+        <p className="page-hero-description mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:mt-5 sm:text-lg sm:leading-8">{description}</p>
       </div>
     </section>
   )

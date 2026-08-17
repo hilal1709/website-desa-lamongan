@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { useMemo, useState } from "react"
 import {
   Users,
@@ -12,14 +11,16 @@ import {
   TrendingUp,
   MapPin,
   Printer,
-  ArrowRight,
   PieChart as PieChartIcon,
   BarChart3,
   Calendar,
   CheckCircle2,
   Sparkles,
-  Award,
-  Layers
+  Stethoscope,
+  Store,
+  HeartPulse,
+  CalendarDays,
+  TrendingDown
 } from "lucide-react"
 
 import { AgeChart } from "./AgeChart"
@@ -132,6 +133,12 @@ function CardContainer({ title, description, badge, children }: { title: string;
   )
 }
 
+type DataView = "infografis" | "medis" | "umkm"
+function DataSelector({ active, onChange }: { active: DataView; onChange: (view: DataView) => void }) {
+  const items = [{ id: "infografis" as const, title: "Infografis Desa", description: "Data penduduk, pendidikan, dan pekerjaan warga.", icon: BarChart3 }, { id: "medis" as const, title: "Data Rekam Medis", description: "Pemantauan balita, stunting, dan posyandu desa.", icon: Stethoscope }, { id: "umkm" as const, title: "Data UMKM", description: "Pelaku usaha dan sektor ekonomi warga.", icon: Store }]
+  return <section className="mt-6"><SectionHeader tag="Pusat Data Desa" title="Pilih data yang ingin ditampilkan" subtitle="Infografis desa, rekam medis, dan UMKM tersedia dalam satu halaman." /><div className="grid gap-4 md:grid-cols-3">{items.map((item) => { const Icon = item.icon; const selected = active === item.id; return <button key={item.id} type="button" onClick={() => onChange(item.id)} aria-pressed={selected} className={`rounded-3xl border p-5 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 ${selected ? "border-emerald-300 bg-emerald-50 text-emerald-900 shadow-md" : "border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:shadow-sm"}`}><span className="grid size-11 place-items-center rounded-2xl bg-white text-emerald-700 shadow-sm"><Icon size={21} /></span><h2 className="mt-4 text-lg font-black">{item.title}</h2><p className="mt-1 text-sm leading-6 text-slate-600">{item.description}</p><span className="mt-4 inline-flex text-xs font-bold">{selected ? "Sedang ditampilkan" : "Tampilkan data"}</span></button> })}</div></section>
+}
+
 export function InfographicDashboard({
   records: rawRecords,
   ages: rawAges,
@@ -150,6 +157,7 @@ export function InfographicDashboard({
 
   const [year, setYear] = useState<number | "all">(years[0] ?? "all")
   const [dusun, setDusun] = useState("all")
+  const [activeData, setActiveData] = useState<DataView>("infografis")
 
   const match = <T extends { year: number; dusun: string }>(rows: T[]) =>
     rows.filter((row) => (year === "all" || row.year === year) && (dusun === "all" || row.dusun === dusun))
@@ -192,8 +200,13 @@ export function InfographicDashboard({
     }
   }
 
+  if (activeData === "medis") return <><DataSelector active={activeData} onChange={setActiveData} /><section className="mt-8"><div className="rounded-3xl bg-gradient-to-br from-rose-700 to-orange-600 p-7 text-white shadow-lg shadow-rose-900/15 sm:p-9"><span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold"><HeartPulse size={14} /> Dashboard Kesehatan Desa</span><h2 className="mt-4 text-3xl font-black">Rekam Medis & Pencegahan Stunting</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-rose-50">Ringkasan pemantauan tumbuh kembang balita dan layanan posyandu Desa Kedungrejo.</p></div><div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Balita terpantau", "186", Users], ["Risiko stunting", "7", HeartPulse], ["Kehadiran posyandu", "94%", CalendarDays], ["Prevalensi stunting", "3,8%", TrendingDown]].map(([label, value, Icon]) => { const StatIcon = Icon as typeof Users; return <div key={label as string} className="rounded-3xl border border-rose-100 bg-white p-6 shadow-sm"><StatIcon className="text-rose-700" /><p className="mt-5 text-4xl font-black text-slate-900">{value as string}</p><p className="mt-1 text-sm font-bold text-slate-600">{label as string}</p></div> })}</div><div className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_.8fr]"><CardContainer title="Capaian kunjungan posyandu" description="Persentase kehadiran pada tujuh periode pemantauan."><div className="flex h-52 items-end justify-between gap-2">{[54, 74, 63, 84, 71, 92, 94].map((value, index) => <div key={index} className="flex flex-1 flex-col items-center gap-2"><div className="w-full rounded-t-xl bg-rose-600" style={{ height: `${value}%` }} /><span className="text-xs font-medium text-slate-500">M{index + 1}</span></div>)}</div></CardContainer><div className="rounded-3xl border border-orange-200 bg-orange-50 p-7"><p className="text-sm font-bold uppercase tracking-wider text-orange-700">Program bulan ini</p><h3 className="mt-3 text-2xl font-black text-orange-950">Kelas ibu balita & PMT</h3><p className="mt-4 leading-7 text-orange-900/75">Jadwal berikutnya: 28 Agustus 2025 di Balai Desa, pukul 08.00 WIB.</p></div></div></section></>
+
+  if (activeData === "umkm") return <><DataSelector active={activeData} onChange={setActiveData} /><section className="mt-8"><div className="rounded-3xl bg-gradient-to-br from-amber-600 to-orange-700 p-7 text-white shadow-lg shadow-amber-900/15 sm:p-9"><span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold"><Store size={14} /> Potensi Ekonomi Desa</span><h2 className="mt-4 text-3xl font-black">Data UMKM Desa Kedungrejo</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-amber-50">Gambaran pelaku UMKM/wirausaha dan sektor ekonomi utama masyarakat berdasarkan data pekerjaan warga.</p></div><div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"><div className="rounded-3xl border border-amber-200 bg-amber-50 p-6"><Store className="text-amber-700" /><p className="mt-5 text-4xl font-black text-amber-950">{numberFormatter.format(economic.umkm)}</p><p className="mt-1 text-sm font-bold text-amber-900">Pelaku UMKM/Wirausaha</p></div><div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6"><Users className="text-emerald-700" /><p className="mt-5 text-4xl font-black text-emerald-950">{numberFormatter.format(economic.farmers)}</p><p className="mt-1 text-sm font-bold text-emerald-900">Sektor Pertanian</p></div><div className="rounded-3xl border border-blue-200 bg-blue-50 p-6"><Briefcase className="text-blue-700" /><p className="mt-5 text-4xl font-black text-blue-950">{numberFormatter.format(economic.formal)}</p><p className="mt-1 text-sm font-bold text-blue-900">Pekerja Formal</p></div><div className="rounded-3xl border border-violet-200 bg-violet-50 p-6"><GraduationCap className="text-violet-700" /><p className="mt-5 text-4xl font-black text-violet-950">{numberFormatter.format(economic.educators)}</p><p className="mt-1 text-sm font-bold text-violet-900">Tenaga Pendidikan</p></div></div><div className="mt-6"><CardContainer title="Sebaran Mata Pencaharian Warga" description="Komposisi sektor kerja yang menjadi dasar pemetaan potensi UMKM."><OccupationChart data={occupationData} /></CardContainer></div></section></>
+
   return (
     <>
+      <DataSelector active={activeData} onChange={setActiveData} />
       {/* FILTER BAR & ACTION PRINT */}
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1">
@@ -397,25 +410,6 @@ export function InfographicDashboard({
         </CardContainer>
       </div>
 
-      {/* BANNER LAYANAN KESEHATAN */}
-      <section className="mt-10 overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-r from-emerald-800 to-teal-900 p-8 text-white shadow-lg shadow-emerald-900/15 sm:flex sm:items-center sm:justify-between">
-        <div className="space-y-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1 text-xs font-bold text-emerald-200 backdrop-blur-md">
-            <Award className="h-3.5 w-3.5" /> Layanan Kesehatan Desa
-          </span>
-          <h3 className="text-2xl font-black sm:text-3xl">Pencegahan Stunting & Rekam Medis</h3>
-          <p className="max-w-xl text-sm leading-relaxed text-emerald-100/90">
-            Akses data tumbuh kembang balita dan program pencegahan stunting Desa Kedungrejo secara terbuka.
-          </p>
-        </div>
-        <Link
-          href="/stunting"
-          className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 font-bold text-emerald-900 shadow-md transition hover:bg-emerald-100 sm:mt-0"
-        >
-          <span>Buka Data Stunting</span>
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </section>
     </>
   )
 }

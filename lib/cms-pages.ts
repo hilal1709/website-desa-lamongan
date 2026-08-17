@@ -94,11 +94,7 @@ export const defaultCmsPages: CmsPageContent[] = [
         description: "Update kegiatan, program, dan momentum positif yang tengah berlangsung di desa.",
         action: "Baca semua berita",
         href: "/berita",
-        items: [
-          { title: "Musrenbangdes 2025: Warga Sepakati Prioritas Jalan Tani dan UMKM", category: "Pembangunan", date: "20 Agustus 2025", image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80", description: "Musyawarah desa menghadirkan perwakilan seluruh dusun untuk menyusun agenda pembangunan bersama." },
-          { title: "Pelatihan Pupuk Organik untuk Kelompok Tani Maju", category: "Pertanian", date: "18 Agustus 2025", image: "https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?auto=format&fit=crop&w=900&q=80" },
-          { title: "Posyandu Serentak Hadir di Lima Dusun", category: "Kesehatan", date: "16 Agustus 2025", image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80" },
-        ],
+        items: [],
       },
       {
         key: "cta",
@@ -323,18 +319,7 @@ export const defaultCmsPages: CmsPageContent[] = [
     description: "Kabar pembangunan, pelayanan, dan kegiatan warga yang disampaikan langsung oleh Pemerintah Desa Kedungrejo.",
     image: "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1800&q=85",
     imagePosition: "center 42%",
-    sections: [
-      {
-        key: "news-list",
-        label: "Daftar berita",
-        title: "Berita utama dan terbaru",
-        items: [
-          { title: "Musrenbangdes 2025: Warga Sepakati Prioritas Jalan Tani dan UMKM", category: "Pembangunan", date: "20 Agustus 2025", description: "Musyawarah desa menghadirkan perwakilan seluruh dusun untuk menyusun agenda pembangunan bersama.", image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80" },
-          { title: "Pelatihan Pupuk Organik untuk Kelompok Tani Maju", category: "Pertanian", date: "18 Agustus 2025", image: "https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?auto=format&fit=crop&w=900&q=80" },
-          { title: "Posyandu Serentak Hadir di Lima Dusun", category: "Kesehatan", date: "16 Agustus 2025", image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80" },
-        ],
-      },
-    ],
+    sections: [],
   },
   {
     slug: "data-desa",
