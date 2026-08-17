@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Save } from "lucide-react"
+import { Plus, Save, Trash2 } from "lucide-react"
 import type { CmsPageContent } from "@/lib/cms-pages"
 import { CmsImageUpload } from "@/components/admin/cms-image-upload"
 
@@ -27,8 +27,11 @@ export function CmsPageEditor() {
     const slug = searchParams.get("halaman")
     const index = pages.findIndex((item) => item.slug === slug)
     if (index >= 0) {
-      setActive(index)
-      setActiveSection(0)
+      const timer = window.setTimeout(() => {
+        setActive(index)
+        setActiveSection(0)
+      }, 0)
+      return () => window.clearTimeout(timer)
     }
   }, [pages, searchParams])
 
@@ -49,7 +52,7 @@ export function CmsPageEditor() {
     )
   }
 
-  const updateItem = (itemIndex: number, field: "title" | "description" | "value" | "detail" | "href" | "category" | "date" | "image", value: string) => {
+  const updateItem = (itemIndex: number, field: "title" | "icon" | "description" | "value" | "detail" | "href" | "category" | "date" | "image", value: string) => {
     setPages((current) =>
       current.map((page, pageIndex) =>
         pageIndex === active
@@ -67,6 +70,14 @@ export function CmsPageEditor() {
           : page,
       ),
     )
+  }
+
+  const addItem = () => {
+    setPages((current) => current.map((page, pageIndex) => pageIndex === active ? { ...page, sections: page.sections.map((section, sectionIndex) => sectionIndex === activeSection ? { ...section, items: [...(section.items ?? []), { title: "Item baru" }] } : section) } : page))
+  }
+
+  const removeItem = (itemIndex: number) => {
+    setPages((current) => current.map((page, pageIndex) => pageIndex === active ? { ...page, sections: page.sections.map((section, sectionIndex) => sectionIndex === activeSection ? { ...section, items: (section.items ?? []).filter((_, index) => index !== itemIndex) } : section) } : page))
   }
 
   const save = async () => {
@@ -197,9 +208,10 @@ export function CmsPageEditor() {
                   <div className="mt-5 space-y-4">
                     {(section.items ?? []).map((item, itemIndex) => (
                       <div key={`${section.key}-${itemIndex}`} className="rounded-2xl bg-slate-50 p-4">
-                        <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Item {itemIndex + 1}</p>
+                        <div className="flex items-center justify-between gap-3"><p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Item {itemIndex + 1}</p><button type="button" onClick={() => removeItem(itemIndex)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50"><Trash2 className="size-3.5" />Hapus</button></div>
                         <div className="mt-3 grid gap-3 md:grid-cols-2">
                           <input value={item.title} onChange={(event) => updateItem(itemIndex, "title", event.target.value)} className={inputClass} placeholder="Judul item" />
+                          <input value={item.icon ?? ""} onChange={(event) => updateItem(itemIndex, "icon", event.target.value)} className={inputClass} placeholder="Ikon: description, badge, favorite, storefront" />
                           <input value={item.value ?? ""} onChange={(event) => updateItem(itemIndex, "value", event.target.value)} className={inputClass} placeholder="Nilai/statistik" />
                           <input value={item.detail ?? ""} onChange={(event) => updateItem(itemIndex, "detail", event.target.value)} className={inputClass} placeholder="Detail kecil" />
                           <input value={item.href ?? ""} onChange={(event) => updateItem(itemIndex, "href", event.target.value)} className={inputClass} placeholder="Link" />
@@ -210,6 +222,7 @@ export function CmsPageEditor() {
                       </div>
                     ))}
                   </div>
+                  <button type="button" onClick={addItem} className="mt-4 inline-flex items-center gap-2 rounded-xl border border-emerald-200 px-4 py-2.5 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"><Plus className="size-4" />Tambah item</button>
                 </div>
               ) : null}
             </div>

@@ -1,0 +1,6 @@
+import type { CmsSectionItem } from "@/lib/cms-pages"
+
+export function ServiceFlow({ title, items }: { title?: string; items: CmsSectionItem[] }) {
+  if (!items.length) return null
+  return <section aria-labelledby="service-flow-heading" className="layanan-flow mt-8 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-5 sm:mt-12 sm:rounded-3xl sm:p-8"><div className="h-1 overflow-hidden rounded-full bg-emerald-100" aria-hidden="true"><div className="layanan-flow-accent h-full w-1/3 -translate-x-full rounded-full bg-emerald-500" /></div><h2 id="service-flow-heading" className="mt-5 text-xl font-black text-slate-950 sm:mt-6 sm:text-2xl">{title || "Alur layanan"}</h2><ol className="mt-5 grid grid-cols-1 gap-3 sm:mt-7 sm:grid-cols-2 xl:grid-cols-4">{items.map((item, index) => <li key={`${item.title}-${index}`} className="layanan-flow-step flex min-h-20 items-center gap-3 rounded-2xl bg-white/80 p-4 shadow-sm sm:min-h-24 sm:gap-4"><span className="grid size-8 shrink-0 place-items-center rounded-full bg-emerald-700 text-sm font-bold text-white" aria-hidden="true">{index + 1}</span><span className="text-sm font-semibold leading-6 text-slate-700 sm:text-base">{item.title}</span></li>)}</ol></section>
+}

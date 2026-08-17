@@ -18,19 +18,6 @@ async function main() {
         },
     });
 
-    // 2. Seed QuickService
-    const services = [
-        { icon: "description", title: "Surat Pengantar RT/RW", bgColor: "bg-secondary-container text-on-secondary-container", link: "/layanan/surat-pengantar-rt-rw", order: 1 },
-        { icon: "badge", title: "Pembuatan KTP/KK", bgColor: "bg-tertiary-container text-on-tertiary-container", link: "/layanan/pembuatan-ktp-kk", order: 2 },
-        { icon: "favorite", title: "Surat Keterangan Lahir/Mati", bgColor: "bg-error-container text-on-error-container", link: "/layanan/surat-keterangan", order: 3 },
-        { icon: "storefront", title: "Izin Usaha Mikro", bgColor: "bg-primary-container text-on-primary-container", link: "/layanan/izin-usaha", order: 4 },
-        { icon: "report", title: "Lapor Aduan Warga", bgColor: "bg-secondary-container text-on-secondary-container", link: "/aduan", order: 5 },
-        { icon: "more_horiz", title: "Layanan Lainnya", bgColor: "bg-surface-variant text-on-surface-variant", link: "/layanan", order: 6 },
-    ];
-    for (const s of services) {
-        await prisma.quickService.create({ data: s });
-    }
-
     // 3. Seed News
     const newsItems = [
         {

@@ -77,6 +77,11 @@ export type CmsPageStore = Prisma.CmsPageStoreModel
  */
 export type CmsNewsStore = Prisma.CmsNewsStoreModel
 /**
+ * Model Complaint
+ * 
+ */
+export type Complaint = Prisma.ComplaintModel
+/**
  * Model DisasterSetting
  * 
  */

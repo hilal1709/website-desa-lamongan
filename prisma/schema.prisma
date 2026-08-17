@@ -71,6 +71,20 @@ model CmsNewsStore {
   updatedAt DateTime @updatedAt
 }
 
+model Complaint {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  location    String
+  contact     String
+  description String
+  status      String   @default("Baru")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
 enum DisasterLocationType {
   EVAKUASI
   RAWAN

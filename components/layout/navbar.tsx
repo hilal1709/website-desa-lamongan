@@ -21,7 +21,7 @@ const navigation = [
   { label: "Beranda", href: "/" },
   // Profil Desa will be a dropdown now
   { label: "Layanan", href: "/layanan" },
-  { label: "Kontak", href: "/aduan" },
+  { label: "Aduan", href: "/aduan" },
 ]
 
 export function Navbar() {

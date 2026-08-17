@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
 }
 export const revalidate = 300
 
@@ -38,8 +39,8 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
   const { featured: featuredArticle, articles, count, categories, page, totalPages } = await getNewsPageData({ query, category, page: requestedPage })
   const hasActiveFilters = Boolean(query || category)
 
-  return <>
+  return <main>
     <PageHero eyebrow="Informasi publik" title="Berita Desa" description={hasActiveFilters ? `${count} berita sesuai pencarian Anda.` : `${count} publikasi terbaru dari Pemerintah Desa Kedungrejo.`} image={featuredArticle?.image_url || "/images/dorr.jpg"} imagePosition="center 42%" />
     <NewsIndexContent featuredArticle={featuredArticle} articles={articles} categories={categories} query={query} category={category} resultCount={count} page={page} totalPages={totalPages} />
-  </>
+  </main>
 }

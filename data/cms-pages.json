@@ -213,26 +213,10 @@
         "key": "service-cards",
         "label": "Kartu layanan",
         "items": [
-          {
-            "title": "Surat Keterangan",
-            "description": "Domisili, usaha, tidak mampu, dan surat pengantar.",
-            "href": "/layanan-digital"
-          },
-          {
-            "title": "Kependudukan",
-            "description": "Administrasi KTP, KK, kelahiran, dan pindah datang.",
-            "href": "/layanan-digital"
-          },
-          {
-            "title": "Kesehatan Warga",
-            "description": "Pendaftaran posyandu dan informasi layanan kesehatan.",
-            "href": "/stunting"
-          },
-          {
-            "title": "Izin Usaha Mikro",
-            "description": "Konsultasi dan surat keterangan usaha desa.",
-            "href": "/layanan-digital"
-          }
+          { "title": "Surat Keterangan", "description": "Domisili, usaha, tidak mampu, dan surat pengantar.", "href": "/layanan-digital", "icon": "description" },
+          { "title": "Kependudukan", "description": "Administrasi KTP, KK, kelahiran, dan pindah datang.", "href": "/layanan-digital", "icon": "badge" },
+          { "title": "Kesehatan Warga", "description": "Pendaftaran posyandu dan informasi layanan kesehatan.", "href": "/stunting", "icon": "favorite" },
+          { "title": "Izin Usaha Mikro", "description": "Konsultasi dan surat keterangan usaha desa.", "href": "/layanan-digital", "icon": "storefront" }
         ]
       },
       {
@@ -240,35 +224,10 @@
         "label": "Alur layanan",
         "title": "Alur layanan yang mudah",
         "items": [
-          {
-            "title": "Pilih jenis layanan yang diperlukan"
-          },
-          {
-            "title": "Siapkan dan unggah persyaratan"
-          },
-          {
-            "title": "Petugas memverifikasi pengajuan"
-          },
-          {
-            "title": "Ambil dokumen di balai desa"
-          }
-        ]
-      },
-      {
-        "key": "submission-status",
-        "label": "Status pengajuan",
-        "title": "Status pengajuan",
-        "items": [
-          {
-            "title": "Surat Keterangan Domisili",
-            "meta": "Diajukan 19 Agustus 2025",
-            "detail": "Selesai"
-          },
-          {
-            "title": "Surat Pengantar KTP",
-            "meta": "Diajukan 21 Agustus 2025",
-            "detail": "Diproses"
-          }
+          { "title": "Pilih jenis layanan yang diperlukan" },
+          { "title": "Siapkan dan unggah persyaratan" },
+          { "title": "Petugas memverifikasi pengajuan" },
+          { "title": "Ambil dokumen di balai desa" }
         ]
       }
     ]
@@ -327,14 +286,14 @@
     "label": "Aduan",
     "eyebrow": "Portal Aduan Masyarakat",
     "title": "Suara warga, tindakan nyata.",
-    "description": "Sampaikan keluhan, laporan, atau aspirasi Anda. Identitas pelapor dijaga dan laporan akan ditindaklanjuti.",
+    "description": "Identitas pelapor dijaga dan setiap aduan ditindaklanjuti.",
     "image": "https://images.unsplash.com/photo-1573496130141-209d200cebd8?auto=format&fit=crop&w=1800&q=85",
     "imagePosition": "center 38%",
     "sections": [
       {
         "key": "complaint-form",
         "label": "Form aduan",
-        "title": "Buat laporan baru",
+        "title": "Buat aduan",
         "items": [
           {
             "title": "Judul laporan"
@@ -355,25 +314,8 @@
       },
       {
         "key": "complaint-history",
-        "label": "Riwayat aduan",
-        "title": "Riwayat aduan",
-        "items": [
-          {
-            "title": "Jalan berlubang di RT 04",
-            "meta": "Infrastruktur - 20 Agustus 2025",
-            "detail": "Diproses"
-          },
-          {
-            "title": "Tumpukan sampah bantaran sungai",
-            "meta": "Lingkungan - 15 Agustus 2025",
-            "detail": "Selesai"
-          },
-          {
-            "title": "Lampu jalan mati",
-            "meta": "Fasilitas umum - 10 Agustus 2025",
-            "detail": "Selesai"
-          }
-        ]
+        "label": "Riwayat",
+        "title": "Aduan terbaru"
       }
     ]
   },

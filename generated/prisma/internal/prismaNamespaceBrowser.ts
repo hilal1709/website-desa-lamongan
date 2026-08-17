@@ -58,6 +58,7 @@ export const ModelName = {
   Statistic: 'Statistic',
   CmsPageStore: 'CmsPageStore',
   CmsNewsStore: 'CmsNewsStore',
+  Complaint: 'Complaint',
   DisasterSetting: 'DisasterSetting',
   DisasterLocation: 'DisasterLocation'
 } as const
@@ -158,6 +159,21 @@ export const CmsNewsStoreScalarFieldEnum = {
 } as const
 
 export type CmsNewsStoreScalarFieldEnum = (typeof CmsNewsStoreScalarFieldEnum)[keyof typeof CmsNewsStoreScalarFieldEnum]
+
+
+export const ComplaintScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  category: 'category',
+  location: 'location',
+  contact: 'contact',
+  description: 'description',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ComplaintScalarFieldEnum = (typeof ComplaintScalarFieldEnum)[keyof typeof ComplaintScalarFieldEnum]
 
 
 export const DisasterSettingScalarFieldEnum = {
