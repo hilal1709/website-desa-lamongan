@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { revalidateTag } from "next/cache"
 import { getCmsPages, saveCmsPages, type CmsPageContent } from "@/lib/cms-pages"
 
 export async function GET() {
@@ -13,5 +14,6 @@ export async function PUT(request: Request) {
   }
 
   await saveCmsPages(body.pages)
-  return NextResponse.json({ pages: await getCmsPages() })
+  revalidateTag("cms-pages", "max")
+  return NextResponse.json({ pages: body.pages })
 }

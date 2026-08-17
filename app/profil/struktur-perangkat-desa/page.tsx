@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { PageHero } from "@/components/ui/page-hero"
 import {
-  Building2,
   ImageIcon,
   Maximize2,
   Download,
@@ -16,44 +15,12 @@ export default function StrukturPerangkatDesaPage() {
   return (
     <>
       <PageHero
-        eyebrow="Pemerintahan Desa Kedungrejo"
-        title="Struktur Organisasi & Perangkat Desa"
-        description="Bagan resmi susunan tata kerja Pemerintah Desa Kedungrejo, Kecamatan Modo, Kabupaten Lamongan."
+        eyebrow="Profil Desa"
+        title="Struktur Perangkat Desa"
+        description="Bagan resmi Pemerintah Desa Kedungrejo."
       />
 
       <div className="mx-auto max-w-7xl px-5 py-12 sm:py-16">
-        {/* Ringkasan Informasi Header Card */}
-        <div className="mb-10 overflow-hidden rounded-3xl border border-emerald-100 bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 p-8 text-white shadow-xl shadow-emerald-900/10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-semibold text-emerald-200 backdrop-blur-md">
-                <Building2 className="h-3.5 w-3.5" />
-                <span>Kecamatan Modo • Kabupaten Lamongan</span>
-              </div>
-              <h2 className="text-2xl font-black sm:text-3xl">Tata Kerja Pemerintahan Desa Kedungrejo</h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-emerald-100/90 sm:text-base">
-                Bagan foto resmi yang mengabdi untuk mewujudkan pelayanan publik yang responsif, transparan, dan sejahtera bagi seluruh warga.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex lg:gap-4">
-              <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur-md">
-                <p className="text-xs font-medium text-emerald-200">Total Posisi</p>
-                <p className="mt-1 text-2xl font-black">13</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur-md">
-                <p className="text-xs font-medium text-emerald-200">Terisi</p>
-                <p className="mt-1 text-2xl font-black text-emerald-300">12</p>
-              </div>
-              <div className="col-span-2 rounded-2xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur-md sm:col-span-1">
-                <p className="text-xs font-medium text-emerald-200">Wilayah Dusun</p>
-                <p className="mt-1 text-2xl font-black text-amber-300">4 Dusun</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* BAGAN GAMBAR FOTO RESMI (TAMPILAN TUNGGAL RESMI) */}
         <div className="mx-auto max-w-5xl space-y-6">
           <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
             {/* Card Header Bar */}
@@ -63,8 +30,7 @@ export default function StrukturPerangkatDesaPage() {
                   <ImageIcon className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-slate-900">Bagan Foto Resmi Perangkat Desa</h3>
-                  <p className="text-xs font-medium text-slate-500">Pemerintah Desa Kedungrejo, Kec. Modo, Kab. Lamongan</p>
+                  <h2 className="font-extrabold text-slate-900">Bagan Struktur Organisasi</h2>
                 </div>
               </div>
 
@@ -98,10 +64,6 @@ export default function StrukturPerangkatDesaPage() {
               </div>
             </div>
 
-            {/* Card Footer */}
-            <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-center text-xs text-slate-500">
-              Dokumen visual bagan SOTK Pemerintah Desa Kedungrejo resmi sesuai penetapan struktur kepemimpinan desa.
-            </div>
           </div>
         </div>
       </div>

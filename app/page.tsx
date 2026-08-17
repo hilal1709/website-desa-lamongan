@@ -72,7 +72,7 @@ export default async function Home() {
 
       <HomeMotion>
       <div className="bg-[#f3f7f3]">
-        {stats.length > 0 && <section className="relative z-10 -mt-4 mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-[24px] bg-slate-200 shadow-xl shadow-slate-900/10 md:grid-cols-4">
+        {stats.length > 0 && <section aria-label="Statistik desa" className="relative z-10 -mt-4 mx-4 grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-[24px] bg-slate-200 shadow-xl shadow-slate-900/10 sm:mx-6 md:mx-auto md:grid-cols-4">
           {stats.map((stat) => {
             const Icon = stat.icon
             return (
@@ -86,7 +86,7 @@ export default async function Home() {
           })}
         </section>}
 
-      {services.length > 0 && <section className="mx-auto max-w-7xl px-5 py-12 sm:py-16">
+      {services.length > 0 && <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="home-section-heading"><SectionHeading eyebrow={servicesSection?.eyebrow ?? ""} title={servicesSection?.title ?? ""} description={servicesSection?.description} href={servicesSection?.href} action={servicesSection?.action} /></div>
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
@@ -96,7 +96,7 @@ export default async function Home() {
       </section>}
 
       <section className="bg-slate-50 py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="home-section-heading"><SectionHeading eyebrow={digitalSection?.eyebrow ?? ""} title={digitalSection?.title ?? ""} description={digitalSection?.description} href={digitalSection?.href} action={digitalSection?.action} /></div>
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -119,7 +119,7 @@ export default async function Home() {
 
       <HomeOverviewSection pages={contentBySlug} digitalItems={digitalSection?.items ?? []} documents={homeData.documents} />
 
-      {news.length > 0 && <section className="mx-auto max-w-7xl px-5 py-16 sm:py-20">
+      {news.length > 0 && <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="home-section-heading"><SectionHeading eyebrow={newsSection?.eyebrow ?? ""} title={newsSection?.title ?? ""} description={newsSection?.description} href={newsSection?.href} action={newsSection?.action} /></div>
         <div className="grid gap-5 md:grid-cols-3">
           {news.map((item, index) => (
@@ -128,18 +128,18 @@ export default async function Home() {
         </div>
       </section>}
 
-        <section className="mx-auto max-w-7xl px-5 pb-20">
+        <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
           <Card className="home-cta overflow-hidden border-emerald-100 bg-gradient-to-r from-emerald-50 via-white to-sky-50">
             <CardContent className="flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">{ctaSection?.eyebrow}</p>
                 <h3 className="mt-2 text-3xl font-black text-slate-900">{ctaSection?.title}</h3>
               </div>
-              <div className="flex flex-wrap gap-3">
-                <Button asChild variant="default">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Button asChild variant="default" className="w-full sm:w-auto">
                   <Link href="/layanan">Layanan desa</Link>
                 </Button>
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="w-full sm:w-auto">
                   <Link href="/aduan">Kirim aspirasi</Link>
                 </Button>
             </div>

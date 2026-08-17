@@ -1,5 +1,6 @@
 import { promises as fs } from "fs"
 import path from "path"
+import { unstable_cache } from "next/cache"
 
 export interface CmsPageContent {
   slug: string
@@ -20,6 +21,7 @@ export interface CmsSection {
   description?: string
   action?: string
   href?: string
+  image?: string
   items?: CmsSectionItem[]
 }
 
@@ -121,30 +123,42 @@ export const defaultCmsPages: CmsPageContent[] = [
         eyebrow: "Sejarah Desa",
         title: "Tumbuh bersama sejak 1928.",
         description: "Desa Kedungrejo berkembang dari permukiman agraris yang dikelilingi persawahan subur. Hari ini, desa kami memadukan kearifan lokal dengan tata kelola digital untuk memberikan hidup yang lebih baik bagi setiap keluarga.",
+        image: "/images/pesona-potensi-desa-poster.jpg",
         items: [
-          { title: "Visi", description: "Desa maju dan mandiri" },
           { title: "4.862", description: "Warga bertetangga" },
           { title: "72 ha", description: "Lahan produktif" },
         ],
       },
       {
-        key: "development",
-        label: "Arah pembangunan",
-        title: "Arah pembangunan",
-        description: "Membangun pelayanan prima, ekonomi yang produktif, lingkungan lestari, dan masyarakat yang sehat.",
-        items: [{ title: "Kutipan", description: "Gotong royong menjadi fondasi utama pembangunan Desa Kedungrejo yang modern." }],
+        key: "vision-mission",
+        label: "Visi & misi",
+        eyebrow: "Arah Desa Kedungrejo",
+        title: "Visi & Misi Desa",
+        description: "Terwujudnya Desa Kedungrejo yang maju, mandiri, sejahtera, dan berbudaya melalui pelayanan yang inklusif serta pembangunan berkelanjutan.",
+        items: [
+          { title: "Pelayanan publik yang cepat, mudah, dan transparan." },
+          { title: "Pemberdayaan ekonomi warga melalui potensi pertanian, UMKM, dan inovasi desa." },
+          { title: "Pembangunan infrastruktur yang merata, aman, dan berwawasan lingkungan." },
+          { title: "Penguatan gotong royong, budaya lokal, serta kualitas sumber daya manusia." },
+        ],
       },
       {
-        key: "government",
-        label: "Perangkat desa",
-        eyebrow: "Pemerintahan",
-        title: "Perangkat Desa",
-        items: [
-          { title: "Budi Santoso, S.E.", description: "Kepala Desa" },
-          { title: "Siti Aminah", description: "Sekretaris Desa" },
-          { title: "Ahmad Ridwan", description: "Kaur Keuangan" },
-          { title: "Nurhayati", description: "Kaur Tata Usaha" },
-        ],
+        key: "government-cta",
+        label: "CTA perangkat desa",
+        eyebrow: "Pemerintahan Desa",
+        title: "Struktur Organisasi & Perangkat Desa",
+        description: "Lihat susunan perangkat Pemerintah Desa Kedungrejo.",
+        action: "Lihat Struktur Perangkat",
+        href: "/profil/struktur-perangkat-desa",
+      },
+      {
+        key: "village-map",
+        label: "Peta wilayah",
+        eyebrow: "Peta wilayah",
+        title: "Peta satelit Desa Kedungrejo",
+        description: "Tampilan satelit dengan batas Desa Kedungrejo dan titik referensi empat dusun.",
+        action: "Buka di Google Maps",
+        href: "https://www.google.com/maps/search/?api=1&query=Desa+Kedungrejo+Kecamatan+Modo+Kabupaten+Lamongan",
       },
     ],
   },
@@ -415,7 +429,7 @@ export const defaultCmsPages: CmsPageContent[] = [
 
 const cmsPath = path.join(process.cwd(), "data", "cms-pages.json")
 
-export async function getCmsPages() {
+async function readCmsPages() {
   try {
     const content = await fs.readFile(cmsPath, "utf8")
     const pages = JSON.parse(content) as CmsPageContent[]
@@ -435,6 +449,15 @@ export async function getCmsPages() {
   } catch {
     return defaultCmsPages
   }
+}
+
+const getCachedCmsPages = unstable_cache(readCmsPages, ["cms-pages"], {
+  tags: ["cms-pages"],
+  revalidate: 3600,
+})
+
+export async function getCmsPages() {
+  return getCachedCmsPages()
 }
 
 export async function getCmsPage(slug: string) {

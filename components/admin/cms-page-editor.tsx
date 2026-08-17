@@ -23,7 +23,7 @@ export function CmsPageEditor() {
     setPages((current) => current.map((page, index) => (index === active ? { ...page, [field]: value } : page)))
   }
 
-  const updateSection = (field: "eyebrow" | "title" | "description" | "action" | "href", value: string) => {
+  const updateSection = (field: "eyebrow" | "title" | "description" | "action" | "href" | "image", value: string) => {
     setPages((current) =>
       current.map((page, pageIndex) =>
         pageIndex === active
@@ -168,6 +168,10 @@ export function CmsPageEditor() {
                     <label className="md:col-span-2 text-sm font-bold text-slate-700">
                       Deskripsi section
                       <textarea value={section.description ?? ""} onChange={(event) => updateSection("description", event.target.value)} rows={2} className={inputClass} />
+                    </label>
+                    <label className="md:col-span-2 text-sm font-bold text-slate-700">
+                      URL gambar section
+                      <input value={section.image ?? ""} onChange={(event) => updateSection("image", event.target.value)} className={inputClass} placeholder="/images/contoh.jpg" />
                     </label>
                   </div>
 
