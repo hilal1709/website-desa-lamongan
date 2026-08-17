@@ -1,7 +1,6 @@
 "use client"
 
 import { useLayoutEffect, useRef } from "react"
-import gsap from "gsap"
 
 interface PageHeroProps {
   eyebrow: string
@@ -21,20 +20,30 @@ export function PageHero({
   const root = useRef<HTMLElement>(null)
 
   useLayoutEffect(() => {
-    if (!root.current) return
+    if (!root.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-    const ctx = gsap.context(() => {
-      const timeline = gsap.timeline({ defaults: { ease: "power3.out" } })
+    let cancelled = false
+    let context: ReturnType<typeof import("gsap").default.context> | undefined
 
-      timeline
-        .from(".page-hero-image", { scale: 1.08, opacity: 0.72, duration: 1.2 })
-        .from(".page-hero-overlay", { opacity: 0, duration: 0.8 }, "<")
-        .from(".page-hero-eyebrow", { opacity: 0, y: 18, duration: 0.55 }, "-=0.55")
-        .from(".page-hero-title", { opacity: 0, y: 34, duration: 0.75 }, "-=0.35")
-        .from(".page-hero-description", { opacity: 0, y: 24, duration: 0.65 }, "-=0.45")
-    }, root)
+    void import("gsap").then(({ default: gsap }) => {
+      if (!root.current || cancelled) return
 
-    return () => ctx.revert()
+      context = gsap.context(() => {
+        const timeline = gsap.timeline({ defaults: { ease: "power3.out" } })
+
+        timeline
+          .from(".page-hero-image", { scale: 1.08, opacity: 0.72, duration: 1.2 })
+          .from(".page-hero-overlay", { opacity: 0, duration: 0.8 }, "<")
+          .from(".page-hero-eyebrow", { opacity: 0, y: 18, duration: 0.55 }, "-=0.55")
+          .from(".page-hero-title", { opacity: 0, y: 34, duration: 0.75 }, "-=0.35")
+          .from(".page-hero-description", { opacity: 0, y: 24, duration: 0.65 }, "-=0.45")
+      }, root)
+    })
+
+    return () => {
+      cancelled = true
+      context?.revert()
+    }
   }, [])
 
   return (

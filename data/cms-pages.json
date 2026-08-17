@@ -195,6 +195,32 @@
     ]
   },
   {
+    "slug": "struktur-perangkat-desa",
+    "label": "Struktur Perangkat Desa",
+    "eyebrow": "Profil Desa",
+    "title": "Struktur Perangkat Desa",
+    "description": "Bagan resmi Pemerintah Desa Kedungrejo.",
+    "image": "/images/dorr.jpg",
+    "imagePosition": "center",
+    "sections": [
+      {
+        "key": "organization-chart",
+        "label": "Bagan organisasi",
+        "title": "Bagan Struktur Organisasi",
+        "description": "Gunakan bagan berikut untuk melihat susunan organisasi Pemerintah Desa Kedungrejo.",
+        "image": "/uploads/cms/13239134-c3d4-4800-9ac0-bdedd3957209.png",
+        "items": [
+          {
+            "title": "Perbesar Gambar"
+          },
+          {
+            "title": "Unduh Gambar"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "layanan",
     "label": "Layanan",
     "eyebrow": "Layanan publik",

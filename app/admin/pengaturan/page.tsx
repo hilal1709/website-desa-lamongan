@@ -1,0 +1,3 @@
+import { Settings } from "lucide-react"
+export const metadata = { title: "Pengaturan | CMS Kedungrejo" }
+export default function PengaturanPage() { return <div className="py-1 sm:py-2"><p className="text-xs font-bold uppercase tracking-[.18em] text-emerald-700">CMS Desa</p><h1 className="mt-1 text-3xl font-black text-slate-950">Pengaturan sistem</h1><section className="mt-5 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm"><Settings className="h-7 w-7 text-emerald-700" /><h2 className="mt-4 text-xl font-black text-slate-950">Status sistem</h2><p className="mt-2 text-sm leading-6 text-slate-600">Semua modul aktif. Data publik siap diperbarui oleh operator desa.</p></section></div> }

@@ -163,6 +163,25 @@ export const defaultCmsPages: CmsPageContent[] = [
     ],
   },
   {
+    slug: "struktur-perangkat-desa",
+    label: "Struktur Perangkat Desa",
+    eyebrow: "Profil Desa",
+    title: "Struktur Perangkat Desa",
+    description: "Bagan resmi Pemerintah Desa Kedungrejo.",
+    image: "/images/dorr.jpg",
+    imagePosition: "center",
+    sections: [
+      {
+        key: "organization-chart",
+        label: "Bagan organisasi",
+        title: "Bagan Struktur Organisasi",
+        description: "Gunakan bagan berikut untuk melihat susunan organisasi Pemerintah Desa Kedungrejo.",
+        image: "/images/struktur-organisasi.png",
+        items: [{ title: "Perbesar Gambar" }, { title: "Unduh Gambar" }],
+      },
+    ],
+  },
+  {
     slug: "layanan",
     label: "Layanan",
     eyebrow: "Layanan publik",
@@ -458,6 +477,12 @@ const getCachedCmsPages = unstable_cache(readCmsPages, ["cms-pages"], {
 
 export async function getCmsPages() {
   return getCachedCmsPages()
+}
+
+// The editor must always receive the current list, including pages added after
+// an older cached CMS response was created.
+export async function getFreshCmsPages() {
+  return readCmsPages()
 }
 
 export async function getCmsPage(slug: string) {

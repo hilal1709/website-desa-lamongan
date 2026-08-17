@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
-import { getCmsPages, saveCmsPages, type CmsPageContent } from "@/lib/cms-pages"
+import { getFreshCmsPages, saveCmsPages, type CmsPageContent } from "@/lib/cms-pages"
 
 export async function GET() {
-  return NextResponse.json({ pages: await getCmsPages() })
+  return NextResponse.json({ pages: await getFreshCmsPages() })
 }
 
 export async function PUT(request: Request) {

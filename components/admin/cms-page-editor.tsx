@@ -1,12 +1,15 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Save } from "lucide-react"
 import type { CmsPageContent } from "@/lib/cms-pages"
+import { CmsImageUpload } from "@/components/admin/cms-image-upload"
 
 const inputClass = "mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-800 outline-none transition focus:border-emerald-700 focus:bg-white"
 
 export function CmsPageEditor() {
+  const searchParams = useSearchParams()
   const [pages, setPages] = useState<CmsPageContent[]>([])
   const [active, setActive] = useState(0)
   const [activeSection, setActiveSection] = useState(0)
@@ -18,6 +21,15 @@ export function CmsPageEditor() {
       .then((response) => response.json())
       .then((payload) => setPages(payload.pages ?? []))
   }, [])
+
+  useEffect(() => {
+    const slug = searchParams.get("halaman")
+    const index = pages.findIndex((item) => item.slug === slug)
+    if (index >= 0) {
+      setActive(index)
+      setActiveSection(0)
+    }
+  }, [pages, searchParams])
 
   const update = (field: keyof CmsPageContent, value: string) => {
     setPages((current) => current.map((page, index) => (index === active ? { ...page, [field]: value } : page)))
@@ -131,6 +143,9 @@ export function CmsPageEditor() {
               URL gambar hero
               <input value={page.image} onChange={(event) => update("image", event.target.value)} className={inputClass} />
             </label>
+            <div className="md:col-span-2">
+              <CmsImageUpload onUploaded={(url) => update("image", url)} />
+            </div>
           </div>
 
           {page.sections.length ? (
@@ -173,6 +188,9 @@ export function CmsPageEditor() {
                       URL gambar section
                       <input value={section.image ?? ""} onChange={(event) => updateSection("image", event.target.value)} className={inputClass} placeholder="/images/contoh.jpg" />
                     </label>
+                    <div className="md:col-span-2">
+                      <CmsImageUpload onUploaded={(url) => updateSection("image", url)} />
+                    </div>
                   </div>
 
                   <div className="mt-5 space-y-4">
@@ -184,7 +202,9 @@ export function CmsPageEditor() {
                           <input value={item.value ?? ""} onChange={(event) => updateItem(itemIndex, "value", event.target.value)} className={inputClass} placeholder="Nilai/statistik" />
                           <input value={item.detail ?? ""} onChange={(event) => updateItem(itemIndex, "detail", event.target.value)} className={inputClass} placeholder="Detail kecil" />
                           <input value={item.href ?? ""} onChange={(event) => updateItem(itemIndex, "href", event.target.value)} className={inputClass} placeholder="Link" />
+                          <input value={item.image ?? ""} onChange={(event) => updateItem(itemIndex, "image", event.target.value)} className={`${inputClass} md:col-span-2`} placeholder="URL gambar item" />
                           <textarea value={item.description ?? ""} onChange={(event) => updateItem(itemIndex, "description", event.target.value)} rows={2} className={`${inputClass} md:col-span-2`} placeholder="Deskripsi" />
+                          <div className="md:col-span-2"><CmsImageUpload onUploaded={(url) => updateItem(itemIndex, "image", url)} /></div>
                         </div>
                       </div>
                     ))}
