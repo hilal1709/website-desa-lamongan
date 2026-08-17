@@ -48,14 +48,14 @@ export function EmergencyAssistance({ riskLevel }: { riskLevel: "aman" | "waspad
   return (
     <div className="space-y-12">
       {/* 1. BANTUAN DARURAT PETANI & WARGA (PROAKTIF FLOOD ASSISTANCE PANEL) */}
-      <section className="overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl">
-        <div className="p-8 sm:p-10">
+      <section data-disaster-motion className="overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl">
+        <div className="p-5 sm:p-10">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-3 max-w-2xl">
-              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-emerald-300 border border-emerald-400/30">
+            <div className="min-w-0 space-y-3 lg:max-w-2xl">
+              <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
                 <Sprout className="h-4 w-4 text-emerald-400" /> Bantuan Khusus Sektor Pertanian & Petani
               </span>
-              <h3 className="text-2xl font-black sm:text-3xl text-white">
+              <h3 className="text-2xl font-black leading-tight text-white sm:text-3xl">
                 Sawah Terendam & Butuh Bantuan Bibit Padi?
               </h3>
               <p className="text-sm leading-relaxed text-emerald-100/90">
@@ -65,12 +65,12 @@ export function EmergencyAssistance({ riskLevel }: { riskLevel: "aman" | "waspad
             </div>
 
             {/* Quick Action Buttons for Farmers */}
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+            <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:flex-col">
               <a
                 href="https://dinkpp.lamongankab.go.id"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-6 py-3.5 text-xs font-black text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3.5 text-center text-xs font-black text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 sm:px-6"
               >
                 <span>Kontak Dinkpp Lamongan</span>
                 <ExternalLink className="h-4 w-4" />
@@ -78,16 +78,16 @@ export function EmergencyAssistance({ riskLevel }: { riskLevel: "aman" | "waspad
 
               <a
                 href="tel:0322321123"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-400/40 bg-white/10 px-6 py-3.5 text-xs font-black text-white backdrop-blur-md transition hover:bg-white/20"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-emerald-400/40 bg-white/10 px-4 py-3.5 text-center text-xs font-black text-white backdrop-blur-md transition hover:bg-white/20 sm:px-6"
               >
                 <PhoneCall className="h-4 w-4 text-emerald-300" />
-                <span>Call Center BPBD / Posko (0322) 321-123</span>
+                <span>Call Center BPBD / Posko (0322) 321 123</span>
               </a>
             </div>
           </div>
 
           {/* Quick Step Cards for Affected Farmers */}
-          <div className="mt-8 grid gap-4 sm:grid-cols-3 border-t border-white/10 pt-6">
+          <div className="mt-8 grid gap-4 border-t border-white/10 pt-6 sm:grid-cols-3">
             <div className="rounded-2xl bg-white/5 p-4 border border-white/10">
               <div className="text-xs font-black text-emerald-400 uppercase tracking-wider">Langkah 1</div>
               <p className="mt-1 text-sm font-bold text-white">Foto & Catat Luas Sawah Terdampak</p>
@@ -110,11 +110,11 @@ export function EmergencyAssistance({ riskLevel }: { riskLevel: "aman" | "waspad
       </section>
 
       {/* 2. SECTION LAYANAN UTAMA (STYLE MATCHING USER UPLOADED MOCKUP) */}
-      <section className="space-y-6">
+      <section data-disaster-motion className="space-y-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <span className="text-xs font-black uppercase tracking-widest text-emerald-800">LAYANAN DESA</span>
-            <h2 className="mt-1 text-3xl font-black text-slate-900 tracking-tight">
+            <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
               Akses layanan desa yang cepat dan jelas
             </h2>
             <p className="mt-1 text-sm text-slate-600 max-w-xl font-medium">
@@ -132,14 +132,14 @@ export function EmergencyAssistance({ riskLevel }: { riskLevel: "aman" | "waspad
         </div>
 
         {/* Grid 4 Cards (Matching User Mockup) */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {serviceCards.map((card) => {
             const Icon = card.icon
             return (
-              <Link
+              <Link data-disaster-motion
                 key={card.title}
                 href={card.href}
-                className="group flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-900/5"
+                className="group flex min-w-0 flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-900/5 sm:p-6"
               >
                 <div>
                   <span className={`grid h-12 w-12 place-items-center rounded-2xl ${card.tone}`}>

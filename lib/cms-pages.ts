@@ -1,6 +1,6 @@
-import { promises as fs } from "fs"
-import path from "path"
 import { unstable_cache } from "next/cache"
+import { prisma } from "@/app/lib/prisma"
+import type { Prisma } from "@/generated/prisma/client"
 
 export interface CmsPageContent {
   slug: string
@@ -431,12 +431,11 @@ export const defaultCmsPages: CmsPageContent[] = [
   },
 ]
 
-const cmsPath = path.join(process.cwd(), "data", "cms-pages.json")
-
 async function readCmsPages() {
   try {
-    const content = await fs.readFile(cmsPath, "utf8")
-    const pages = JSON.parse(content) as CmsPageContent[]
+    const store = await prisma.cmsPageStore.findUnique({ where: { id: 1 } })
+    const pages = Array.isArray(store?.data) ? store.data as unknown as CmsPageContent[] : defaultCmsPages
+    if (!store) await prisma.cmsPageStore.create({ data: { id: 1, data: defaultCmsPages as unknown as Prisma.InputJsonValue } })
     return defaultCmsPages.map((page) => {
       const saved = pages.find((item) => item.slug === page.slug)
       if (!saved) return page
@@ -476,6 +475,5 @@ export async function getCmsPage(slug: string) {
 }
 
 export async function saveCmsPages(pages: CmsPageContent[]) {
-  await fs.mkdir(path.dirname(cmsPath), { recursive: true })
-  await fs.writeFile(cmsPath, JSON.stringify(pages, null, 2), "utf8")
+  await prisma.cmsPageStore.upsert({ where: { id: 1 }, create: { id: 1, data: pages as unknown as Prisma.InputJsonValue }, update: { data: pages as unknown as Prisma.InputJsonValue } })
 }

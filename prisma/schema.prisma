@@ -58,3 +58,42 @@ model Statistic {
   color     String
   order     Int      @default(0)
 }
+
+model CmsPageStore {
+  id        Int      @id @default(1)
+  data      Json
+  updatedAt DateTime @updatedAt
+}
+
+model CmsNewsStore {
+  id        Int      @id @default(1)
+  data      Json
+  updatedAt DateTime @updatedAt
+}
+
+enum DisasterLocationType {
+  EVAKUASI
+  RAWAN
+  POSKO
+}
+
+model DisasterSetting {
+  id          Int      @id @default(1)
+  override    String   @default("auto")
+  announcement String?
+  updatedAt   DateTime @updatedAt
+}
+
+model DisasterLocation {
+  id          String               @id @default(cuid())
+  name        String
+  description String?
+  type        DisasterLocationType
+  latitude    Float
+  longitude   Float
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@index([isActive, type])
+}

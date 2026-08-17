@@ -9,7 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
+export const DisasterLocationType = {
+  EVAKUASI: 'EVAKUASI',
+  RAWAN: 'RAWAN',
+  POSKO: 'POSKO'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type DisasterLocationType = (typeof DisasterLocationType)[keyof typeof DisasterLocationType]

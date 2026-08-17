@@ -55,7 +55,11 @@ export const ModelName = {
   QuickService: 'QuickService',
   News: 'News',
   Document: 'Document',
-  Statistic: 'Statistic'
+  Statistic: 'Statistic',
+  CmsPageStore: 'CmsPageStore',
+  CmsNewsStore: 'CmsNewsStore',
+  DisasterSetting: 'DisasterSetting',
+  DisasterLocation: 'DisasterLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -138,12 +142,62 @@ export const StatisticScalarFieldEnum = {
 export type StatisticScalarFieldEnum = (typeof StatisticScalarFieldEnum)[keyof typeof StatisticScalarFieldEnum]
 
 
+export const CmsPageStoreScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CmsPageStoreScalarFieldEnum = (typeof CmsPageStoreScalarFieldEnum)[keyof typeof CmsPageStoreScalarFieldEnum]
+
+
+export const CmsNewsStoreScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CmsNewsStoreScalarFieldEnum = (typeof CmsNewsStoreScalarFieldEnum)[keyof typeof CmsNewsStoreScalarFieldEnum]
+
+
+export const DisasterSettingScalarFieldEnum = {
+  id: 'id',
+  override: 'override',
+  announcement: 'announcement',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisasterSettingScalarFieldEnum = (typeof DisasterSettingScalarFieldEnum)[keyof typeof DisasterSettingScalarFieldEnum]
+
+
+export const DisasterLocationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisasterLocationScalarFieldEnum = (typeof DisasterLocationScalarFieldEnum)[keyof typeof DisasterLocationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -160,4 +214,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

@@ -42,3 +42,23 @@ export type Document = Prisma.DocumentModel
  * 
  */
 export type Statistic = Prisma.StatisticModel
+/**
+ * Model CmsPageStore
+ * 
+ */
+export type CmsPageStore = Prisma.CmsPageStoreModel
+/**
+ * Model CmsNewsStore
+ * 
+ */
+export type CmsNewsStore = Prisma.CmsNewsStoreModel
+/**
+ * Model DisasterSetting
+ * 
+ */
+export type DisasterSetting = Prisma.DisasterSettingModel
+/**
+ * Model DisasterLocation
+ * 
+ */
+export type DisasterLocation = Prisma.DisasterLocationModel

@@ -8,6 +8,7 @@ interface PageHeroProps {
   title: string
   description: string
   image?: string
+  imageAlt?: string
   imagePosition?: string
 }
 
@@ -16,6 +17,7 @@ export function PageHero({
   title,
   description,
   image = "/images/dorr.jpg",
+  imageAlt = "",
   imagePosition = "center",
 }: PageHeroProps) {
   const root = useRef<HTMLElement>(null)
@@ -49,7 +51,7 @@ export function PageHero({
 
   return (
     <section ref={root} className="relative -mt-[88px] flex min-h-[480px] items-center overflow-hidden bg-[#071b1d] px-4 pb-12 pt-[144px] text-white sm:min-h-[600px] sm:px-6 sm:pb-20 sm:pt-[168px] lg:min-h-[640px] lg:px-8">
-      <Image src={image} alt="" fill priority sizes="100vw" className="page-hero-image object-cover" style={{ objectPosition: imagePosition }} />
+      <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="page-hero-image object-cover" style={{ objectPosition: imagePosition }} />
       <div className="page-hero-overlay absolute inset-0 bg-[linear-gradient(90deg,rgba(4,18,15,0.76),rgba(8,34,23,0.56),rgba(8,36,19,0.42)),linear-gradient(180deg,rgba(5,24,18,0.22),rgba(5,24,18,0.3)_42%,rgba(5,24,18,0.7))]" />
 
       <div className="relative mx-auto max-w-7xl">

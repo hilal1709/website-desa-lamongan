@@ -24,6 +24,8 @@ export function WeatherForecast({
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState<7 | 14>(7)
   const [currentRisk, setCurrentRisk] = useState<"aman" | "waspada" | "bahaya">("aman")
+  const [lastUpdated, setLastUpdated] = useState("")
+  const [error, setError] = useState("")
 
   useEffect(() => {
     let active = true
@@ -31,13 +33,13 @@ export function WeatherForecast({
     async function fetchForecast() {
       setLoading(true)
       try {
-        // Open-Meteo API for Modo / Kedungrejo GPS (-7.1705, 111.9742)
-        const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=-7.1571&longitude=112.1593&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&timezone=Asia%2FJakarta&forecast_days=${period}`
-        )
+        const response = await fetch(`/api/weather?period=${period}`)
+        if (!response.ok) throw new Error("Permintaan data cuaca gagal")
         const data = await response.json()
 
-        if (data && data.daily && active) {
+        if (!data?.daily?.time) throw new Error("Data prakiraan cuaca tidak tersedia")
+
+        if (active) {
           const daily = data.daily
           const parsedDays: WeatherDay[] = daily.time.map((timeStr: string, index: number) => {
             const dateObj = new Date(timeStr)
@@ -45,15 +47,17 @@ export function WeatherForecast({
             return {
               date: timeStr,
               dayName: index === 0 ? "Hari Ini" : dayNames[dateObj.getDay()],
-              weatherCode: daily.weathercode[index] ?? 0,
+              weatherCode: daily.weather_code[index] ?? 0,
               tempMax: Math.round(daily.temperature_2m_max[index] ?? 30),
               tempMin: Math.round(daily.temperature_2m_min[index] ?? 24),
               precipitation: daily.precipitation_sum[index] ?? 0,
-              windSpeed: Math.round(daily.windspeed_10m_max[index] ?? 10)
+              windSpeed: Math.round(daily.wind_speed_10m_max[index] ?? 10)
             }
           })
 
           setDays(parsedDays)
+          setLastUpdated(data.current?.time ?? new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }))
+          setError("")
 
           // Determine overall risk level based on max precipitation in next 3 days
           const maxRainNext3 = Math.max(...parsedDays.slice(0, 3).map((d) => d.precipitation))
@@ -76,20 +80,9 @@ export function WeatherForecast({
         }
       } catch (err) {
         console.error("Failed to fetch weather data:", err)
-        // Fallback default forecast data for Kedungrejo
         if (active) {
-          const fallbackData: WeatherDay[] = [
-            { date: "2026-08-15", dayName: "Hari Ini", weatherCode: 61, tempMax: 31, tempMin: 24, precipitation: 12.5, windSpeed: 14 },
-            { date: "2026-08-16", dayName: "Minggu", weatherCode: 63, tempMax: 30, tempMin: 24, precipitation: 35.0, windSpeed: 18 },
-            { date: "2026-08-17", dayName: "Senin", weatherCode: 95, tempMax: 29, tempMin: 23, precipitation: 55.2, windSpeed: 22 },
-            { date: "2026-08-18", dayName: "Selasa", weatherCode: 3, tempMax: 32, tempMin: 25, precipitation: 5.0, windSpeed: 12 },
-            { date: "2026-08-19", dayName: "Rabu", weatherCode: 1, tempMax: 33, tempMin: 25, precipitation: 0.0, windSpeed: 10 },
-            { date: "2026-08-20", dayName: "Kamis", weatherCode: 2, tempMax: 32, tempMin: 24, precipitation: 2.1, windSpeed: 11 },
-            { date: "2026-08-21", dayName: "Jumat", weatherCode: 61, tempMax: 30, tempMin: 24, precipitation: 18.4, windSpeed: 15 }
-          ]
-          setDays(fallbackData)
-          setCurrentRisk("waspada")
-          onRiskChange("waspada")
+          setDays([])
+          setError("Data cuaca realtime sedang tidak dapat diakses. Silakan coba lagi.")
         }
       } finally {
         if (active) setLoading(false)
@@ -97,8 +90,10 @@ export function WeatherForecast({
     }
 
     void fetchForecast()
+    const refreshInterval = window.setInterval(() => void fetchForecast(), 10 * 60 * 1000)
     return () => {
       active = false
+      window.clearInterval(refreshInterval)
     }
   }, [period, onRiskChange])
 
@@ -119,7 +114,7 @@ export function WeatherForecast({
   return (
     <div className="space-y-6">
       {/* REALTIME ALERT BANNER AUTOMATIC FROM API */}
-      <div
+      <div data-disaster-motion
         className={`rounded-3xl p-6 text-white shadow-lg transition-all duration-300 ${
           currentRisk === "bahaya"
             ? "bg-gradient-to-r from-red-800 to-rose-900 border border-red-700 shadow-red-900/20"
@@ -142,20 +137,20 @@ export function WeatherForecast({
 
             <div>
               <span className="inline-block rounded-full bg-white/20 px-3 py-0.5 text-xs font-black uppercase tracking-wider text-white">
-                Status BMKG & Open-Meteo Kedungrejo
+                Status BMKG dan Open Meteo Kedungrejo
               </span>
               <h3 className="mt-1 text-2xl font-black tracking-tight">
                 {currentRisk === "bahaya"
-                  ? "🔴 SIAGA BANJIR — Curah Hujan Tinggi Diprakirakan"
+                  ? "Siaga Banjir: Curah Hujan Tinggi Diprakirakan"
                   : currentRisk === "waspada"
-                  ? "🟡 WASPADA CUACA — Potensi Hujan Lebat di Wilayah Modo"
-                  : "🟢 KONDISI AMAN — Cuaca Normal Berawan"}
+                  ? "Waspada Cuaca: Potensi Hujan Lebat di Wilayah Modo"
+                  : "Kondisi Aman: Cuaca Normal Berawan"}
               </h3>
               <p className="mt-1 text-sm text-white/90 leading-relaxed">
                 {currentRisk === "bahaya"
                   ? "Peringatan Dini: Curah hujan diperkirakan melebihi 50mm. Warga di bantaran alur sungai Dusun Gabang & Dopok Sambi dihimbau amankan barang berharga."
                   : currentRisk === "waspada"
-                  ? "Diprakirakan terjadi hujan sedang-lebat. Warga dihimbau mengecek saluran drainase & mempersiapkan perlengkapan siaga bencana."
+                  ? "Diprakirakan terjadi hujan sedang hingga lebat. Warga dihimbau mengecek saluran drainase & mempersiapkan perlengkapan siaga bencana."
                   : "Kondisi cuaca terkendali. Tidak ada indikasi bahaya banjir dalam 24 jam ke depan."}
               </p>
             </div>
@@ -163,13 +158,13 @@ export function WeatherForecast({
 
           <div className="shrink-0 text-right sm:border-l sm:border-white/20 sm:pl-5">
             <p className="text-[11px] font-bold uppercase tracking-wider text-white/70">Diperbarui Otomatis</p>
-            <p className="text-xs font-black text-white mt-0.5">API Realtime Open-Meteo</p>
+            <p className="text-xs font-black text-white mt-0.5">{lastUpdated ? `Data ${lastUpdated.replaceAll("-", "/")}` : "Memuat data realtime"}</p>
           </div>
         </div>
       </div>
 
       {/* FORECAST PERIOD SELECTOR & CARDS */}
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div data-disaster-motion className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-4">
           <div>
             <h3 className="text-lg font-black text-slate-900">Prakiraan Cuaca & Curah Hujan Kedungrejo</h3>
@@ -204,8 +199,10 @@ export function WeatherForecast({
         {loading ? (
           <div className="flex h-40 items-center justify-center text-slate-400">
             <RefreshCw className="h-6 w-6 animate-spin text-emerald-600" />
-            <span className="ml-2 text-sm font-bold">Mengambil data cuaca BMKG/Open-Meteo...</span>
+            <span className="ml-2 text-sm font-bold">Mengambil data cuaca BMKG dan Open Meteo...</span>
           </div>
+        ) : error ? (
+          <p className="py-10 text-center text-sm font-semibold text-rose-700">{error}</p>
         ) : (
           <div className="mt-5 grid gap-3 grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 overflow-x-auto">
             {days.map((day) => {
@@ -213,7 +210,7 @@ export function WeatherForecast({
               const Icon = info.icon
 
               return (
-                <div
+                <div data-disaster-motion
                   key={day.date}
                   className={`flex flex-col justify-between rounded-2xl border p-4 transition hover:-translate-y-1 hover:shadow-md ${
                     day.precipitation >= 50
@@ -225,7 +222,7 @@ export function WeatherForecast({
                 >
                   <div>
                     <span className="text-[11px] font-black uppercase text-slate-500">{day.dayName}</span>
-                    <p className="text-[10px] text-slate-400">{day.date}</p>
+                    <p className="text-[10px] text-slate-400">{day.date.replaceAll("-", "/")}</p>
 
                     <div className="mt-3 flex items-center gap-2">
                       <div className={`grid h-8 w-8 place-items-center rounded-xl ${info.color}`}>
@@ -245,7 +242,7 @@ export function WeatherForecast({
 
                     <div className="flex items-center justify-between text-xs text-slate-600">
                       <span>Suhu:</span>
-                      <span className="font-bold">{day.tempMin}° - {day.tempMax}°C</span>
+                      <span className="font-bold">{day.tempMin}° hingga {day.tempMax}°C</span>
                     </div>
                   </div>
                 </div>

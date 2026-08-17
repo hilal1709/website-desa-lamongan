@@ -24,7 +24,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
     }
     if (activeRain >= 15) {
       return {
-        planting: { label: "Sangat Cocok Olah Tanah", status: "cocok", color: "bg-emerald-50 text-emerald-800 border-emerald-200", icon: Sprout, desc: "Pasokan air memadai (15-50mm). Sangat baik untuk pembajakan sawah & olah lahan MT 1/2." },
+        planting: { label: "Sangat Cocok Olah Tanah", status: "cocok", color: "bg-emerald-50 text-emerald-800 border-emerald-200", icon: Sprout, desc: "Pasokan air memadai antara 15 hingga 50 mm. Sangat baik untuk pembajakan sawah & olah lahan MT 1/2." },
         drying: { label: "Jemur Waspada", status: "waspada", color: "bg-amber-50 text-amber-800 border-amber-200", icon: Sun, desc: "Gunakan alas jemur cepat gulung. Potensi hujan ringan di siang/sore hari." },
         residential: { label: "Kondisi Waspada", status: "waspada", color: "bg-amber-50 text-amber-800 border-amber-200", icon: ShieldCheck, desc: "Pastikan saluran drainase depan rumah bersih dari sampah." }
       }
@@ -41,7 +41,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
   return (
     <div className="space-y-6">
       {/* Header Title Section */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-slate-200 pb-4">
+      <div data-disaster-motion className="flex flex-col gap-2 border-b border-slate-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold text-emerald-800">
             <Sparkles className="h-3.5 w-3.5 text-amber-500" /> Prediksi Iklim Otomatis Petani
@@ -55,12 +55,12 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
         </div>
 
         <div className="text-xs font-bold text-slate-500 bg-slate-100 rounded-2xl px-4 py-2 self-start sm:self-auto">
-          📅 Periode: <b>Musim Tanam MT 1 & 2</b>
+          Periode: <b>Musim Tanam MT 1 dan 2</b>
         </div>
       </div>
 
       {/* LIVE AUTOMATION TESTING SIMULATOR BAR */}
-      <div className="rounded-3xl border border-emerald-200 bg-emerald-50/60 p-4 sm:p-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div data-disaster-motion className="flex flex-col gap-3 rounded-3xl border border-emerald-200 bg-emerald-50/60 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-emerald-700 text-white">
             <Sliders className="h-5 w-5" />
@@ -80,7 +80,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
               activeRain === 0 ? "bg-emerald-800 text-white" : "bg-white text-emerald-900 border border-emerald-200 hover:bg-emerald-100"
             }`}
           >
-            ☀️ 0 mm (Cerah)
+            0 mm (Cerah)
           </button>
           <button
             onClick={() => setSimulatedRain(25)}
@@ -88,7 +88,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
               activeRain === 25 ? "bg-amber-600 text-white" : "bg-white text-amber-900 border border-amber-200 hover:bg-amber-100"
             }`}
           >
-            🌧️ 25 mm (Hujan Sedang)
+            25 mm (Hujan Sedang)
           </button>
           <button
             onClick={() => setSimulatedRain(60)}
@@ -96,7 +96,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
               activeRain === 60 ? "bg-rose-700 text-white" : "bg-white text-rose-900 border border-rose-200 hover:bg-rose-100"
             }`}
           >
-            ⛈️ 60 mm (Hujan Lebat)
+            60 mm (Hujan Lebat)
           </button>
 
           {simulatedRain !== null && (
@@ -113,7 +113,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
       {/* 3 Main Actionable Recommendation Cards (Elder Friendly) */}
       <div className="grid gap-5 sm:grid-cols-3">
         {/* Card 1: Masa Tanam Padi */}
-        <div className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.planting.color}`}>
+        <div data-disaster-motion className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.planting.color}`}>
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider opacity-75">FASE PERTANIAN</span>
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/80 shadow-sm backdrop-blur-sm">
@@ -131,7 +131,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
         </div>
 
         {/* Card 2: Penjemuran Gabah & Hasil Panen */}
-        <div className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.drying.color}`}>
+        <div data-disaster-motion className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.drying.color}`}>
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider opacity-75">PANEN & GABAH</span>
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/80 shadow-sm backdrop-blur-sm">
@@ -149,7 +149,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
         </div>
 
         {/* Card 3: Keselamatan Pemukiman */}
-        <div className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.residential.color}`}>
+        <div data-disaster-motion className={`rounded-3xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 ${recommendations.residential.color}`}>
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider opacity-75">PEMUKIMAN DESA</span>
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/80 shadow-sm backdrop-blur-sm">
@@ -168,7 +168,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
       </div>
 
       {/* Transparent Disclaimer Banner */}
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600 font-medium flex items-start gap-3">
+      <div data-disaster-motion className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs font-medium text-slate-600">
         <Info className="h-5 w-5 text-emerald-700 shrink-0 mt-0.5" />
         <div>
           <b>Catatan Penting untuk Warga & Petani Kedungrejo:</b>

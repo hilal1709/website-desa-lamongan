@@ -1,65 +1,17 @@
-"use client"
+import type { Metadata } from "next"
+import { DisasterPage } from "@/components/bencana/disaster-page"
 
-import { useState } from "react"
-import { PageHero } from "@/components/ui/page-hero"
-import { DisasterMap } from "@/components/bencana/disaster-map"
-import { WeatherForecast } from "@/components/bencana/weather-forecast"
-import { FarmingClimatePredictor } from "@/components/bencana/farming-climate-predictor"
-import { EmergencyAssistance } from "@/components/bencana/emergency-assistance"
+export const metadata: Metadata = {
+  title: "Peta Lokasi Bencana dan Cuaca Kedungrejo",
+  description: "Pantau prakiraan cuaca realtime, titik evakuasi, posko, dan zona rawan bencana di Desa Kedungrejo.",
+  keywords: ["peta bencana", "cuaca Kedungrejo", "evakuasi", "posko bencana", "Desa Kedungrejo"],
+  openGraph: {
+    title: "Peta Lokasi Bencana dan Cuaca Kedungrejo",
+    description: "Informasi cuaca realtime, titik evakuasi, posko, dan zona rawan Desa Kedungrejo.",
+    images: [{ url: "/images/peta-bencana-hero.png", width: 1823, height: 863, alt: "Sawah dan permukiman Desa Kedungrejo saat cuaca mendung" }],
+  },
+}
 
 export default function PetaBencanaPage() {
-  const [riskLevel, setRiskLevel] = useState<"aman" | "waspada" | "bahaya">("aman")
-  const [precipitationToday, setPrecipitationToday] = useState<number>(12.5)
-  const [weatherCode, setWeatherCode] = useState<number>(61)
-
-  const handleWeatherUpdate = (data: { risk: "aman" | "waspada" | "bahaya"; precipitationToday: number; weatherCode: number }) => {
-    setPrecipitationToday(data.precipitationToday)
-    setWeatherCode(data.weatherCode)
-  }
-
-  return (
-    <>
-      <PageHero
-        eyebrow="INFORMASI DIGITAL DESA"
-        title="Peta Bencana & Kalender Iklim Kedungrejo"
-        description="Pantau prakiraan cuaca otomatis BMKG, panduan masa tanam/jemur gabah petani, peta titik evakuasi, serta akses bantuan bibit padi."
-        image="/images/profil.jpeg"
-        imagePosition="right"
-      />
-
-      <div className="mx-auto max-w-7xl px-5 py-12 space-y-12">
-        {/* SECTION 1: WEATHER FORECAST & REALTIME RISK ALERT */}
-        <section>
-          <WeatherForecast onRiskChange={setRiskLevel} onWeatherUpdate={handleWeatherUpdate} />
-        </section>
-
-        {/* SECTION 2: FARMER CLIMATE PREDICTOR & DAILY LIFE RECOMMENDATIONS */}
-        <section>
-          <FarmingClimatePredictor
-            precipitationSum={precipitationToday}
-            weatherCode={weatherCode}
-            riskLevel={riskLevel}
-          />
-        </section>
-
-        {/* SECTION 3: INTERACTIVE DISASTER MAP */}
-        <section className="space-y-4">
-          <div className="flex flex-col gap-1 border-b border-slate-200 pb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-emerald-700">PETA WILAYAH INTERAKTIF</span>
-            <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Peta Titik Rawan & Posko Evakuasi</h2>
-            <p className="text-sm font-medium text-slate-500">
-              Peta interaktif wilayah Kedungrejo (Kecamatan Modo, Kab. Lamongan) untuk memantau posko evakuasi dan titik genangan air.
-            </p>
-          </div>
-
-          <DisasterMap riskLevel={riskLevel} />
-        </section>
-
-        {/* SECTION 4: EMERGENCY FARMER ASSISTANCE & BOTTOM SERVICE CARDS GRID */}
-        <section>
-          <EmergencyAssistance riskLevel={riskLevel} />
-        </section>
-      </div>
-    </>
-  )
+  return <DisasterPage />
 }

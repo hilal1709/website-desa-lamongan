@@ -2,19 +2,53 @@
 
 import { useEffect, useState } from "react"
 import { MapPin } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+type DisasterLocation = {
+  id: string
+  name: string
+  description: string | null
+  type: "EVAKUASI" | "RAWAN" | "POSKO"
+  latitude: number
+  longitude: number
+}
 
 export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "bahaya" }) {
   const [isClient, setIsClient] = useState(false)
   const [filterType, setFilterType] = useState<"all" | "evakuasi" | "rawan" | "posko">("all")
   const [tileType, setTileType] = useState<"street" | "satellite">("street")
+  const [locations, setLocations] = useState<DisasterLocation[]>([])
+  const [locationsError, setLocationsError] = useState("")
 
   useEffect(() => {
     setIsClient(true)
   }, [])
 
+  useEffect(() => {
+    let cancelled = false
+
+    const loadLocations = async () => {
+      try {
+        const response = await fetch("/api/bencana", { cache: "no-store" })
+        if (!response.ok) throw new Error("Gagal memuat titik peta")
+        const data = await response.json() as { locations?: DisasterLocation[] }
+        if (!cancelled) {
+          setLocations(data.locations ?? [])
+          setLocationsError("")
+        }
+      } catch {
+        if (!cancelled) setLocationsError("Titik peta belum tersedia.")
+      }
+    }
+
+    void loadLocations()
+    const refresh = window.setInterval(() => void loadLocations(), 60_000)
+    return () => { cancelled = true; window.clearInterval(refresh) }
+  }, [])
+
   if (!isClient) {
     return (
-      <div className="flex h-[360px] sm:h-[480px] w-full items-center justify-center rounded-3xl border border-slate-200 bg-slate-100/70 p-6 text-slate-500">
+      <div className="flex h-[300px] w-full items-center justify-center rounded-2xl border border-slate-200 bg-slate-100/70 p-4 text-slate-500 sm:h-[480px] sm:rounded-3xl sm:p-6">
         <div className="text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-emerald-600 border-t-transparent"></div>
           <p className="mt-3 text-xs sm:text-sm font-semibold">Memuat Peta Interaktif Bencana Kedungrejo...</p>
@@ -34,6 +68,8 @@ export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "ba
       setFilterType={setFilterType}
       tileType={tileType}
       setTileType={setTileType}
+      locations={locations}
+      locationsError={locationsError}
       L={L}
     />
   )
@@ -45,6 +81,8 @@ function LeafletMapContainer({
   setFilterType,
   tileType,
   setTileType,
+  locations,
+  locationsError,
   L
 }: {
   riskLevel: "aman" | "waspada" | "bahaya"
@@ -52,6 +90,8 @@ function LeafletMapContainer({
   setFilterType: (val: "all" | "evakuasi" | "rawan" | "posko") => void
   tileType: "street" | "satellite"
   setTileType: (val: "street" | "satellite") => void
+  locations: DisasterLocation[]
+  locationsError: string
   L: any
 }) {
   useEffect(() => {
@@ -90,57 +130,13 @@ function LeafletMapContainer({
       }).addTo(map)
     }
 
-    // Disaster points & Locations in Kedungrejo Modo Lamongan
-    const locations = [
-      {
-        name: "Balai Desa Kedungrejo (Posko Utama)",
-        coords: [-7.1571, 112.1593],
-        type: "posko",
-        desc: "Pusat Koordinasi Penanggulangan Bencana & Pengungsian Utama Desa Kedungrejo",
-        color: "#059669"
-      },
-      {
-        name: "Titik Evakuasi 1 - SDN Kedungrejo",
-        coords: [-7.1555, 112.1575],
-        type: "evakuasi",
-        desc: "Lokasi Pengungsian Sementara & Dapur Umum Warga Dusun Topang",
-        color: "#2563eb"
-      },
-      {
-        name: "Titik Evakuasi 2 - Lapangan Desa Kedungrejo",
-        coords: [-7.1585, 112.1610],
-        type: "evakuasi",
-        desc: "Posko Darurat & Penampungan Logistik Dusun Karangpilang",
-        color: "#2563eb"
-      },
-      {
-        name: "Zona Rawan Genangan Dusun Gabang",
-        coords: [-7.1600, 112.1550],
-        type: "rawan",
-        desc: "Wilayah dataran rendah persawahan — Rawan genangan air hujan lebat",
-        color: "#dc2626"
-      },
-      {
-        name: "Zona Rawan Genangan Dusun Dopok Sambi",
-        coords: [-7.1530, 112.1620],
-        type: "rawan",
-        desc: "Area alur anak sungai — Waspada luapan saat hujan deras berturut-turut",
-        color: "#d97706"
-      },
-      {
-        name: "Poskesdes Kedungrejo / Pustu Modo",
-        coords: [-7.1565, 112.1600],
-        type: "posko",
-        desc: "Layanan Pertolongan Pertama & Kesehatan Darurat Bencana Desa",
-        color: "#16a34a"
-      }
-    ]
+    const locationType = { EVAKUASI: { filter: "evakuasi", color: "#2563eb" }, RAWAN: { filter: "rawan", color: "#dc2626" }, POSKO: { filter: "posko", color: "#059669" } } as const
 
     // Custom Icon Generator
     const createCustomIcon = (color: string) =>
       L.divIcon({
         className: "custom-leaflet-marker",
-        html: `<div style="background-color: ${color}; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 13px;">📍</div>`,
+        html: `<div style="background-color: ${color}; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);"></div>`,
         iconSize: [30, 30],
         iconAnchor: [15, 30]
       })
@@ -156,19 +152,17 @@ function LeafletMapContainer({
 
     // Filter & Add Markers
     locations.forEach((loc) => {
-      if (filterType !== "all" && loc.type !== filterType) return
+      const details = locationType[loc.type]
+      if (filterType !== "all" && details.filter !== filterType) return
 
-      const marker = L.marker(loc.coords as [number, number], {
-        icon: createCustomIcon(loc.color)
+      const marker = L.marker([loc.latitude, loc.longitude] as [number, number], {
+        icon: createCustomIcon(details.color)
       }).addTo(map)
 
       marker.bindPopup(`
         <div style="font-family: sans-serif; padding: 2px;">
           <h4 style="margin: 0 0 4px 0; font-size: 13px; font-weight: 800; color: #0f172a;">${loc.name}</h4>
-          <p style="margin: 0; font-size: 11px; color: #475569; line-height: 1.4;">${loc.desc}</p>
-          <div style="margin-top: 6px; font-size: 10px; font-weight: 700; color: ${loc.color};">
-            Kedungrejo, Modo (-7.1571, 112.1593)
-          </div>
+          ${loc.description ? `<p style="margin: 0; font-size: 11px; color: #475569; line-height: 1.4;">${loc.description}</p>` : ""}
         </div>
       `)
     })
@@ -176,80 +170,88 @@ function LeafletMapContainer({
     return () => {
       map.remove()
     }
-  }, [riskLevel, filterType, tileType, L])
+  }, [riskLevel, filterType, tileType, locations, L])
 
   const googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=Desa+Kedungrejo+Kecamatan+Modo+Kabupaten+Lamongan"
 
   return (
-    <div className="space-y-3 sm:space-y-4">
-      {/* Map Filter Controls (Fully Responsive for Mobile) */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200 bg-white p-3 sm:p-3.5 shadow-sm">
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-500 w-full sm:w-auto">Filter Marker:</span>
-          <div className="flex flex-wrap gap-1 sm:gap-1.5">
-            <button
+    <section className="space-y-3 sm:space-y-4" aria-label="Peta interaktif lokasi bencana">
+      <nav data-disaster-motion data-motion-kind="map" aria-label="Filter titik peta" className="flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-3.5">
+        <div className="min-w-0">
+          <span className="mb-2 block text-[11px] font-black uppercase tracking-wider text-slate-500 sm:mb-0 sm:inline sm:text-xs">Filter Marker:</span>
+          <div className="flex flex-wrap gap-1 sm:mt-2 sm:gap-1.5">
+            <Button
+              type="button"
+              size="sm"
+              variant={filterType === "all" ? "default" : "secondary"}
               onClick={() => setFilterType("all")}
-              className={`rounded-xl px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition ${
-                filterType === "all" ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
+              aria-pressed={filterType === "all"}
+              className={filterType === "all" ? "bg-slate-900 text-white hover:bg-slate-800" : "text-[11px] sm:text-xs"}
             >
               Semua
-            </button>
-            <button
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={filterType === "evakuasi" ? "default" : "outline"}
               onClick={() => setFilterType("evakuasi")}
-              className={`rounded-xl px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition ${
-                filterType === "evakuasi" ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-800 hover:bg-blue-100"
-              }`}
+              aria-pressed={filterType === "evakuasi"}
+              className={filterType === "evakuasi" ? "bg-blue-600 text-white hover:bg-blue-700" : "border-blue-100 bg-blue-50 text-[11px] text-blue-800 hover:bg-blue-100 sm:text-xs"}
             >
-              🛡️ Evakuasi
-            </button>
-            <button
+              Evakuasi
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={filterType === "rawan" ? "default" : "outline"}
               onClick={() => setFilterType("rawan")}
-              className={`rounded-xl px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition ${
-                filterType === "rawan" ? "bg-rose-600 text-white" : "bg-rose-50 text-rose-800 hover:bg-rose-100"
-              }`}
+              aria-pressed={filterType === "rawan"}
+              className={filterType === "rawan" ? "bg-rose-600 text-white hover:bg-rose-700" : "border-rose-100 bg-rose-50 text-[11px] text-rose-800 hover:bg-rose-100 sm:text-xs"}
             >
-              ⚠️ Zona Rawan
-            </button>
-            <button
+              Zona Rawan
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={filterType === "posko" ? "default" : "outline"}
               onClick={() => setFilterType("posko")}
-              className={`rounded-xl px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition ${
-                filterType === "posko" ? "bg-emerald-700 text-white" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
-              }`}
+              aria-pressed={filterType === "posko"}
+              className={filterType === "posko" ? "bg-emerald-700 text-white hover:bg-emerald-800" : "text-[11px] sm:text-xs"}
             >
-              🏢 Posko Desa
-            </button>
+              Posko Desa
+            </Button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between sm:justify-end gap-2 border-t border-slate-100 pt-2 sm:border-0 sm:pt-0">
-          <button
+        <div className="flex w-full items-center justify-between gap-2 border-t border-slate-100 pt-2 sm:w-auto sm:justify-end sm:border-0 sm:pt-0">
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
             onClick={() => setTileType(tileType === "street" ? "satellite" : "street")}
-            className="rounded-xl border border-slate-200 bg-slate-50 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold text-slate-700 hover:bg-slate-100"
+            aria-label={tileType === "street" ? "Ubah ke tampilan satelit" : "Ubah ke tampilan peta jalan"}
+            className="border border-slate-200 bg-slate-50 text-[11px] text-slate-700 hover:bg-slate-100 sm:text-xs"
           >
-            {tileType === "street" ? "🛰️ Satelit" : "🗺️ Peta Jalan"}
-          </button>
+            {tileType === "street" ? "Satelit" : "Peta Jalan"}
+          </Button>
 
           <a
             href={googleMapsUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-3 py-1.5 text-[11px] sm:text-xs font-extrabold text-white shadow-sm transition hover:bg-emerald-700"
+            className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-emerald-600 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-sm transition hover:bg-emerald-700 sm:text-xs"
           >
             <MapPin className="h-3.5 w-3.5" />
             <span>Google Maps</span>
           </a>
         </div>
-      </div>
+      </nav>
 
-      {/* Map Canvas Container */}
-      <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-md">
-        <div id="kedungrejo-disaster-map" className="h-[360px] sm:h-[480px] w-full z-0" />
+      <figure data-disaster-motion data-motion-kind="map" className="relative overflow-hidden rounded-2xl border border-slate-200 shadow-md sm:rounded-3xl">
+        <div id="kedungrejo-disaster-map" role="application" aria-label="Peta lokasi bencana Desa Kedungrejo" className="h-[300px] w-full z-0 sm:h-[480px]" />
 
-        {/* Floating Legend Overlay */}
-        <div className="absolute bottom-3 left-3 z-[400] max-w-[220px] sm:max-w-xs rounded-2xl border border-slate-200/90 bg-white/95 p-3 shadow-lg backdrop-blur-md">
-          <p className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-400">Peta Kedungrejo (Modo)</p>
-          <div className="mt-1.5 space-y-1 text-[11px] sm:text-xs font-bold text-slate-700">
+        <figcaption data-disaster-float className="absolute bottom-2 left-2 z-[400] max-w-[calc(100%-1rem)] rounded-xl border border-slate-200/90 bg-white/95 p-2.5 shadow-lg backdrop-blur-md sm:bottom-3 sm:left-3 sm:max-w-xs sm:rounded-2xl sm:p-3">
+          <div className="space-y-1 text-[11px] sm:text-xs font-bold text-slate-700">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-600 shrink-0"></span>
               <span className="truncate">Balai Desa / Posko</span>
@@ -263,8 +265,9 @@ function LeafletMapContainer({
               <span className="truncate">Zona Rawan Genangan</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </figcaption>
+      </figure>
+      {locationsError ? <p className="text-sm font-medium text-slate-500" role="status">{locationsError}</p> : null}
+    </section>
   )
 }

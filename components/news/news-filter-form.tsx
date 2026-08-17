@@ -8,7 +8,7 @@ interface NewsFilterFormProps {
   category: string
 }
 
-export function NewsFilterForm({ categories, query, category }: NewsFilterFormProps) {
+export function NewsFilterForm({ categories = [], query, category }: NewsFilterFormProps) {
   const hasActiveFilters = Boolean(query || category)
 
   return (

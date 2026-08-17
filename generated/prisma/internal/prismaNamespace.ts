@@ -401,7 +401,11 @@ export const ModelName = {
   QuickService: 'QuickService',
   News: 'News',
   Document: 'Document',
-  Statistic: 'Statistic'
+  Statistic: 'Statistic',
+  CmsPageStore: 'CmsPageStore',
+  CmsNewsStore: 'CmsNewsStore',
+  DisasterSetting: 'DisasterSetting',
+  DisasterLocation: 'DisasterLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic"
+    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "disasterSetting" | "disasterLocation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +795,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CmsPageStore: {
+      payload: Prisma.$CmsPageStorePayload<ExtArgs>
+      fields: Prisma.CmsPageStoreFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CmsPageStoreFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CmsPageStoreFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>
+        }
+        findFirst: {
+          args: Prisma.CmsPageStoreFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CmsPageStoreFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>
+        }
+        findMany: {
+          args: Prisma.CmsPageStoreFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>[]
+        }
+        create: {
+          args: Prisma.CmsPageStoreCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>
+        }
+        createMany: {
+          args: Prisma.CmsPageStoreCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CmsPageStoreCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>[]
+        }
+        delete: {
+          args: Prisma.CmsPageStoreDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>
+        }
+        update: {
+          args: Prisma.CmsPageStoreUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>
+        }
+        deleteMany: {
+          args: Prisma.CmsPageStoreDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CmsPageStoreUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CmsPageStoreUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>[]
+        }
+        upsert: {
+          args: Prisma.CmsPageStoreUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsPageStorePayload>
+        }
+        aggregate: {
+          args: Prisma.CmsPageStoreAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCmsPageStore>
+        }
+        groupBy: {
+          args: Prisma.CmsPageStoreGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CmsPageStoreGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CmsPageStoreCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CmsPageStoreCountAggregateOutputType> | number
+        }
+      }
+    }
+    CmsNewsStore: {
+      payload: Prisma.$CmsNewsStorePayload<ExtArgs>
+      fields: Prisma.CmsNewsStoreFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CmsNewsStoreFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CmsNewsStoreFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>
+        }
+        findFirst: {
+          args: Prisma.CmsNewsStoreFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CmsNewsStoreFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>
+        }
+        findMany: {
+          args: Prisma.CmsNewsStoreFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>[]
+        }
+        create: {
+          args: Prisma.CmsNewsStoreCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>
+        }
+        createMany: {
+          args: Prisma.CmsNewsStoreCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CmsNewsStoreCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>[]
+        }
+        delete: {
+          args: Prisma.CmsNewsStoreDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>
+        }
+        update: {
+          args: Prisma.CmsNewsStoreUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>
+        }
+        deleteMany: {
+          args: Prisma.CmsNewsStoreDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CmsNewsStoreUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CmsNewsStoreUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>[]
+        }
+        upsert: {
+          args: Prisma.CmsNewsStoreUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CmsNewsStorePayload>
+        }
+        aggregate: {
+          args: Prisma.CmsNewsStoreAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCmsNewsStore>
+        }
+        groupBy: {
+          args: Prisma.CmsNewsStoreGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CmsNewsStoreGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CmsNewsStoreCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CmsNewsStoreCountAggregateOutputType> | number
+        }
+      }
+    }
+    DisasterSetting: {
+      payload: Prisma.$DisasterSettingPayload<ExtArgs>
+      fields: Prisma.DisasterSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DisasterSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DisasterSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.DisasterSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DisasterSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>
+        }
+        findMany: {
+          args: Prisma.DisasterSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>[]
+        }
+        create: {
+          args: Prisma.DisasterSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>
+        }
+        createMany: {
+          args: Prisma.DisasterSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DisasterSettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>[]
+        }
+        delete: {
+          args: Prisma.DisasterSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>
+        }
+        update: {
+          args: Prisma.DisasterSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.DisasterSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DisasterSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DisasterSettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.DisasterSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.DisasterSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDisasterSetting>
+        }
+        groupBy: {
+          args: Prisma.DisasterSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisasterSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DisasterSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisasterSettingCountAggregateOutputType> | number
+        }
+      }
+    }
+    DisasterLocation: {
+      payload: Prisma.$DisasterLocationPayload<ExtArgs>
+      fields: Prisma.DisasterLocationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DisasterLocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DisasterLocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>
+        }
+        findFirst: {
+          args: Prisma.DisasterLocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DisasterLocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>
+        }
+        findMany: {
+          args: Prisma.DisasterLocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>[]
+        }
+        create: {
+          args: Prisma.DisasterLocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>
+        }
+        createMany: {
+          args: Prisma.DisasterLocationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DisasterLocationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>[]
+        }
+        delete: {
+          args: Prisma.DisasterLocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>
+        }
+        update: {
+          args: Prisma.DisasterLocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>
+        }
+        deleteMany: {
+          args: Prisma.DisasterLocationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DisasterLocationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DisasterLocationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>[]
+        }
+        upsert: {
+          args: Prisma.DisasterLocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisasterLocationPayload>
+        }
+        aggregate: {
+          args: Prisma.DisasterLocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDisasterLocation>
+        }
+        groupBy: {
+          args: Prisma.DisasterLocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisasterLocationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DisasterLocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisasterLocationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -894,12 +1194,62 @@ export const StatisticScalarFieldEnum = {
 export type StatisticScalarFieldEnum = (typeof StatisticScalarFieldEnum)[keyof typeof StatisticScalarFieldEnum]
 
 
+export const CmsPageStoreScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CmsPageStoreScalarFieldEnum = (typeof CmsPageStoreScalarFieldEnum)[keyof typeof CmsPageStoreScalarFieldEnum]
+
+
+export const CmsNewsStoreScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CmsNewsStoreScalarFieldEnum = (typeof CmsNewsStoreScalarFieldEnum)[keyof typeof CmsNewsStoreScalarFieldEnum]
+
+
+export const DisasterSettingScalarFieldEnum = {
+  id: 'id',
+  override: 'override',
+  announcement: 'announcement',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisasterSettingScalarFieldEnum = (typeof DisasterSettingScalarFieldEnum)[keyof typeof DisasterSettingScalarFieldEnum]
+
+
+export const DisasterLocationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisasterLocationScalarFieldEnum = (typeof DisasterLocationScalarFieldEnum)[keyof typeof DisasterLocationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -916,6 +1266,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -970,6 +1329,34 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'DisasterLocationType'
+ */
+export type EnumDisasterLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DisasterLocationType'>
+    
+
+
+/**
+ * Reference to a field of type 'DisasterLocationType[]'
+ */
+export type ListEnumDisasterLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DisasterLocationType[]'>
     
 
 
@@ -1142,6 +1529,10 @@ export type GlobalOmitConfig = {
   news?: Prisma.NewsOmit
   document?: Prisma.DocumentOmit
   statistic?: Prisma.StatisticOmit
+  cmsPageStore?: Prisma.CmsPageStoreOmit
+  cmsNewsStore?: Prisma.CmsNewsStoreOmit
+  disasterSetting?: Prisma.DisasterSettingOmit
+  disasterLocation?: Prisma.DisasterLocationOmit
 }
 
 /* Types for Logging */
