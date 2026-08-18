@@ -22,6 +22,10 @@ const nextConfig: NextConfig = {
         source: "/images/struktur-organisasi.png",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=2592000, stale-while-revalidate=604800" }],
       },
+      {
+        source: "/images/logokedungrejo.jpeg",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=2592000, immutable" }],
+      },
     ]
   },
 };

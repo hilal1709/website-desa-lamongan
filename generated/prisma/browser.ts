@@ -58,6 +58,16 @@ export type CmsNewsStore = Prisma.CmsNewsStoreModel
  */
 export type Complaint = Prisma.ComplaintModel
 /**
+ * Model AdminUser
+ * 
+ */
+export type AdminUser = Prisma.AdminUserModel
+/**
+ * Model AdminSession
+ * 
+ */
+export type AdminSession = Prisma.AdminSessionModel
+/**
  * Model DisasterSetting
  * 
  */

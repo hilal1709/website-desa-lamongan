@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ChevronDown, Menu, X } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 
 const informationLinks = [
@@ -28,6 +28,8 @@ export function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const mobileNavRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const listener = () => setScrolled(window.scrollY > 12)
@@ -35,6 +37,27 @@ export function Navbar() {
     window.addEventListener("scroll", listener)
     return () => window.removeEventListener("scroll", listener)
   }, [])
+
+  useEffect(() => {
+    if (!open || !mobileNavRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    let cancelled = false
+    let context: ReturnType<typeof import("gsap").default.context> | undefined
+
+    void import("gsap").then(({ default: gsap }) => {
+      if (!mobileNavRef.current || cancelled) return
+
+      context = gsap.context(() => {
+        gsap.fromTo(mobileNavRef.current, { autoAlpha: 0, y: -12 }, { autoAlpha: 1, y: 0, duration: 0.32, ease: "power3.out" })
+        gsap.from("[data-mobile-link]", { autoAlpha: 0, x: -12, duration: 0.3, stagger: 0.04, ease: "power2.out", delay: 0.08 })
+      }, mobileNavRef)
+    })
+
+    return () => {
+      cancelled = true
+      context?.revert()
+    }
+  }, [open])
 
   if (pathname.startsWith("/admin")) {
     return null
@@ -50,6 +73,17 @@ export function Navbar() {
         ? "bg-[#dff5e8] text-[#0f3b2f] shadow-sm ring-1 ring-emerald-200"
         : "text-[#214b3d] hover:bg-[#e9f6ee] hover:text-[#0f3b2f]"
     }`
+
+  const toggleMenu = () => {
+    const nextOpen = !open
+    setOpen(nextOpen)
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    void import("gsap").then(({ default: gsap }) => {
+      if (!menuButtonRef.current) return
+      gsap.to(menuButtonRef.current, { rotate: nextOpen ? 90 : 0, scale: nextOpen ? 1.08 : 1, duration: 0.24, ease: "power2.out", overwrite: "auto" })
+    })
+  }
 
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300`}>
@@ -138,13 +172,14 @@ export function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <Link href="/aduan" className="inline-flex items-center rounded-full border border-[#b8d8c5] bg-white/80 px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-emerald-200 hover:text-emerald-800">
-              Aspirasi warga
+            <Link href="/login" className="inline-flex items-center rounded-full border border-[#b8d8c5] bg-white/80 px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-emerald-200 hover:text-emerald-800">
+              Login
             </Link>
           </div>
 
           <button
-            onClick={() => setOpen(!open)}
+            ref={menuButtonRef}
+            onClick={toggleMenu}
             aria-expanded={open}
             aria-label="Buka menu navigasi"
             className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-700 transition hover:bg-slate-200 lg:hidden"
@@ -154,12 +189,13 @@ export function Navbar() {
         </div>
 
         {open && (
-          <nav className="mt-3 rounded-3xl border border-slate-200 bg-white/90 p-3 shadow-xl shadow-slate-900/5 backdrop-blur-xl lg:hidden">
+          <nav ref={mobileNavRef} className="mt-3 rounded-3xl border border-slate-200 bg-white/90 p-3 shadow-xl shadow-slate-900/5 backdrop-blur-xl lg:hidden">
             {navigation.slice(0, 1).map((item) => (
               <Link
                 onClick={() => setOpen(false)}
                 key={item.href}
                 href={item.href}
+                data-mobile-link
                 className={`block rounded-2xl px-3 py-3 text-sm font-semibold ${
                   active(item.href) ? "bg-emerald-50 text-emerald-800" : "text-slate-700"
                 }`}
@@ -175,6 +211,7 @@ export function Navbar() {
                   onClick={() => setOpen(false)}
                   key={item.label}
                   href={item.href}
+                  data-mobile-link
                   className={`block rounded-xl px-3 py-2.5 text-sm font-medium ${
                     active(item.href) ? "bg-emerald-50 text-emerald-800" : "text-slate-600"
                   }`}
@@ -191,6 +228,7 @@ export function Navbar() {
                   onClick={() => setOpen(false)}
                   key={item.label}
                   href={item.href}
+                  data-mobile-link
                   className={`block rounded-xl px-3 py-2.5 text-sm font-medium ${
                     active(item.href) ? "bg-emerald-50 text-emerald-800" : "text-slate-600"
                   }`}
@@ -205,6 +243,7 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 key={item.href}
                 href={item.href}
+                data-mobile-link
                 className={`block rounded-2xl px-3 py-3 text-sm font-semibold ${
                   active(item.href) ? "bg-emerald-50 text-emerald-800" : "text-slate-700"
                 }`}
@@ -212,6 +251,9 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+            <Link onClick={() => setOpen(false)} href="/login" className="mt-2 flex items-center justify-center rounded-2xl bg-emerald-700 px-3 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-800">
+              Login CMS
+            </Link>
           </nav>
         )}
       </div>

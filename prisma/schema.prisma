@@ -19,12 +19,12 @@ model Announcement {
 }
 
 model QuickService {
-  id        Int      @id @default(autoincrement())
-  title     String
-  icon      String
-  bgColor   String
-  link      String
-  order     Int      @default(0)
+  id      Int    @id @default(autoincrement())
+  title   String
+  icon    String
+  bgColor String
+  link    String
+  order   Int    @default(0)
 }
 
 model News {
@@ -51,12 +51,12 @@ model Document {
 }
 
 model Statistic {
-  id        Int      @id @default(autoincrement())
-  label     String
-  value     String
-  icon      String
-  color     String
-  order     Int      @default(0)
+  id    Int    @id @default(autoincrement())
+  label String
+  value String
+  icon  String
+  color String
+  order Int    @default(0)
 }
 
 model CmsPageStore {
@@ -85,6 +85,30 @@ model Complaint {
   @@index([createdAt])
 }
 
+model AdminUser {
+  id           String         @id @default(cuid())
+  username     String         @unique
+  email        String         @unique
+  passwordHash String
+  name         String?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
 enum DisasterLocationType {
   EVAKUASI
   RAWAN
@@ -92,10 +116,10 @@ enum DisasterLocationType {
 }
 
 model DisasterSetting {
-  id          Int      @id @default(1)
-  override    String   @default("auto")
+  id           Int      @id @default(1)
+  override     String   @default("auto")
   announcement String?
-  updatedAt   DateTime @updatedAt
+  updatedAt    DateTime @updatedAt
 }
 
 model DisasterLocation {
