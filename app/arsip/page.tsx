@@ -1,33 +1,35 @@
-import { FileArchive, Search } from "lucide-react"
-
-import { DataTable } from "@/components/ui/data-table"
+import type { Metadata } from "next"
+import dynamic from "next/dynamic"
+import { ArchiveJsonLd } from "@/components/arsip/archive-json-ld"
 import { PageHero } from "@/components/ui/page-hero"
 import { getCmsPage } from "@/lib/cms-pages"
+import { getArchiveDocuments } from "@/lib/archive-data"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 300
+
+export const metadata: Metadata = {
+  title: "Arsip Dokumen Publik | Desa Kedungrejo",
+  description: "Akses dan unduh dokumen publik Pemerintah Desa Kedungrejo secara terbuka.",
+  alternates: { canonical: "/arsip" },
+  openGraph: { title: "Arsip Dokumen Publik Desa Kedungrejo", description: "Dokumen publik yang dapat diakses dan diunduh warga.", type: "website" },
+}
+
+const PublicDocumentArchive = dynamic(
+  () => import("@/components/arsip/public-document-archive").then((module) => module.PublicDocumentArchive),
+  { loading: () => <div className="mx-auto -mt-10 h-72 max-w-7xl animate-pulse rounded-[2rem] bg-white/70 shadow-sm" /> },
+)
 
 export default async function Arsip() {
-  const hero = await getCmsPage("arsip")
-  const documents = hero.sections.find((item) => item.key === "documents")
+  const [hero, documents] = await Promise.all([getCmsPage("arsip"), getArchiveDocuments()])
   const notice = hero.sections.find((item) => item.key === "notice")
+  const publicDocuments = documents.map((document) => ({ id: document.id, title: document.title, meta: `${document.type} - ${document.size}`, status: "Publik" }))
 
   return (
     <>
       <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} image={hero.image} imagePosition={hero.imagePosition} />
 
-      <div className="mx-auto max-w-5xl px-5 py-16">
-        <div className="mb-8 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-400 shadow-sm">
-          <Search size={20} />
-          <span className="text-sm">Cari dokumen atau keputusan desa...</span>
-        </div>
-
-        <DataTable rows={(documents?.items ?? []).map((item) => ({ title: item.title, meta: item.meta ?? "", status: item.detail }))} />
-
-        <div className="mt-8 flex items-center gap-4 rounded-3xl border border-blue-200 bg-blue-50 p-6">
-          <FileArchive className="text-green-800" />
-          <p className="text-sm text-blue-900">{notice?.title}</p>
-        </div>
-      </div>
+      <ArchiveJsonLd documents={publicDocuments} />
+      <PublicDocumentArchive documents={publicDocuments} notice={notice?.title} />
     </>
   )
 }

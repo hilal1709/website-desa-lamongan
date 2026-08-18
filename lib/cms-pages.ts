@@ -284,12 +284,6 @@ export const defaultCmsPages: CmsPageContent[] = [
         key: "documents",
         label: "Dokumen publik",
         title: "Daftar arsip digital",
-        items: [
-          { title: "APBDes Tahun Anggaran 2025", meta: "Keuangan Desa - PDF - 2.4 MB", detail: "Publik" },
-          { title: "Perdes Rencana Kerja Pemerintah Desa 2025", meta: "Peraturan Desa - PDF - 1.1 MB", detail: "Publik" },
-          { title: "Laporan Realisasi APBDes Semester I", meta: "Laporan Keuangan - PDF - 1.8 MB", detail: "Publik" },
-          { title: "SK Pengurus BUMDes Sejahtera", meta: "Keputusan Kepala Desa - PDF - 900 KB", detail: "Publik" },
-        ],
       },
       {
         key: "notice",

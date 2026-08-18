@@ -23,7 +23,7 @@ export function NewsPagination({ currentPage, totalPages, query, category }: New
   const pages = Array.from({ length: Math.min(5, totalPages) }, (_, index) => Math.min(Math.max(currentPage - 2, 1), totalPages - 4) + index)
 
   return (
-    <nav aria-label="Paginasi berita" className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:mt-12">
+    <nav aria-label="Paginasi berita" className="news-pagination mt-10 flex flex-wrap items-center justify-center gap-2 sm:mt-12">
       <Button asChild variant="outline" size="sm" className="gap-1" aria-disabled={currentPage === 1} tabIndex={currentPage === 1 ? -1 : undefined}>
         {currentPage === 1 ? <span><ChevronLeft /> Sebelumnya</span> : <Link href={createHref(currentPage - 1)}><ChevronLeft /> Sebelumnya</Link>}
       </Button>

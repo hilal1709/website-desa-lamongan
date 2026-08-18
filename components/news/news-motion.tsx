@@ -45,9 +45,11 @@ export function NewsMotion({ children }: { children: ReactNode }) {
         }
 
         reveal(".news-featured", { y: 36, scale: 0.985 })
+        reveal(".news-popular", { x: 24, y: 0, scale: 0.985 })
         reveal(".news-filter", { y: 18 })
         reveal(".news-section-divider", { y: 18 })
         reveal(".news-card", { y: 30, scale: 0.975 })
+        reveal(".news-pagination", { y: 14 })
         reveal(".news-empty-state", { y: 24, scale: 0.98 })
       }, root)
     })

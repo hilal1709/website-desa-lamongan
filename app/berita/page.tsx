@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { NewsIndexContent } from "@/components/news/news-index-content"
-import { PageHero } from "@/components/ui/page-hero"
+import { NewsPageHeader } from "@/components/news/news-page-header"
 import { getNewsPageData } from "@/lib/news-data"
 
 export const metadata: Metadata = {
@@ -39,8 +39,8 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
   const { featured: featuredArticle, articles, count, categories, page, totalPages } = await getNewsPageData({ query, category, page: requestedPage })
   const hasActiveFilters = Boolean(query || category)
 
-  return <main>
-    <PageHero eyebrow="Informasi publik" title="Berita Desa" description={hasActiveFilters ? `${count} berita sesuai pencarian Anda.` : `${count} publikasi terbaru dari Pemerintah Desa Kedungrejo.`} image={featuredArticle?.image_url || "/images/dorr.jpg"} imagePosition="center 42%" />
+  return <>
+    <NewsPageHeader articleCount={count} hasActiveFilters={hasActiveFilters} categories={categories} activeCategory={category} />
     <NewsIndexContent featuredArticle={featuredArticle} articles={articles} categories={categories} query={query} category={category} resultCount={count} page={page} totalPages={totalPages} />
-  </main>
+  </>
 }
