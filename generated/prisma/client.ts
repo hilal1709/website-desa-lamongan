@@ -101,3 +101,13 @@ export type DisasterSetting = Prisma.DisasterSettingModel
  * 
  */
 export type DisasterLocation = Prisma.DisasterLocationModel
+/**
+ * Model Umkm
+ * 
+ */
+export type Umkm = Prisma.UmkmModel
+/**
+ * Model UmkmProduct
+ * 
+ */
+export type UmkmProduct = Prisma.UmkmProductModel

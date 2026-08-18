@@ -2,6 +2,7 @@ import { revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 
 import { prisma } from "@/app/lib/prisma"
+import { isComplaintCategory } from "@/lib/complaint-categories"
 import { getRecentComplaints } from "@/lib/complaints"
 
 const maxLengths = { title: 120, category: 80, location: 160, contact: 80, description: 2000 }
@@ -29,12 +30,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Mohon lengkapi semua kolom aduan." }, { status: 400 })
   }
 
+  if (!isComplaintCategory(category)) {
+    return NextResponse.json({ message: "Kategori aduan tidak valid." }, { status: 400 })
+  }
+
   const complaint = await prisma.complaint.create({
     data: { title, category, location, contact, description },
     select: { id: true, title: true, category: true, location: true, status: true, createdAt: true },
   })
 
   revalidateTag("complaints", "max")
+  revalidateTag("admin-dashboard", "max")
 
   return NextResponse.json({ complaint: { ...complaint, createdAt: complaint.createdAt.toISOString() } }, { status: 201 })
 }

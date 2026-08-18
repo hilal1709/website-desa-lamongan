@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { CloudRain, Sun, CloudLightning, Droplets, Wind, ShieldAlert, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react"
+import { CloudRain, Sun, CloudLightning, Droplets, ShieldAlert, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react"
 
 export interface WeatherDay {
   date: string
@@ -95,7 +95,7 @@ export function WeatherForecast({
       active = false
       window.clearInterval(refreshInterval)
     }
-  }, [period, onRiskChange])
+  }, [period, onRiskChange, onWeatherUpdate])
 
   // Get Weather Icon & Label based on Open-Meteo WMO weather code
   const getWeatherInfo = (code: number, rain: number) => {
@@ -137,7 +137,7 @@ export function WeatherForecast({
 
             <div>
               <span className="inline-block rounded-full bg-white/20 px-3 py-0.5 text-xs font-black uppercase tracking-wider text-white">
-                Status BMKG dan Open Meteo Kedungrejo
+                Status Prakiraan Cuaca Kedungrejo
               </span>
               <h3 className="mt-1 text-2xl font-black tracking-tight">
                 {currentRisk === "bahaya"
@@ -199,7 +199,7 @@ export function WeatherForecast({
         {loading ? (
           <div className="flex h-40 items-center justify-center text-slate-400">
             <RefreshCw className="h-6 w-6 animate-spin text-emerald-600" />
-            <span className="ml-2 text-sm font-bold">Mengambil data cuaca BMKG dan Open Meteo...</span>
+            <span className="ml-2 text-sm font-bold">Mengambil data prakiraan cuaca...</span>
           </div>
         ) : error ? (
           <p className="py-10 text-center text-sm font-semibold text-rose-700">{error}</p>

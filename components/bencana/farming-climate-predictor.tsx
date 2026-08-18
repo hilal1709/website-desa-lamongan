@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { Sprout, Sun, CloudRain, ShieldCheck, AlertCircle, Info, Calendar, Sparkles, CheckCircle2, Sliders, Play } from "lucide-react"
+import { Sprout, Sun, CloudRain, ShieldCheck, AlertCircle, Info, Sparkles, CheckCircle2 } from "lucide-react"
 
 type ClimateProps = {
   precipitationSum: number
@@ -9,13 +8,23 @@ type ClimateProps = {
   riskLevel: "aman" | "waspada" | "bahaya"
 }
 
-export function FarmingClimatePredictor({ precipitationSum: initialRain, weatherCode, riskLevel }: ClimateProps) {
-  const [simulatedRain, setSimulatedRain] = useState<number | null>(null)
-  const activeRain = simulatedRain !== null ? simulatedRain : initialRain
+export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLevel }: ClimateProps) {
+  const activeRain = precipitationSum
+  const isHeavyRain = weatherCode >= 61 || activeRain >= 50
+  const isRaining = weatherCode >= 51 || activeRain > 0
+  const WeatherIcon = isRaining ? CloudRain : Sun
+  const weatherLabel = weatherCode >= 95
+    ? "Hujan badai / petir"
+    : isHeavyRain
+      ? "Hujan lebat"
+      : isRaining
+        ? "Hujan ringan"
+        : "Cerah / berawan"
+  const riskLabel = riskLevel === "bahaya" ? "Siaga" : riskLevel === "waspada" ? "Waspada" : "Aman"
 
   // Determine farming & daily life recommendations based on rain precipitation
   const getFarmingStatus = () => {
-    if (activeRain >= 50) {
+    if (isHeavyRain) {
       return {
         planting: { label: "Waspada Luapan", status: "waspada", color: "bg-rose-50 text-rose-800 border-rose-200", icon: CloudRain, desc: "Curah hujan sangat tinggi (>50mm). Hindari tanam bibit muda yang rawan hanyut." },
         drying: { label: "Tidak Disarankan", status: "bahaya", color: "bg-rose-50 text-rose-800 border-rose-200", icon: CloudRain, desc: "Potensi hujan lebat. Amankan gabah & hasil panen ke dalam lumbung tertutup." },
@@ -59,54 +68,22 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
         </div>
       </div>
 
-      {/* LIVE AUTOMATION TESTING SIMULATOR BAR */}
+      {/* Automatic forecast summary */}
       <div data-disaster-motion className="flex flex-col gap-3 rounded-3xl border border-emerald-200 bg-emerald-50/60 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-emerald-700 text-white">
-            <Sliders className="h-5 w-5" />
+            <WeatherIcon className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-xs font-black uppercase text-emerald-950">Uji Otomatisasi Status (Testing Simulator)</p>
+            <p className="text-xs font-black uppercase text-emerald-950">Prakiraan Cuaca Otomatis Hari Ini</p>
             <p className="text-xs text-emerald-900/80 font-medium">
-              Curah Hujan Terdeteksi: <b>{activeRain} mm/hari</b> {simulatedRain !== null && "(Mode Simulasi Testing)"}
+              Kondisi: <b>{weatherLabel}</b> · Curah hujan diprakirakan <b>{activeRain} mm/hari</b>
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => setSimulatedRain(0)}
-            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
-              activeRain === 0 ? "bg-emerald-800 text-white" : "bg-white text-emerald-900 border border-emerald-200 hover:bg-emerald-100"
-            }`}
-          >
-            0 mm (Cerah)
-          </button>
-          <button
-            onClick={() => setSimulatedRain(25)}
-            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
-              activeRain === 25 ? "bg-amber-600 text-white" : "bg-white text-amber-900 border border-amber-200 hover:bg-amber-100"
-            }`}
-          >
-            25 mm (Hujan Sedang)
-          </button>
-          <button
-            onClick={() => setSimulatedRain(60)}
-            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
-              activeRain === 60 ? "bg-rose-700 text-white" : "bg-white text-rose-900 border border-rose-200 hover:bg-rose-100"
-            }`}
-          >
-            60 mm (Hujan Lebat)
-          </button>
-
-          {simulatedRain !== null && (
-            <button
-              onClick={() => setSimulatedRain(null)}
-              className="rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800"
-            >
-              Reset ke Realtime API
-            </button>
-          )}
+        <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-bold text-emerald-900">
+          Status 3 hari: <span className={riskLevel === "bahaya" ? "text-rose-700" : riskLevel === "waspada" ? "text-amber-700" : "text-emerald-700"}>{riskLabel}</span>
         </div>
       </div>
 
@@ -173,7 +150,7 @@ export function FarmingClimatePredictor({ precipitationSum: initialRain, weather
         <div>
           <b>Catatan Penting untuk Warga & Petani Kedungrejo:</b>
           <p className="mt-0.5 text-slate-500">
-            Prediksi cuaca dan rekomendasi iklim di atas diperbarui secara otomatis setiap 6 jam berdasarkan sinyal stasiun meteorologi BMKG & Open-Meteo.
+            Prediksi cuaca dan rekomendasi iklim di atas mengikuti prakiraan terbaru dari Open-Meteo dan diperbarui otomatis setiap 10 menit saat halaman dibuka.
             Selalu kombinasikan dengan pengamatan cuaca fisik langsung di wilayah dusun Anda.
           </p>
         </div>

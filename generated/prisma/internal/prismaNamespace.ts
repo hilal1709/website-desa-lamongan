@@ -408,7 +408,9 @@ export const ModelName = {
   AdminUser: 'AdminUser',
   AdminSession: 'AdminSession',
   DisasterSetting: 'DisasterSetting',
-  DisasterLocation: 'DisasterLocation'
+  DisasterLocation: 'DisasterLocation',
+  Umkm: 'Umkm',
+  UmkmProduct: 'UmkmProduct'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "disasterSetting" | "disasterLocation"
+    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1316,6 +1318,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Umkm: {
+      payload: Prisma.$UmkmPayload<ExtArgs>
+      fields: Prisma.UmkmFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UmkmFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UmkmFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>
+        }
+        findFirst: {
+          args: Prisma.UmkmFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UmkmFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>
+        }
+        findMany: {
+          args: Prisma.UmkmFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>[]
+        }
+        create: {
+          args: Prisma.UmkmCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>
+        }
+        createMany: {
+          args: Prisma.UmkmCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UmkmCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>[]
+        }
+        delete: {
+          args: Prisma.UmkmDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>
+        }
+        update: {
+          args: Prisma.UmkmUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>
+        }
+        deleteMany: {
+          args: Prisma.UmkmDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UmkmUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UmkmUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>[]
+        }
+        upsert: {
+          args: Prisma.UmkmUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmPayload>
+        }
+        aggregate: {
+          args: Prisma.UmkmAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUmkm>
+        }
+        groupBy: {
+          args: Prisma.UmkmGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UmkmGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UmkmCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UmkmCountAggregateOutputType> | number
+        }
+      }
+    }
+    UmkmProduct: {
+      payload: Prisma.$UmkmProductPayload<ExtArgs>
+      fields: Prisma.UmkmProductFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UmkmProductFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UmkmProductFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>
+        }
+        findFirst: {
+          args: Prisma.UmkmProductFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UmkmProductFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>
+        }
+        findMany: {
+          args: Prisma.UmkmProductFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>[]
+        }
+        create: {
+          args: Prisma.UmkmProductCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>
+        }
+        createMany: {
+          args: Prisma.UmkmProductCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UmkmProductCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>[]
+        }
+        delete: {
+          args: Prisma.UmkmProductDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>
+        }
+        update: {
+          args: Prisma.UmkmProductUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>
+        }
+        deleteMany: {
+          args: Prisma.UmkmProductDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UmkmProductUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UmkmProductUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>[]
+        }
+        upsert: {
+          args: Prisma.UmkmProductUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UmkmProductPayload>
+        }
+        aggregate: {
+          args: Prisma.UmkmProductAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUmkmProduct>
+        }
+        groupBy: {
+          args: Prisma.UmkmProductGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UmkmProductGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UmkmProductCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UmkmProductCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1500,6 +1650,38 @@ export const DisasterLocationScalarFieldEnum = {
 } as const
 
 export type DisasterLocationScalarFieldEnum = (typeof DisasterLocationScalarFieldEnum)[keyof typeof DisasterLocationScalarFieldEnum]
+
+
+export const UmkmScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  category: 'category',
+  description: 'description',
+  logoUrl: 'logoUrl',
+  whatsapp: 'whatsapp',
+  address: 'address',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UmkmScalarFieldEnum = (typeof UmkmScalarFieldEnum)[keyof typeof UmkmScalarFieldEnum]
+
+
+export const UmkmProductScalarFieldEnum = {
+  id: 'id',
+  umkmId: 'umkmId',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  price: 'price',
+  isAvailable: 'isAvailable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UmkmProductScalarFieldEnum = (typeof UmkmProductScalarFieldEnum)[keyof typeof UmkmProductScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1801,6 +1983,8 @@ export type GlobalOmitConfig = {
   adminSession?: Prisma.AdminSessionOmit
   disasterSetting?: Prisma.DisasterSettingOmit
   disasterLocation?: Prisma.DisasterLocationOmit
+  umkm?: Prisma.UmkmOmit
+  umkmProduct?: Prisma.UmkmProductOmit
 }
 
 /* Types for Logging */

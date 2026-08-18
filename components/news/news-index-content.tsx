@@ -10,7 +10,6 @@ import type { NewsArticle } from "@/types"
 interface NewsIndexContentProps {
   featuredArticle: NewsArticle | null
   articles: NewsArticle[]
-  categories: string[]
   query: string
   category: string
   resultCount: number
@@ -18,7 +17,7 @@ interface NewsIndexContentProps {
   totalPages: number
 }
 
-export function NewsIndexContent({ featuredArticle, articles, categories, query, category, resultCount, page, totalPages }: NewsIndexContentProps) {
+export function NewsIndexContent({ featuredArticle, articles, query, category, resultCount, page, totalPages }: NewsIndexContentProps) {
   const hasNews = Boolean(featuredArticle || articles.length)
   const hasActiveFilters = Boolean(query || category)
   const popularArticles = [featuredArticle, ...articles].filter((article): article is NewsArticle => Boolean(article))
@@ -33,7 +32,7 @@ export function NewsIndexContent({ featuredArticle, articles, categories, query,
           </section>
         ) : null}
 
-        <div className={featuredArticle ? "mt-10 sm:mt-12" : ""}><NewsFilterForm categories={categories} query={query} category={category} /></div>
+        <div className={featuredArticle ? "mt-10 sm:mt-12" : ""}><NewsFilterForm query={query} category={category} /></div>
 
         {articles.length ? (
           <section aria-labelledby="latest-news-heading" className="mt-10 sm:mt-12">

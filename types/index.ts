@@ -30,3 +30,7 @@ export interface EducationStat { id: string; year: number; dusun: string; educat
 export interface OccupationStat { id: string; year: number; dusun: string; occupation: string; total: number }
 export interface PopulationTrend { id: string; year: number; total_population: number }
 export interface DocumentItem { title: string; category: string; date: string; size: string }
+export interface UmkmProduct { id: string; name: string; description: string; imageUrl: string; price: number; isAvailable: boolean }
+export interface UmkmCatalogItem { id: string; name: string; slug: string; category: string; description: string; logoUrl: string; whatsapp: string; address: string | null; productCount: number }
+export interface UmkmCategoryStat { category: string; businesses: number; products: number }
+export interface UmkmPublicData { catalog: UmkmCatalogItem[]; categories: UmkmCategoryStat[]; totalBusinesses: number; totalProducts: number }

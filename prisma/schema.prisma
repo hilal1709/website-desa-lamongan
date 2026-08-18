@@ -135,3 +135,35 @@ model DisasterLocation {
 
   @@index([isActive, type])
 }
+
+model Umkm {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  category    String
+  description String
+  logoUrl     String
+  whatsapp    String
+  address     String?
+  isPublished Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  products    UmkmProduct[]
+
+  @@index([isPublished, category])
+}
+
+model UmkmProduct {
+  id          String   @id @default(cuid())
+  umkmId      String
+  name        String
+  description String
+  imageUrl    String
+  price       Int
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  umkm        Umkm     @relation(fields: [umkmId], references: [id], onDelete: Cascade)
+
+  @@index([umkmId, isAvailable])
+}

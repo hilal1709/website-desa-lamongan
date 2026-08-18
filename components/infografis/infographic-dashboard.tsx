@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from "react"
 import dynamic from "next/dynamic"
-import { EconomicCards } from "./EconomicCards"
 import { FilterBar } from "./FilterBar"
 import { InfographicMotion } from "./infographic-motion"
 import { EmptyState } from "./EmptyState"
 import { ChartViewport } from "./chart-viewport"
 import { ChartCard, DashboardSummary, DataSelector, KpiGrid, PrintButton, SectionHeader, type DataView } from "./infographic-dashboard-ui"
-import type { AgeGroupStat, EducationStat, InfographicStat, OccupationStat, PopulationTrend } from "@/types"
+import { UmkmCatalog, UmkmVisualization } from "./umkm-data"
+import type { AgeGroupStat, EducationStat, InfographicStat, OccupationStat, PopulationTrend, UmkmPublicData } from "@/types"
 
 const AgeChart = dynamic(() => import("./AgeChart").then((module) => module.AgeChart), { ssr: false })
 const EducationChart = dynamic(() => import("./EducationChart").then((module) => module.EducationChart), { ssr: false })
@@ -23,6 +23,7 @@ type Props = {
   education: EducationStat[]
   occupations: OccupationStat[]
   trends: PopulationTrend[]
+  umkm: UmkmPublicData
 }
 
 const ageGroups = ["0-5", "6-17", "18-35", "36-59", "60+"]
@@ -52,7 +53,8 @@ export function InfographicDashboard({
   ages: rawAges,
   education: rawEducation,
   occupations: rawOccupations,
-  trends: rawTrends
+  trends: rawTrends,
+  umkm,
 }: Props) {
   const records = rawRecords
   const ages = rawAges
@@ -66,6 +68,7 @@ export function InfographicDashboard({
   const [year, setYear] = useState<number | "all">(years[0] ?? "all")
   const [dusun, setDusun] = useState("all")
   const [activeData, setActiveData] = useState<DataView>("infografis")
+  const [umkmSection, setUmkmSection] = useState<"visualisasi" | "katalog">("visualisasi")
 
   const match = <T extends { year: number; dusun: string }>(rows: T[]) =>
     rows.filter((row) => (year === "all" || row.year === year) && (dusun === "all" || row.dusun === dusun))
@@ -89,14 +92,6 @@ export function InfographicDashboard({
   const educationData = summarize(selectedEducation, "education_level", educationLevels)
   const occupationData = summarize(selectedOccupations, "occupation", occupationNames)
 
-  const occupationTotal = (name: string) => occupationData.find((item) => item.name === name)?.total ?? 0
-  const economic = {
-    umkm: occupationTotal("UMKM/Wirausaha"),
-    farmers: occupationTotal("Petani"),
-    formal: occupationTotal("Karyawan Swasta") + occupationTotal("PNS/ASN") + occupationTotal("Perangkat Desa"),
-    educators: occupationTotal("Guru/Tenaga Pendidikan")
-  }
-
   const visibleTrends = [...trends].sort((a, b) => a.year - b.year)
 
   const malePercentage = totals.population > 0 ? ((totals.male / totals.population) * 100).toFixed(1) : "0"
@@ -110,9 +105,9 @@ export function InfographicDashboard({
 
   if (activeData === "medis") return <InfographicMotion><DataSelector active={activeData} onChange={setActiveData} /><EmptyState title="Data rekam medis belum tersedia" description="Data akan tampil setelah sumber rekam medis terhubung ke sistem." /></InfographicMotion>
 
-  if (!records.length) return <InfographicMotion><DataSelector active={activeData} onChange={setActiveData} /><EmptyState /></InfographicMotion>
+  if (activeData === "umkm") return <InfographicMotion><DataSelector active={activeData} onChange={setActiveData} /><section data-infographic-motion className="mt-6" aria-label="Data UMKM"><SectionHeader tag="Ekonomi Desa" title="UMKM Desa Kedungrejo" subtitle="Jelajahi potensi usaha warga, produk lokal, dan profil UMKM desa." /><div className="flex flex-wrap gap-2"><button type="button" onClick={() => setUmkmSection("visualisasi")} className={`rounded-xl px-4 py-2.5 text-sm font-bold transition ${umkmSection === "visualisasi" ? "bg-emerald-700 text-white" : "border border-emerald-200 bg-white text-emerald-800 hover:bg-emerald-50"}`}>Visualisasi UMKM</button><button type="button" onClick={() => setUmkmSection("katalog")} className={`rounded-xl px-4 py-2.5 text-sm font-bold transition ${umkmSection === "katalog" ? "bg-emerald-700 text-white" : "border border-emerald-200 bg-white text-emerald-800 hover:bg-emerald-50"}`}>Katalog & Profil</button></div>{umkmSection === "visualisasi" ? <UmkmVisualization data={umkm} /> : <UmkmCatalog catalog={umkm.catalog} />}</section></InfographicMotion>
 
-  if (activeData === "umkm") return <InfographicMotion><DataSelector active={activeData} onChange={setActiveData} /><section data-infographic-motion className="mt-6" aria-label="Data UMKM dan sektor ekonomi"><SectionHeader tag="Ekonomi Desa" title="Data UMKM dan sektor ekonomi" subtitle="Ringkasan data pekerjaan warga yang mendukung potensi ekonomi desa." /><EconomicCards values={economic} /><div className="mt-6"><ChartCard title="Sebaran Mata Pencaharian Warga" description="Komposisi pekerjaan utama warga desa."><ChartViewport className="min-h-[38rem] sm:min-h-[22rem]"><OccupationChart data={occupationData} /></ChartViewport></ChartCard></div></section></InfographicMotion>
+  if (!records.length) return <InfographicMotion><DataSelector active={activeData} onChange={setActiveData} /><EmptyState /></InfographicMotion>
 
   return (
     <InfographicMotion>

@@ -105,14 +105,8 @@ export function CmsPageEditor() {
 
   return (
     <section id="konten-halaman" className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="mb-5">
-        <p className="text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">Konten halaman</p>
-        <h2 className="mt-2 text-2xl font-black text-slate-950">Atur isi halaman publik</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-500">Hero dan section halaman dibaca langsung oleh halaman publik.</p>
-      </div>
-
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
-        <div className="grid gap-2 lg:w-56">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:w-56 lg:grid-cols-1">
           {pages.map((item, index) => (
             <button
               key={item.slug}

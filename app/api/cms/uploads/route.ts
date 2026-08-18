@@ -2,6 +2,7 @@ import { randomUUID } from "crypto"
 import { promises as fs } from "fs"
 import path from "path"
 import { NextResponse } from "next/server"
+import { getCurrentAdmin } from "@/lib/admin-auth"
 
 const allowedTypes: Record<string, string> = {
   "image/jpeg": ".jpg",
@@ -12,6 +13,7 @@ const allowedTypes: Record<string, string> = {
 const maxSize = 5 * 1024 * 1024
 
 export async function POST(request: Request) {
+  if (!(await getCurrentAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
   const formData = await request.formData()
   const file = formData.get("image")
 

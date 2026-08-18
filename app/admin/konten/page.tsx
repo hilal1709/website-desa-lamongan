@@ -1,3 +1,9 @@
-import { CmsPageEditor } from "@/components/admin/cms-page-editor"
-export const metadata = { title: "Konten Halaman | CMS Kedungrejo" }
-export default function KontenPage() { return <div className="py-1 sm:py-2"><p className="text-xs font-bold uppercase tracking-[.18em] text-emerald-700">CMS Konten</p><h1 className="mt-1 text-3xl font-black text-slate-950">Konten halaman publik</h1><p className="mt-2 text-sm text-slate-600">Perbarui hero dan section halaman website desa.</p><div className="mt-5"><CmsPageEditor /></div></div> }
+import { LazyCmsPageEditor } from "@/components/admin/lazy-cms-editors"
+import { AdminPageHeader } from "@/components/admin/admin-page-header"
+import { createAdminMetadata } from "@/lib/admin-metadata"
+
+export const metadata = createAdminMetadata("Konten halaman", "Kelola hero dan section halaman publik website desa.")
+
+export default function KontenPage() {
+  return <section data-admin-reveal aria-labelledby="konten-halaman-publik-title" className="py-1 sm:py-2"><AdminPageHeader eyebrow="CMS Konten" title="Konten halaman publik" description="Perbarui hero dan section halaman website desa." /><div className="mt-5"><LazyCmsPageEditor /></div></section>
+}

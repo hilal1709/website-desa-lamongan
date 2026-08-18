@@ -5,6 +5,7 @@ import { FileText, MapPin, MessageCircleMore, Send } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { COMPLAINT_CATEGORIES } from "@/lib/complaint-categories"
 import type { CmsSection } from "@/lib/cms-pages"
 
 type ComplaintFormProps = {
@@ -15,7 +16,7 @@ type ComplaintFormProps = {
 
 const fields = [
   { name: "title", icon: FileText, type: "text" },
-  { name: "category", icon: MessageCircleMore, type: "text" },
+  { name: "category", icon: MessageCircleMore, type: "select" },
   { name: "location", icon: MapPin, type: "text" },
   { name: "contact", icon: MessageCircleMore, type: "tel" },
 ] as const
@@ -37,7 +38,14 @@ export function ComplaintForm({ section, isSubmitting, onSubmit }: ComplaintForm
               return (
                 <label key={name} className="complaint-field block text-sm font-bold text-slate-800">
                   <span className="flex items-center gap-2"><Icon aria-hidden size={15} className="text-emerald-700" />{label}</span>
-                  <input required name={name} type={type} inputMode={type === "tel" ? "tel" : "text"} autoComplete={name === "contact" ? "tel" : "off"} className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-normal text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-emerald-200 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100" placeholder={`Masukkan ${label.toLowerCase()}`} />
+                  {type === "select" ? (
+                    <select required name={name} defaultValue="" className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-normal text-slate-900 outline-none transition hover:border-emerald-200 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100">
+                      <option value="" disabled>Pilih kategori aduan</option>
+                      {COMPLAINT_CATEGORIES.map((item) => <option key={item} value={item}>{item}</option>)}
+                    </select>
+                  ) : (
+                    <input required name={name} type={type} inputMode={type === "tel" ? "tel" : "text"} autoComplete={name === "contact" ? "tel" : "off"} className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-normal text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-emerald-200 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100" placeholder={`Masukkan ${label.toLowerCase()}`} />
+                  )}
                 </label>
               )
             })}

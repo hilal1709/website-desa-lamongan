@@ -1,4 +1,11 @@
 import { DataTable } from "@/components/ui/data-table"
-export const metadata = { title: "Antrian Layanan | CMS Kedungrejo" }
-const rows = [{ title: "Surat Keterangan Domisili", meta: "Ahmad Fauzi · RT 04 · 10 menit lalu", status: "Baru" }, { title: "Aduan jalan berlubang", meta: "Infrastruktur · Dusun Krajan", status: "Diproses" }, { title: "Update data pendidikan", meta: "Infografis · Dusun Timur", status: "Review" }, { title: "Artikel posyandu balita", meta: "Berita desa · Draft admin", status: "Draft" }]
-export default function AntrianPage() { return <div className="py-1 sm:py-2"><p className="text-xs font-bold uppercase tracking-[.18em] text-emerald-700">Layanan Desa</p><h1 className="mt-1 text-3xl font-black text-slate-950">Antrian layanan</h1><section className="mt-5 rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm"><h2 className="text-xl font-black text-slate-950">Butuh perhatian operator</h2><div className="mt-5 overflow-x-auto"><DataTable rows={rows} /></div></section></div> }
+import { getAdminDashboardData } from "@/lib/admin-data"
+import { AdminPageHeader } from "@/components/admin/admin-page-header"
+import { createAdminMetadata } from "@/lib/admin-metadata"
+
+export const metadata = createAdminMetadata("Antrian layanan", "Aduan warga dan draft berita yang membutuhkan tindak lanjut operator.")
+
+export default async function AntrianPage() {
+  const { queue } = await getAdminDashboardData()
+  return <section data-admin-reveal aria-labelledby="antrian-layanan-title" className="py-1 sm:py-2"><AdminPageHeader eyebrow="Layanan Desa" title="Antrian layanan" /><section aria-labelledby="perhatian-operator-title" className="mt-5 rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm"><h2 id="perhatian-operator-title" className="text-xl font-black text-slate-950">Butuh perhatian operator</h2><div className="mt-5 overflow-x-auto"><DataTable rows={queue} emptyMessage="Tidak ada aduan atau draft berita yang perlu ditindaklanjuti." /></div></section></section>
+}

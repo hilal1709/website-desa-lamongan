@@ -62,7 +62,9 @@ export const ModelName = {
   AdminUser: 'AdminUser',
   AdminSession: 'AdminSession',
   DisasterSetting: 'DisasterSetting',
-  DisasterLocation: 'DisasterLocation'
+  DisasterLocation: 'DisasterLocation',
+  Umkm: 'Umkm',
+  UmkmProduct: 'UmkmProduct'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -226,6 +228,38 @@ export const DisasterLocationScalarFieldEnum = {
 } as const
 
 export type DisasterLocationScalarFieldEnum = (typeof DisasterLocationScalarFieldEnum)[keyof typeof DisasterLocationScalarFieldEnum]
+
+
+export const UmkmScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  category: 'category',
+  description: 'description',
+  logoUrl: 'logoUrl',
+  whatsapp: 'whatsapp',
+  address: 'address',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UmkmScalarFieldEnum = (typeof UmkmScalarFieldEnum)[keyof typeof UmkmScalarFieldEnum]
+
+
+export const UmkmProductScalarFieldEnum = {
+  id: 'id',
+  umkmId: 'umkmId',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  price: 'price',
+  isAvailable: 'isAvailable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UmkmProductScalarFieldEnum = (typeof UmkmProductScalarFieldEnum)[keyof typeof UmkmProductScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { revalidateTag, unstable_cache } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 const validTypes = new Set(["EVAKUASI", "RAWAN", "POSKO"])
 const validOverrides = new Set(["auto", "aman", "waspada", "bahaya"])
@@ -55,5 +56,6 @@ export async function PUT(request: Request) {
   })
 
   revalidateTag("disaster-data", "max")
+  await publishCmsUpdate("disaster")
   return NextResponse.json(result)
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { getFreshCmsPages, saveCmsPages, type CmsPageContent } from "@/lib/cms-pages"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export async function GET() {
   return NextResponse.json({ pages: await getFreshCmsPages() })
@@ -15,5 +16,10 @@ export async function PUT(request: Request) {
 
   await saveCmsPages(body.pages)
   revalidateTag("cms-pages", "max")
+  revalidateTag("admin-dashboard", "max")
+  // The public pages consume CMS content through route-level caches. Invalidate
+  // the root layout so every affected public route is regenerated on its next visit.
+  revalidatePath("/", "layout")
+  await publishCmsUpdate("pages")
   return NextResponse.json({ pages: body.pages })
 }

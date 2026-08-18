@@ -41,6 +41,6 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
 
   return <>
     <NewsPageHeader articleCount={count} hasActiveFilters={hasActiveFilters} categories={categories} activeCategory={category} />
-    <NewsIndexContent featuredArticle={featuredArticle} articles={articles} categories={categories} query={query} category={category} resultCount={count} page={page} totalPages={totalPages} />
+    <NewsIndexContent featuredArticle={featuredArticle} articles={articles} query={query} category={category} resultCount={count} page={page} totalPages={totalPages} />
   </>
 }

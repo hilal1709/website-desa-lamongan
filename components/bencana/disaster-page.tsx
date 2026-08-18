@@ -39,7 +39,7 @@ export function DisasterPage() {
             </Card>
           </section>
 
-          <section data-disaster-motion aria-label="Bantuan dan layanan darurat"><EmergencyAssistance riskLevel={riskLevel} /></section>
+          <section data-disaster-motion aria-label="Bantuan dan layanan darurat"><EmergencyAssistance /></section>
         </main>
       </DisasterPageMotion>
     </>

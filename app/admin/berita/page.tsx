@@ -1,3 +1,9 @@
-import { NewsManager } from "@/components/admin/news-manager"
-export const metadata = { title: "Kelola Berita | CMS Kedungrejo" }
-export default function BeritaAdminPage() { return <div className="py-1 sm:py-2"><p className="text-xs font-bold uppercase tracking-[.18em] text-emerald-700">CMS Berita</p><h1 className="mt-1 text-3xl font-black text-slate-950">Artikel berita desa</h1><p className="mt-2 text-sm text-slate-600">Tambah kategori dan kelola artikel yang akan ditampilkan kepada warga.</p><div className="mt-5"><NewsManager /></div></div> }
+import { LazyNewsManager } from "@/components/admin/lazy-cms-editors"
+import { AdminPageHeader } from "@/components/admin/admin-page-header"
+import { createAdminMetadata } from "@/lib/admin-metadata"
+
+export const metadata = createAdminMetadata("Artikel berita desa", "Kelola kategori dan artikel berita yang akan ditampilkan kepada warga.")
+
+export default function BeritaAdminPage() {
+  return <section data-admin-reveal aria-labelledby="artikel-berita-desa-title" className="py-1 sm:py-2"><AdminPageHeader eyebrow="CMS Berita" title="Artikel berita desa" description="Tambah kategori dan kelola artikel yang akan ditampilkan kepada warga." /><div className="mt-5"><LazyNewsManager /></div></section>
+}
