@@ -61,6 +61,8 @@ export const ModelName = {
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
   AdminSession: 'AdminSession',
+  PopulationOpeningBalance: 'PopulationOpeningBalance',
+  PopulationEvent: 'PopulationEvent',
   DisasterSetting: 'DisasterSetting',
   DisasterLocation: 'DisasterLocation',
   Umkm: 'Umkm',
@@ -205,6 +207,40 @@ export const AdminSessionScalarFieldEnum = {
 export type AdminSessionScalarFieldEnum = (typeof AdminSessionScalarFieldEnum)[keyof typeof AdminSessionScalarFieldEnum]
 
 
+export const PopulationOpeningBalanceScalarFieldEnum = {
+  id: 'id',
+  dusun: 'dusun',
+  effectiveDate: 'effectiveDate',
+  totalPopulation: 'totalPopulation',
+  demographics: 'demographics',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PopulationOpeningBalanceScalarFieldEnum = (typeof PopulationOpeningBalanceScalarFieldEnum)[keyof typeof PopulationOpeningBalanceScalarFieldEnum]
+
+
+export const PopulationEventScalarFieldEnum = {
+  id: 'id',
+  eventDate: 'eventDate',
+  type: 'type',
+  dusun: 'dusun',
+  fullName: 'fullName',
+  nationalId: 'nationalId',
+  familyCardNumber: 'familyCardNumber',
+  gender: 'gender',
+  birthDate: 'birthDate',
+  residenceAddress: 'residenceAddress',
+  originAddress: 'originAddress',
+  destinationAddress: 'destinationAddress',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PopulationEventScalarFieldEnum = (typeof PopulationEventScalarFieldEnum)[keyof typeof PopulationEventScalarFieldEnum]
+
+
 export const DisasterSettingScalarFieldEnum = {
   id: 'id',
   override: 'override',
@@ -275,6 +311,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

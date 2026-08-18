@@ -109,10 +109,48 @@ model AdminSession {
   @@index([expiresAt])
 }
 
+model PopulationOpeningBalance {
+  id              String   @id @default(cuid())
+  dusun           String   @unique
+  effectiveDate   DateTime
+  totalPopulation Int
+  demographics    Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model PopulationEvent {
+  id                 String              @id @default(cuid())
+  eventDate          DateTime
+  type               PopulationEventType
+  dusun              String
+  fullName           String
+  nationalId         String
+  familyCardNumber   String
+  gender             String
+  birthDate          DateTime
+  residenceAddress   String
+  originAddress      String?
+  destinationAddress String?
+  notes              String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  @@index([eventDate, dusun, type])
+  @@index([dusun, eventDate])
+}
+
 enum DisasterLocationType {
   EVAKUASI
   RAWAN
   POSKO
+}
+
+enum PopulationEventType {
+  KELAHIRAN
+  KEMATIAN
+  PINDAH_MASUK
+  PINDAH_KELUAR
 }
 
 model DisasterSetting {

@@ -16,3 +16,13 @@ export const DisasterLocationType = {
 } as const
 
 export type DisasterLocationType = (typeof DisasterLocationType)[keyof typeof DisasterLocationType]
+
+
+export const PopulationEventType = {
+  KELAHIRAN: 'KELAHIRAN',
+  KEMATIAN: 'KEMATIAN',
+  PINDAH_MASUK: 'PINDAH_MASUK',
+  PINDAH_KELUAR: 'PINDAH_KELUAR'
+} as const
+
+export type PopulationEventType = (typeof PopulationEventType)[keyof typeof PopulationEventType]

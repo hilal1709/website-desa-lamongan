@@ -68,6 +68,16 @@ export type AdminUser = Prisma.AdminUserModel
  */
 export type AdminSession = Prisma.AdminSessionModel
 /**
+ * Model PopulationOpeningBalance
+ * 
+ */
+export type PopulationOpeningBalance = Prisma.PopulationOpeningBalanceModel
+/**
+ * Model PopulationEvent
+ * 
+ */
+export type PopulationEvent = Prisma.PopulationEventModel
+/**
  * Model DisasterSetting
  * 
  */

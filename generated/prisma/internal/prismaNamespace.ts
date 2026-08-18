@@ -407,6 +407,8 @@ export const ModelName = {
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
   AdminSession: 'AdminSession',
+  PopulationOpeningBalance: 'PopulationOpeningBalance',
+  PopulationEvent: 'PopulationEvent',
   DisasterSetting: 'DisasterSetting',
   DisasterLocation: 'DisasterLocation',
   Umkm: 'Umkm',
@@ -426,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
+    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "populationOpeningBalance" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1170,6 +1172,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PopulationOpeningBalance: {
+      payload: Prisma.$PopulationOpeningBalancePayload<ExtArgs>
+      fields: Prisma.PopulationOpeningBalanceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PopulationOpeningBalanceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PopulationOpeningBalanceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>
+        }
+        findFirst: {
+          args: Prisma.PopulationOpeningBalanceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PopulationOpeningBalanceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>
+        }
+        findMany: {
+          args: Prisma.PopulationOpeningBalanceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>[]
+        }
+        create: {
+          args: Prisma.PopulationOpeningBalanceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>
+        }
+        createMany: {
+          args: Prisma.PopulationOpeningBalanceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PopulationOpeningBalanceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>[]
+        }
+        delete: {
+          args: Prisma.PopulationOpeningBalanceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>
+        }
+        update: {
+          args: Prisma.PopulationOpeningBalanceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>
+        }
+        deleteMany: {
+          args: Prisma.PopulationOpeningBalanceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PopulationOpeningBalanceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PopulationOpeningBalanceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>[]
+        }
+        upsert: {
+          args: Prisma.PopulationOpeningBalanceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationOpeningBalancePayload>
+        }
+        aggregate: {
+          args: Prisma.PopulationOpeningBalanceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePopulationOpeningBalance>
+        }
+        groupBy: {
+          args: Prisma.PopulationOpeningBalanceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PopulationOpeningBalanceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PopulationOpeningBalanceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PopulationOpeningBalanceCountAggregateOutputType> | number
+        }
+      }
+    }
+    PopulationEvent: {
+      payload: Prisma.$PopulationEventPayload<ExtArgs>
+      fields: Prisma.PopulationEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PopulationEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PopulationEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>
+        }
+        findFirst: {
+          args: Prisma.PopulationEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PopulationEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>
+        }
+        findMany: {
+          args: Prisma.PopulationEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>[]
+        }
+        create: {
+          args: Prisma.PopulationEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>
+        }
+        createMany: {
+          args: Prisma.PopulationEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PopulationEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>[]
+        }
+        delete: {
+          args: Prisma.PopulationEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>
+        }
+        update: {
+          args: Prisma.PopulationEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.PopulationEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PopulationEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PopulationEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.PopulationEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PopulationEventPayload>
+        }
+        aggregate: {
+          args: Prisma.PopulationEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePopulationEvent>
+        }
+        groupBy: {
+          args: Prisma.PopulationEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PopulationEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PopulationEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PopulationEventCountAggregateOutputType> | number
+        }
+      }
+    }
     DisasterSetting: {
       payload: Prisma.$DisasterSettingPayload<ExtArgs>
       fields: Prisma.DisasterSettingFieldRefs
@@ -1627,6 +1777,40 @@ export const AdminSessionScalarFieldEnum = {
 export type AdminSessionScalarFieldEnum = (typeof AdminSessionScalarFieldEnum)[keyof typeof AdminSessionScalarFieldEnum]
 
 
+export const PopulationOpeningBalanceScalarFieldEnum = {
+  id: 'id',
+  dusun: 'dusun',
+  effectiveDate: 'effectiveDate',
+  totalPopulation: 'totalPopulation',
+  demographics: 'demographics',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PopulationOpeningBalanceScalarFieldEnum = (typeof PopulationOpeningBalanceScalarFieldEnum)[keyof typeof PopulationOpeningBalanceScalarFieldEnum]
+
+
+export const PopulationEventScalarFieldEnum = {
+  id: 'id',
+  eventDate: 'eventDate',
+  type: 'type',
+  dusun: 'dusun',
+  fullName: 'fullName',
+  nationalId: 'nationalId',
+  familyCardNumber: 'familyCardNumber',
+  gender: 'gender',
+  birthDate: 'birthDate',
+  residenceAddress: 'residenceAddress',
+  originAddress: 'originAddress',
+  destinationAddress: 'destinationAddress',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PopulationEventScalarFieldEnum = (typeof PopulationEventScalarFieldEnum)[keyof typeof PopulationEventScalarFieldEnum]
+
+
 export const DisasterSettingScalarFieldEnum = {
   id: 'id',
   override: 'override',
@@ -1697,6 +1881,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1790,6 +1982,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PopulationEventType'
+ */
+export type EnumPopulationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PopulationEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'PopulationEventType[]'
+ */
+export type ListEnumPopulationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PopulationEventType[]'>
     
 
 
@@ -1981,6 +2187,8 @@ export type GlobalOmitConfig = {
   complaint?: Prisma.ComplaintOmit
   adminUser?: Prisma.AdminUserOmit
   adminSession?: Prisma.AdminSessionOmit
+  populationOpeningBalance?: Prisma.PopulationOpeningBalanceOmit
+  populationEvent?: Prisma.PopulationEventOmit
   disasterSetting?: Prisma.DisasterSettingOmit
   disasterLocation?: Prisma.DisasterLocationOmit
   umkm?: Prisma.UmkmOmit

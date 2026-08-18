@@ -1,8 +1,10 @@
 "use client"
 
 import Link from "next/link"
+import { useState } from "react"
 import { Boxes, Package, Store, Tag } from "lucide-react"
 import type { UmkmCatalogItem, UmkmPublicData } from "@/types"
+import { PaginationControls } from "@/components/ui/pagination-controls"
 
 const formatter = new Intl.NumberFormat("id-ID")
 
@@ -16,6 +18,11 @@ function Metric({ icon: Icon, label, value }: { icon: typeof Store; label: strin
 }
 
 export function UmkmCatalog({ catalog }: { catalog: UmkmCatalogItem[] }) {
+  const [page, setPage] = useState(1)
   if (!catalog.length) return <section className="mt-6 rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center"><Boxes className="mx-auto size-9 text-slate-400" /><h3 className="mt-3 text-lg font-black text-slate-900">Katalog UMKM sedang disiapkan</h3><p className="mt-2 text-sm leading-6 text-slate-500">Profil dan produk UMKM akan tampil setelah diterbitkan oleh admin desa.</p></section>
-  return <section className="mt-6" aria-label="Katalog UMKM"><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{catalog.map((business) => <Link key={business.id} href={`/infografis/umkm/${business.slug}`} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg"><div className="flex items-start gap-4"><img src={business.logoUrl} alt={`Logo ${business.name}`} className="size-16 rounded-2xl border border-slate-100 bg-slate-50 object-cover" /><div className="min-w-0"><span className="inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800">{business.category}</span><h3 className="mt-2 truncate text-lg font-black text-slate-950">{business.name}</h3></div></div><p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">{business.description}</p><div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-sm"><span className="font-bold text-slate-600">{business.productCount} produk tersedia</span><span className="font-bold text-emerald-700 transition group-hover:translate-x-1">Lihat profil →</span></div></Link>)}</div></section>
+  const perPage = 9
+  const totalPages = Math.max(1, Math.ceil(catalog.length / perPage))
+  const currentPage = Math.min(page, totalPages)
+  const visibleCatalog = catalog.slice((currentPage - 1) * perPage, currentPage * perPage)
+  return <section className="mt-6" aria-label="Katalog UMKM"><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleCatalog.map((business) => <Link key={business.id} href={`/infografis/umkm/${business.slug}`} prefetch={false} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg"><div className="flex items-start gap-4"><img src={business.logoUrl} alt={`Logo ${business.name}`} className="size-16 rounded-2xl border border-slate-100 bg-slate-50 object-cover" /><div className="min-w-0"><span className="inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800">{business.category}</span><h3 className="mt-2 truncate text-lg font-black text-slate-950">{business.name}</h3></div></div><p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">{business.description}</p><div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-sm"><span className="font-bold text-slate-600">{business.productCount} produk tersedia</span><span className="font-bold text-emerald-700 transition group-hover:translate-x-1">Lihat profil →</span></div></Link>)}</div><PaginationControls className="mt-6 rounded-3xl border border-slate-200 bg-white" page={currentPage} totalPages={totalPages} totalItems={catalog.length} pageSize={perPage} onPageChange={setPage} itemLabel="UMKM" /></section>
 }

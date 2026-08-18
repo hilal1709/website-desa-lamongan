@@ -15,6 +15,6 @@ function createPrismaClient() {
 const cachedPrisma = globalForPrisma.prisma;
 // Prisma Client is regenerated when the schema changes. In development, discard
 // a cached client generated before a newly added model is available.
-export const prisma = cachedPrisma && "adminUser" in cachedPrisma && "umkm" in cachedPrisma && globalForPrisma.prismaUsesTls === usesTls ? cachedPrisma : createPrismaClient();
+export const prisma = cachedPrisma && "adminUser" in cachedPrisma && "umkm" in cachedPrisma && "populationEvent" in cachedPrisma && globalForPrisma.prismaUsesTls === usesTls ? cachedPrisma : createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") { globalForPrisma.prisma = prisma; globalForPrisma.prismaUsesTls = usesTls; }
