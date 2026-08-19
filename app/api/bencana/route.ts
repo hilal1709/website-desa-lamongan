@@ -1,31 +1,23 @@
 import { NextResponse } from "next/server"
-import { revalidateTag, unstable_cache } from "next/cache"
+import { revalidateTag } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
 import { publishCmsUpdate } from "@/lib/pusher"
 
 const validTypes = new Set(["EVAKUASI", "RAWAN", "POSKO"])
 const validOverrides = new Set(["auto", "aman", "waspada", "bahaya"])
-const getCachedDisasterData = unstable_cache(
-  async () => {
-    const [setting, locations] = await Promise.all([
-      prisma.disasterSetting.findUnique({ where: { id: 1 } }),
-      prisma.disasterLocation.findMany({ where: { isActive: true }, orderBy: { updatedAt: "desc" } }),
-    ])
-    return { setting: setting ?? { override: "auto", announcement: null, updatedAt: null }, locations }
-  },
-  ["disaster-data"],
-  { revalidate: 60, tags: ["disaster-data"] },
-)
-
 export async function GET(request: Request) {
   const includeInactive = new URL(request.url).searchParams.get("includeInactive") === "1"
-  if (!includeInactive) return NextResponse.json(await getCachedDisasterData(), { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" } })
-
   const [setting, locations] = await Promise.all([
     prisma.disasterSetting.findUnique({ where: { id: 1 } }),
-    prisma.disasterLocation.findMany({ orderBy: { updatedAt: "desc" } }),
+    prisma.disasterLocation.findMany({ where: includeInactive ? undefined : { isActive: true }, orderBy: { updatedAt: "desc" } }),
   ])
-  return NextResponse.json({ setting: setting ?? { override: "auto", announcement: null, updatedAt: null }, locations }, { headers: { "Cache-Control": "no-store" } })
+  // The public components refetch this endpoint after a Pusher event. A CDN
+  // stale-while-revalidate response would overwrite that fresh UI with the
+  // previous status, so disaster data must never be served from an HTTP cache.
+  return NextResponse.json(
+    { setting: setting ?? { override: "auto", announcement: null, updatedAt: null }, locations },
+    { headers: { "Cache-Control": "no-store, max-age=0" } },
+  )
 }
 
 export async function PUT(request: Request) {
