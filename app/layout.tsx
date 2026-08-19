@@ -4,6 +4,11 @@ import "./globals.css"
 import { SiteShell } from "@/components/layout/site-shell"
 import { prisma } from "@/app/lib/prisma"
 
+// Public content is maintained through the CMS. Render at request time so a
+// refresh triggered by the CMS update signal always reads the latest database
+// values on Vercel as well as in local development.
+export const dynamic = "force-dynamic"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {

@@ -6,16 +6,21 @@ import { useRouter } from "next/navigation"
 export function PublicContentSync() {
   const router = useRouter()
   const refreshTimer = useRef<number | null>(null)
+  const isActive = useRef(false)
 
   useEffect(() => {
+    isActive.current = true
     const key = process.env.NEXT_PUBLIC_PUSHER_KEY
     const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER
     let cancelled = false
     let disconnect: (() => void) | undefined
 
     const refreshPublicContent = () => {
+      if (!isActive.current) return
       if (refreshTimer.current) window.clearTimeout(refreshTimer.current)
-      refreshTimer.current = window.setTimeout(() => router.refresh(), 300)
+      refreshTimer.current = window.setTimeout(() => {
+        if (isActive.current) router.refresh()
+      }, 300)
     }
 
     // Keep public content current even when a WebSocket is blocked by a browser,
@@ -32,6 +37,7 @@ export function PublicContentSync() {
 
     if (!key || !cluster) {
       return () => {
+        isActive.current = false
         window.clearInterval(poll)
         window.removeEventListener("visibilitychange", refreshWhenVisible)
         window.removeEventListener("storage", refreshFromAdminTab)
@@ -54,6 +60,7 @@ export function PublicContentSync() {
     })
 
     return () => {
+      isActive.current = false
       cancelled = true
       window.clearInterval(poll)
       window.removeEventListener("visibilitychange", refreshWhenVisible)

@@ -1,6 +1,5 @@
 import "server-only"
 
-import { unstable_cache } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
 import type { UmkmCatalogItem, UmkmCategoryStat, UmkmProduct, UmkmPublicData } from "@/types"
 
@@ -11,7 +10,7 @@ function normalizedCategory(value: string) {
   return value.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID")
 }
 
-export const getCachedUmkmData = unstable_cache(async (): Promise<UmkmPublicData> => {
+export async function getCachedUmkmData(): Promise<UmkmPublicData> {
   try {
     const businesses = await prisma.umkm.findMany({
       where: { isPublished: true },
@@ -32,9 +31,9 @@ export const getCachedUmkmData = unstable_cache(async (): Promise<UmkmPublicData
   } catch {
     return emptyUmkmData
   }
-}, ["umkm-public"], { revalidate: 60, tags: ["umkm"] })
+}
 
-export const getCachedUmkmBySlug = (slug: string) => unstable_cache(async () => {
+export async function getCachedUmkmBySlug(slug: string) {
   try {
     const business = await prisma.umkm.findFirst({
       where: { slug, isPublished: true },
@@ -44,4 +43,4 @@ export const getCachedUmkmBySlug = (slug: string) => unstable_cache(async () => 
   } catch {
     return null
   }
-}, ["umkm-detail", slug], { revalidate: 60, tags: ["umkm"] })()
+}

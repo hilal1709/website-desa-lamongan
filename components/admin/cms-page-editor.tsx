@@ -18,9 +18,18 @@ export function CmsPageEditor() {
   const [message, setMessage] = useState("")
 
   useEffect(() => {
-    fetch("/api/cms/pages")
+    const controller = new AbortController()
+
+    void fetch("/api/cms/pages", { signal: controller.signal })
       .then((response) => response.json())
-      .then((payload) => setPages(payload.pages ?? []))
+      .then((payload) => {
+        if (!controller.signal.aborted) setPages(payload.pages ?? [])
+      })
+      .catch((error: unknown) => {
+        if ((error as { name?: string }).name !== "AbortError") console.error("CMS pages could not be loaded", error)
+      })
+
+    return () => controller.abort()
   }, [])
 
   useEffect(() => {

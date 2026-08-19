@@ -18,7 +18,20 @@ export function NewsManager() {
   const [message, setMessage] = useState("")
   const [articlePage, setArticlePage] = useState(1)
   const articlesPerPage = 10
-  useEffect(() => { fetch("/api/cms/news").then((res) => res.json()).then((value) => setData(value)) }, [])
+  useEffect(() => {
+    const controller = new AbortController()
+
+    void fetch("/api/cms/news", { signal: controller.signal })
+      .then((response) => response.json())
+      .then((value) => {
+        if (!controller.signal.aborted) setData(value)
+      })
+      .catch((error: unknown) => {
+        if ((error as { name?: string }).name !== "AbortError") console.error("CMS news could not be loaded", error)
+      })
+
+    return () => controller.abort()
+  }, [])
   const save = async (next = data) => { const response = await fetch("/api/cms/news", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(next) }); if (response.ok) { setData(next); setArticlePage(1); setMessage("Perubahan berita disimpan.") } }
   const update = <K extends keyof CmsNewsArticle>(key: K, value: CmsNewsArticle[K]) => setArticle((current) => current ? { ...current, [key]: value } : current)
   const saveArticle = async () => { if (!article?.title.trim() || !article.category) return setMessage("Judul dan kategori wajib diisi."); const next = { ...data, articles: data.articles.some((item) => item.id === article.id) ? data.articles.map((item) => item.id === article.id ? article : item) : [article, ...data.articles] }; await save(next); setArticle(null) }

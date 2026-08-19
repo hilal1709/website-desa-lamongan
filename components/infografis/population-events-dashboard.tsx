@@ -56,31 +56,52 @@ export function PopulationEventsDashboard() {
 
   useEffect(() => {
     const controller = new AbortController()
-    queueMicrotask(() => setLoading(true))
+    let active = true
+
+    setLoading(true)
     fetch(`/api/infografis/kependudukan?${query}`, { signal: controller.signal })
       .then(async (response) => {
         const body = await response.json()
         if (!response.ok) throw new Error(body.error)
-        setData(body)
-        setMessage("")
+        if (active) {
+          setData(body)
+          setMessage("")
+        }
       })
       .catch((error: unknown) => {
-        if ((error as { name?: string }).name !== "AbortError") setMessage(error instanceof Error ? error.message : "Data belum dapat dimuat.")
+        if (active && (error as { name?: string }).name !== "AbortError") setMessage(error instanceof Error ? error.message : "Data belum dapat dimuat.")
       })
-      .finally(() => setLoading(false))
-    return () => controller.abort()
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+      controller.abort()
+    }
   }, [query])
 
   useEffect(() => {
+    let active = true
+    const controller = new AbortController()
     const refreshPopulationData = (event: Event) => {
       const topic = (event as CustomEvent<{ topic?: string }>).detail?.topic
-      if (topic === "population") void fetch(`/api/infografis/kependudukan?${query}`).then(async (response) => {
-        const body = await response.json()
-        if (response.ok) setData(body)
-      })
+      if (topic === "population") {
+        void fetch(`/api/infografis/kependudukan?${query}`, { signal: controller.signal })
+          .then(async (response) => {
+            const body = await response.json()
+            if (active && response.ok) setData(body)
+          })
+          .catch((error: unknown) => {
+            if (active && (error as { name?: string }).name !== "AbortError") console.error("Population data could not be refreshed", error)
+          })
+      }
     }
     window.addEventListener("cms-content-updated", refreshPopulationData)
-    return () => window.removeEventListener("cms-content-updated", refreshPopulationData)
+    return () => {
+      active = false
+      controller.abort()
+      window.removeEventListener("cms-content-updated", refreshPopulationData)
+    }
   }, [query])
 
   const setFilter = (setValue: (value: string) => void) => (value: string) => {

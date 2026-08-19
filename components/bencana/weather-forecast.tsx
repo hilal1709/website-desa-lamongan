@@ -100,9 +100,14 @@ export function WeatherForecast({
     }
 
     void fetchForecast()
+    const refreshFromRealtimeEvent = (event: Event) => {
+      if ((event as CustomEvent<{ topic?: string }>).detail?.topic === "disaster") void fetchForecast()
+    }
+    window.addEventListener("cms-content-updated", refreshFromRealtimeEvent)
     const refreshInterval = window.setInterval(() => void fetchForecast(), 60 * 1000)
     return () => {
       active = false
+      window.removeEventListener("cms-content-updated", refreshFromRealtimeEvent)
       window.clearInterval(refreshInterval)
     }
   }, [period, onRiskChange, onWeatherUpdate])

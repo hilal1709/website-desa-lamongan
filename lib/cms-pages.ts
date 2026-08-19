@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
 import type { Prisma } from "@/generated/prisma/client"
 
@@ -435,13 +434,8 @@ async function readCmsPages() {
   }
 }
 
-const getCachedCmsPages = unstable_cache(readCmsPages, ["cms-pages"], {
-  tags: ["cms-pages"],
-  revalidate: 3600,
-})
-
 export async function getCmsPages() {
-  return getCachedCmsPages()
+  return readCmsPages()
 }
 
 // The editor must always receive the current list, including pages added after

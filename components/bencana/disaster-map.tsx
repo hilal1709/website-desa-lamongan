@@ -42,8 +42,12 @@ export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "ba
     }
 
     void loadLocations()
+    const refreshFromRealtimeEvent = (event: Event) => {
+      if ((event as CustomEvent<{ topic?: string }>).detail?.topic === "disaster") void loadLocations()
+    }
+    window.addEventListener("cms-content-updated", refreshFromRealtimeEvent)
     const refresh = window.setInterval(() => void loadLocations(), 60_000)
-    return () => { cancelled = true; window.clearInterval(refresh) }
+    return () => { cancelled = true; window.removeEventListener("cms-content-updated", refreshFromRealtimeEvent); window.clearInterval(refresh) }
   }, [])
 
   if (!isClient) {
