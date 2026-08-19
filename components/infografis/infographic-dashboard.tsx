@@ -9,9 +9,9 @@ import { PopulationEventsDashboard } from "./population-events-dashboard"
 import { UmkmCatalog, UmkmVisualization } from "./umkm-data"
 import type { UmkmPublicData } from "@/types"
 
-export function InfographicDashboard({ umkm }: { umkm: UmkmPublicData }) {
-  const [activeData, setActiveData] = useState<DataView>("infografis")
-  const [umkmSection, setUmkmSection] = useState<"visualisasi" | "katalog">("visualisasi")
+export function InfographicDashboard({ umkm, initialData = "infografis", initialUmkmSection = "visualisasi" }: { umkm: UmkmPublicData; initialData?: DataView; initialUmkmSection?: "visualisasi" | "katalog" }) {
+  const [activeData, setActiveData] = useState<DataView>(initialData)
+  const [umkmSection, setUmkmSection] = useState<"visualisasi" | "katalog">(initialUmkmSection)
 
   if (activeData === "medis") {
     return <InfographicMotion><DataSelector active={activeData} onChange={setActiveData} /><EmptyState title="Data rekam medis belum tersedia" description="Data akan tampil setelah sumber rekam medis terhubung ke sistem." /></InfographicMotion>

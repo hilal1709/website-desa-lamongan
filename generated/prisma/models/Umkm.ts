@@ -33,6 +33,8 @@ export type UmkmMinAggregateOutputType = {
   logoUrl: string | null
   whatsapp: string | null
   address: string | null
+  dusun: string | null
+  registeredAt: Date | null
   isPublished: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -47,6 +49,8 @@ export type UmkmMaxAggregateOutputType = {
   logoUrl: string | null
   whatsapp: string | null
   address: string | null
+  dusun: string | null
+  registeredAt: Date | null
   isPublished: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -61,6 +65,8 @@ export type UmkmCountAggregateOutputType = {
   logoUrl: number
   whatsapp: number
   address: number
+  dusun: number
+  registeredAt: number
   isPublished: number
   createdAt: number
   updatedAt: number
@@ -77,6 +83,8 @@ export type UmkmMinAggregateInputType = {
   logoUrl?: true
   whatsapp?: true
   address?: true
+  dusun?: true
+  registeredAt?: true
   isPublished?: true
   createdAt?: true
   updatedAt?: true
@@ -91,6 +99,8 @@ export type UmkmMaxAggregateInputType = {
   logoUrl?: true
   whatsapp?: true
   address?: true
+  dusun?: true
+  registeredAt?: true
   isPublished?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +115,8 @@ export type UmkmCountAggregateInputType = {
   logoUrl?: true
   whatsapp?: true
   address?: true
+  dusun?: true
+  registeredAt?: true
   isPublished?: true
   createdAt?: true
   updatedAt?: true
@@ -192,6 +204,8 @@ export type UmkmGroupByOutputType = {
   logoUrl: string
   whatsapp: string
   address: string | null
+  dusun: string
+  registeredAt: Date
   isPublished: boolean
   createdAt: Date
   updatedAt: Date
@@ -227,6 +241,8 @@ export type UmkmWhereInput = {
   logoUrl?: Prisma.StringFilter<"Umkm"> | string
   whatsapp?: Prisma.StringFilter<"Umkm"> | string
   address?: Prisma.StringNullableFilter<"Umkm"> | string | null
+  dusun?: Prisma.StringFilter<"Umkm"> | string
+  registeredAt?: Prisma.DateTimeFilter<"Umkm"> | Date | string
   isPublished?: Prisma.BoolFilter<"Umkm"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Umkm"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Umkm"> | Date | string
@@ -242,6 +258,8 @@ export type UmkmOrderByWithRelationInput = {
   logoUrl?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  dusun?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -260,6 +278,8 @@ export type UmkmWhereUniqueInput = Prisma.AtLeast<{
   logoUrl?: Prisma.StringFilter<"Umkm"> | string
   whatsapp?: Prisma.StringFilter<"Umkm"> | string
   address?: Prisma.StringNullableFilter<"Umkm"> | string | null
+  dusun?: Prisma.StringFilter<"Umkm"> | string
+  registeredAt?: Prisma.DateTimeFilter<"Umkm"> | Date | string
   isPublished?: Prisma.BoolFilter<"Umkm"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Umkm"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Umkm"> | Date | string
@@ -275,6 +295,8 @@ export type UmkmOrderByWithAggregationInput = {
   logoUrl?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  dusun?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -295,6 +317,8 @@ export type UmkmScalarWhereWithAggregatesInput = {
   logoUrl?: Prisma.StringWithAggregatesFilter<"Umkm"> | string
   whatsapp?: Prisma.StringWithAggregatesFilter<"Umkm"> | string
   address?: Prisma.StringNullableWithAggregatesFilter<"Umkm"> | string | null
+  dusun?: Prisma.StringWithAggregatesFilter<"Umkm"> | string
+  registeredAt?: Prisma.DateTimeWithAggregatesFilter<"Umkm"> | Date | string
   isPublished?: Prisma.BoolWithAggregatesFilter<"Umkm"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Umkm"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Umkm"> | Date | string
@@ -309,6 +333,8 @@ export type UmkmCreateInput = {
   logoUrl: string
   whatsapp: string
   address?: string | null
+  dusun?: string
+  registeredAt?: Date | string
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -324,6 +350,8 @@ export type UmkmUncheckedCreateInput = {
   logoUrl: string
   whatsapp: string
   address?: string | null
+  dusun?: string
+  registeredAt?: Date | string
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -339,6 +367,8 @@ export type UmkmUpdateInput = {
   logoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   whatsapp?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -354,6 +384,8 @@ export type UmkmUncheckedUpdateInput = {
   logoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   whatsapp?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -369,6 +401,8 @@ export type UmkmCreateManyInput = {
   logoUrl: string
   whatsapp: string
   address?: string | null
+  dusun?: string
+  registeredAt?: Date | string
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -383,6 +417,8 @@ export type UmkmUpdateManyMutationInput = {
   logoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   whatsapp?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -397,6 +433,8 @@ export type UmkmUncheckedUpdateManyInput = {
   logoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   whatsapp?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,6 +449,8 @@ export type UmkmCountOrderByAggregateInput = {
   logoUrl?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  dusun?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -425,6 +465,8 @@ export type UmkmMaxOrderByAggregateInput = {
   logoUrl?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  dusun?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -439,6 +481,8 @@ export type UmkmMinOrderByAggregateInput = {
   logoUrl?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  dusun?: Prisma.SortOrder
+  registeredAt?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -472,6 +516,8 @@ export type UmkmCreateWithoutProductsInput = {
   logoUrl: string
   whatsapp: string
   address?: string | null
+  dusun?: string
+  registeredAt?: Date | string
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -486,6 +532,8 @@ export type UmkmUncheckedCreateWithoutProductsInput = {
   logoUrl: string
   whatsapp: string
   address?: string | null
+  dusun?: string
+  registeredAt?: Date | string
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -516,6 +564,8 @@ export type UmkmUpdateWithoutProductsInput = {
   logoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   whatsapp?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -530,6 +580,8 @@ export type UmkmUncheckedUpdateWithoutProductsInput = {
   logoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   whatsapp?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -575,6 +627,8 @@ export type UmkmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   logoUrl?: boolean
   whatsapp?: boolean
   address?: boolean
+  dusun?: boolean
+  registeredAt?: boolean
   isPublished?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -591,6 +645,8 @@ export type UmkmSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   logoUrl?: boolean
   whatsapp?: boolean
   address?: boolean
+  dusun?: boolean
+  registeredAt?: boolean
   isPublished?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -605,6 +661,8 @@ export type UmkmSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   logoUrl?: boolean
   whatsapp?: boolean
   address?: boolean
+  dusun?: boolean
+  registeredAt?: boolean
   isPublished?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -619,12 +677,14 @@ export type UmkmSelectScalar = {
   logoUrl?: boolean
   whatsapp?: boolean
   address?: boolean
+  dusun?: boolean
+  registeredAt?: boolean
   isPublished?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UmkmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "category" | "description" | "logoUrl" | "whatsapp" | "address" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["umkm"]>
+export type UmkmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "category" | "description" | "logoUrl" | "whatsapp" | "address" | "dusun" | "registeredAt" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["umkm"]>
 export type UmkmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Umkm$productsArgs<ExtArgs>
   _count?: boolean | Prisma.UmkmCountOutputTypeDefaultArgs<ExtArgs>
@@ -646,6 +706,8 @@ export type $UmkmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     logoUrl: string
     whatsapp: string
     address: string | null
+    dusun: string
+    registeredAt: Date
     isPublished: boolean
     createdAt: Date
     updatedAt: Date
@@ -1081,6 +1143,8 @@ export interface UmkmFieldRefs {
   readonly logoUrl: Prisma.FieldRef<"Umkm", 'String'>
   readonly whatsapp: Prisma.FieldRef<"Umkm", 'String'>
   readonly address: Prisma.FieldRef<"Umkm", 'String'>
+  readonly dusun: Prisma.FieldRef<"Umkm", 'String'>
+  readonly registeredAt: Prisma.FieldRef<"Umkm", 'DateTime'>
   readonly isPublished: Prisma.FieldRef<"Umkm", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Umkm", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Umkm", 'DateTime'>

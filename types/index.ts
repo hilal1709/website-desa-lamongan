@@ -31,6 +31,7 @@ export interface OccupationStat { id: string; year: number; dusun: string; occup
 export interface PopulationTrend { id: string; year: number; total_population: number }
 export interface DocumentItem { title: string; category: string; date: string; size: string }
 export interface UmkmProduct { id: string; name: string; description: string; imageUrl: string; price: number; isAvailable: boolean }
-export interface UmkmCatalogItem { id: string; name: string; slug: string; category: string; description: string; logoUrl: string; whatsapp: string; address: string | null; productCount: number }
+export interface UmkmCatalogItem { id: string; name: string; slug: string; category: string; description: string; logoUrl: string; whatsapp: string; address: string | null; dusun: string; registeredAt: string; productCount: number }
 export interface UmkmCategoryStat { category: string; businesses: number; products: number }
-export interface UmkmPublicData { catalog: UmkmCatalogItem[]; categories: UmkmCategoryStat[]; totalBusinesses: number; totalProducts: number }
+export interface UmkmYearlyStat { year: number; added: number; total: number }
+export interface UmkmPublicData { catalog: UmkmCatalogItem[]; categories: UmkmCategoryStat[]; hamlets: string[]; yearly: UmkmYearlyStat[]; totalBusinesses: number; totalProducts: number }

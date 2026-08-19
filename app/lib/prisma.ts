@@ -2,7 +2,8 @@ import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient; prismaUsesTls?: boolean };
+const prismaSchemaVersion = "20260819120000_add_umkm_tracking"
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient; prismaUsesTls?: boolean; prismaSchemaVersion?: string };
 const databaseUrl = process.env.DATABASE_URL ?? "";
 const usesTls = databaseUrl.includes("supabase.com") || databaseUrl.includes("sslmode=require");
 
@@ -13,8 +14,8 @@ function createPrismaClient() {
 }
 
 const cachedPrisma = globalForPrisma.prisma;
-// Prisma Client is regenerated when the schema changes. In development, discard
-// a cached client generated before a newly added model is available.
-export const prisma = cachedPrisma && "adminUser" in cachedPrisma && "umkm" in cachedPrisma && "populationEvent" in cachedPrisma && globalForPrisma.prismaUsesTls === usesTls ? cachedPrisma : createPrismaClient();
+// In development, discard the cached client after schema changes so Turbopack
+// cannot continue querying with an outdated generated Prisma Client.
+export const prisma = cachedPrisma && "adminUser" in cachedPrisma && "umkm" in cachedPrisma && "populationEvent" in cachedPrisma && globalForPrisma.prismaUsesTls === usesTls && globalForPrisma.prismaSchemaVersion === prismaSchemaVersion ? cachedPrisma : createPrismaClient();
 
-if (process.env.NODE_ENV !== "production") { globalForPrisma.prisma = prisma; globalForPrisma.prismaUsesTls = usesTls; }
+if (process.env.NODE_ENV !== "production") { globalForPrisma.prisma = prisma; globalForPrisma.prismaUsesTls = usesTls; globalForPrisma.prismaSchemaVersion = prismaSchemaVersion }

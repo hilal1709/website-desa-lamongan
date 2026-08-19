@@ -19,15 +19,17 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
 }
-export default async function InfografisPage() {
-  const umkm = await getCachedUmkmData()
+export default async function InfografisPage({ searchParams }: { searchParams: Promise<{ tab?: string; section?: string }> }) {
+  const [umkm, params] = await Promise.all([getCachedUmkmData(), searchParams])
+  const initialData = params.tab === "umkm" ? "umkm" : "infografis"
+  const initialUmkmSection = params.section === "katalog" ? "katalog" : "visualisasi"
 
   return (
     <>
       <Hero />
       <main className="bg-slate-50 px-3 py-7 sm:px-5 sm:py-10 lg:py-14" suppressHydrationWarning>
         <div className="mx-auto max-w-7xl">
-          <InfographicDashboard umkm={umkm} />
+          <InfographicDashboard umkm={umkm} initialData={initialData} initialUmkmSection={initialUmkmSection} />
         </div>
       </main>
     </>

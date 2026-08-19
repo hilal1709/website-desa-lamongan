@@ -1845,6 +1845,8 @@ export const UmkmScalarFieldEnum = {
   logoUrl: 'logoUrl',
   whatsapp: 'whatsapp',
   address: 'address',
+  dusun: 'dusun',
+  registeredAt: 'registeredAt',
   isPublished: 'isPublished',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

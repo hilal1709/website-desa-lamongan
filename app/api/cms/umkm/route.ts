@@ -5,7 +5,7 @@ import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { publishCmsUpdate } from "@/lib/pusher"
 
-const limit = { name: 120, slug: 140, category: 80, description: 2000, logoUrl: 500, whatsapp: 32, address: 300 }
+const limit = { name: 120, slug: 140, category: 80, description: 2000, logoUrl: 500, whatsapp: 32, address: 300, dusun: 100 }
 const text = (value: unknown, field: keyof typeof limit) => typeof value === "string" ? value.trim().slice(0, limit[field]) : ""
 const slugify = (value: string) => value.toLocaleLowerCase("id-ID").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
 
@@ -17,8 +17,10 @@ function profileInput(body: Record<string, unknown>) {
   const logoUrl = text(body.logoUrl, "logoUrl")
   const whatsapp = text(body.whatsapp, "whatsapp").replace(/\D/g, "")
   const address = text(body.address, "address")
-  if (!name || !slug || !category || !description || !logoUrl || whatsapp.length < 9) return null
-  return { name, slug, category, description, logoUrl, whatsapp, address: address || null, isPublished: body.isPublished !== false }
+  const dusun = text(body.dusun, "dusun")
+  const registeredAt = typeof body.registeredAt === "string" ? new Date(`${body.registeredAt.slice(0, 10)}T00:00:00.000Z`) : new Date()
+  if (!name || !slug || !category || !description || !logoUrl || !dusun || whatsapp.length < 9 || Number.isNaN(registeredAt.getTime())) return null
+  return { name, slug, category, description, logoUrl, whatsapp, address: address || null, dusun, registeredAt, isPublished: body.isPublished !== false }
 }
 
 async function requireAdmin() {
@@ -38,7 +40,7 @@ export async function GET() {
 export async function POST(request: Request) {
   if (!(await requireAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
   const input = profileInput(await request.json() as Record<string, unknown>)
-  if (!input) return NextResponse.json({ message: "Lengkapi profil UMKM, logo, dan nomor WhatsApp yang valid." }, { status: 400 })
+  if (!input) return NextResponse.json({ message: "Lengkapi profil UMKM, dusun, tanggal pencatatan, logo, dan nomor WhatsApp yang valid." }, { status: 400 })
   try {
     const business = await prisma.umkm.create({ data: input, include: { products: true } })
     revalidateTag("umkm", { expire: 0 })
