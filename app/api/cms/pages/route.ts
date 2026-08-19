@@ -15,7 +15,7 @@ export async function PUT(request: Request) {
   }
 
   await saveCmsPages(body.pages)
-  revalidateTag("cms-pages", "max")
+  revalidateTag("cms-pages", { expire: 0 })
   revalidateTag("admin-dashboard", "max")
   // The public pages consume CMS content through route-level caches. Invalidate
   // the root layout so every affected public route is regenerated on its next visit.

@@ -68,7 +68,7 @@ export async function PUT(request: Request) {
       return { setting, locations: await tx.disasterLocation.findMany({ where: { isActive: true }, orderBy: { updatedAt: "desc" } }) }
     })
 
-    revalidateTag("disaster-data", "max")
+    revalidateTag("disaster-data", { expire: 0 })
     await publishCmsUpdate("disaster")
     return NextResponse.json(result)
   } catch (error) {

@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   if (!umkmId || !input) return NextResponse.json({ message: "Lengkapi nama, deskripsi, gambar, dan harga produk." }, { status: 400 })
   try {
     const product = await prisma.umkmProduct.create({ data: { ...input, umkmId } })
-    revalidateTag("umkm", "max")
+    revalidateTag("umkm", { expire: 0 })
     await publishCmsUpdate("umkm")
     return NextResponse.json({ product }, { status: 201 })
   } catch { return databaseError() }
@@ -41,7 +41,7 @@ export async function PUT(request: Request) {
   if (!id || !input) return NextResponse.json({ message: "Data produk tidak valid." }, { status: 400 })
   try {
     const product = await prisma.umkmProduct.update({ where: { id }, data: input })
-    revalidateTag("umkm", "max")
+    revalidateTag("umkm", { expire: 0 })
     await publishCmsUpdate("umkm")
     return NextResponse.json({ product })
   } catch (error) {
@@ -56,7 +56,7 @@ export async function DELETE(request: Request) {
   if (!id) return NextResponse.json({ message: "ID produk wajib diisi." }, { status: 400 })
   try {
     await prisma.umkmProduct.delete({ where: { id } })
-    revalidateTag("umkm", "max")
+    revalidateTag("umkm", { expire: 0 })
     await publishCmsUpdate("umkm")
     return new NextResponse(null, { status: 204 })
   } catch { return databaseError() }

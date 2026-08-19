@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   if (!input) return NextResponse.json({ message: "Lengkapi profil UMKM, logo, dan nomor WhatsApp yang valid." }, { status: 400 })
   try {
     const business = await prisma.umkm.create({ data: input, include: { products: true } })
-    revalidateTag("umkm", "max")
+    revalidateTag("umkm", { expire: 0 })
     revalidateTag("admin-dashboard", "max")
     await publishCmsUpdate("umkm")
     return NextResponse.json({ business }, { status: 201 })
@@ -59,7 +59,7 @@ export async function PUT(request: Request) {
   if (!id || !input) return NextResponse.json({ message: "Data UMKM tidak valid." }, { status: 400 })
   try {
     const business = await prisma.umkm.update({ where: { id }, data: input, include: { products: true } })
-    revalidateTag("umkm", "max")
+    revalidateTag("umkm", { expire: 0 })
     revalidateTag("admin-dashboard", "max")
     await publishCmsUpdate("umkm")
     return NextResponse.json({ business })
@@ -76,7 +76,7 @@ export async function DELETE(request: Request) {
   if (!id) return NextResponse.json({ message: "ID UMKM wajib diisi." }, { status: 400 })
   try {
     await prisma.umkm.delete({ where: { id } })
-    revalidateTag("umkm", "max")
+    revalidateTag("umkm", { expire: 0 })
     revalidateTag("admin-dashboard", "max")
     await publishCmsUpdate("umkm")
     return new NextResponse(null, { status: 204 })

@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     if (earliestEvent && earliestEvent.eventDate < effectiveDate) throw new Error("Tanggal saldo awal tidak boleh setelah catatan peristiwa yang sudah ada.")
 
     const balance = await prisma.populationOpeningBalance.upsert({ where: { dusun }, update: { effectiveDate, totalPopulation, demographics }, create: { dusun, effectiveDate, totalPopulation, demographics } })
-    revalidateTag("population-events", "max")
+    revalidateTag("population-events", { expire: 0 })
     revalidatePath("/infografis")
     await publishCmsUpdate("population")
     return Response.json(balance)
@@ -61,7 +61,7 @@ export async function DELETE(request: Request) {
     if (eventCount > 0) throw new Error("Saldo awal tidak dapat dihapus karena dusun ini masih memiliki catatan peristiwa. Hapus catatan peristiwa terlebih dahulu.")
 
     await prisma.populationOpeningBalance.delete({ where: { id: balance.id } })
-    revalidateTag("population-events", "max")
+    revalidateTag("population-events", { expire: 0 })
     revalidatePath("/infografis")
     await publishCmsUpdate("population")
     return new Response(null, { status: 204 })

@@ -8,7 +8,7 @@ export async function PUT(request: Request) {
   const data = await request.json() as CmsNewsData
   if (!Array.isArray(data.categories) || !Array.isArray(data.articles)) return NextResponse.json({ message: "Data berita tidak valid." }, { status: 400 })
   await saveCmsNews({ categories: data.categories.map((item) => item.trim()).filter(Boolean), articles: data.articles })
-  revalidateTag("cms-news", "max")
+  revalidateTag("cms-news", { expire: 0 })
   revalidateTag("admin-dashboard", "max")
   revalidatePath("/berita")
   data.articles.filter((article) => article.slug).forEach((article) => revalidatePath(`/berita/${article.slug}`))

@@ -8,7 +8,7 @@ import { publishCmsUpdate } from "@/lib/pusher"
 export const dynamic = "force-dynamic"
 
 function refreshed() {
-  revalidateTag("population-events", "max")
+  revalidateTag("population-events", { expire: 0 })
   revalidatePath("/infografis")
 }
 
