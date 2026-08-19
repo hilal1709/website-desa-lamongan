@@ -24,6 +24,7 @@ export function WeatherForecast({
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState<7 | 14>(7)
   const [currentRisk, setCurrentRisk] = useState<"aman" | "waspada" | "bahaya">("aman")
+  const [manualOverride, setManualOverride] = useState<"auto" | "aman" | "waspada" | "bahaya">("auto")
   const [lastUpdated, setLastUpdated] = useState("")
   const [error, setError] = useState("")
 
@@ -33,9 +34,15 @@ export function WeatherForecast({
     async function fetchForecast() {
       setLoading(true)
       try {
-        const response = await fetch(`/api/weather?period=${period}`)
+        const [response, disasterResponse] = await Promise.all([
+          fetch(`/api/weather?period=${period}`, { cache: "no-store" }),
+          fetch("/api/bencana", { cache: "no-store" }),
+        ])
         if (!response.ok) throw new Error("Permintaan data cuaca gagal")
         const data = await response.json()
+        const disasterData = disasterResponse.ok
+          ? await disasterResponse.json() as { setting?: { override?: "auto" | "aman" | "waspada" | "bahaya" } }
+          : undefined
 
         if (!data?.daily?.time) throw new Error("Data prakiraan cuaca tidak tersedia")
 
@@ -68,11 +75,14 @@ export function WeatherForecast({
             risk = "waspada"
           }
 
-          setCurrentRisk(risk)
-          onRiskChange(risk)
+          const override = disasterData?.setting?.override ?? "auto"
+          const displayedRisk = override === "auto" ? risk : override
+          setManualOverride(override)
+          setCurrentRisk(displayedRisk)
+          onRiskChange(displayedRisk)
           if (onWeatherUpdate && parsedDays.length > 0) {
             onWeatherUpdate({
-              risk,
+              risk: displayedRisk,
               precipitationToday: parsedDays[0].precipitation,
               weatherCode: parsedDays[0].weatherCode
             })
@@ -90,7 +100,7 @@ export function WeatherForecast({
     }
 
     void fetchForecast()
-    const refreshInterval = window.setInterval(() => void fetchForecast(), 10 * 60 * 1000)
+    const refreshInterval = window.setInterval(() => void fetchForecast(), 60 * 1000)
     return () => {
       active = false
       window.clearInterval(refreshInterval)
@@ -137,18 +147,18 @@ export function WeatherForecast({
 
             <div>
               <span className="inline-block rounded-full bg-white/20 px-3 py-0.5 text-xs font-black uppercase tracking-wider text-white">
-                Status Prakiraan Cuaca Kedungrejo
+                {manualOverride === "auto" ? "Status Prakiraan Cuaca Kedungrejo" : "Status Bencana dari Admin Desa"}
               </span>
               <h3 className="mt-1 text-2xl font-black tracking-tight">
                 {currentRisk === "bahaya"
-                  ? "Siaga Banjir: Curah Hujan Tinggi Diprakirakan"
+                  ? manualOverride === "bahaya" ? "Siaga Banjir: Peringatan Darurat Desa" : "Siaga Banjir: Curah Hujan Tinggi Diprakirakan"
                   : currentRisk === "waspada"
                   ? "Waspada Cuaca: Potensi Hujan Lebat di Wilayah Modo"
                   : "Kondisi Aman: Cuaca Normal Berawan"}
               </h3>
               <p className="mt-1 text-sm text-white/90 leading-relaxed">
                 {currentRisk === "bahaya"
-                  ? "Peringatan Dini: Curah hujan diperkirakan melebihi 50mm. Warga di bantaran alur sungai Dusun Gabang & Dopok Sambi dihimbau amankan barang berharga."
+                  ? manualOverride === "bahaya" ? "Status ini ditetapkan oleh admin desa berdasarkan kondisi lapangan. Warga diminta mengikuti arahan petugas dan mengutamakan keselamatan." : "Peringatan Dini: Curah hujan diperkirakan melebihi 50mm. Warga di bantaran alur sungai Dusun Gabang & Dopok Sambi dihimbau amankan barang berharga."
                   : currentRisk === "waspada"
                   ? "Diprakirakan terjadi hujan sedang hingga lebat. Warga dihimbau mengecek saluran drainase & mempersiapkan perlengkapan siaga bencana."
                   : "Kondisi cuaca terkendali. Tidak ada indikasi bahaya banjir dalam 24 jam ke depan."}

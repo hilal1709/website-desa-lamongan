@@ -19,7 +19,8 @@ export function PublicContentSync() {
       if (cancelled) return
       const pusher = new Pusher(key, { cluster })
       const channel = pusher.subscribe("cms-public")
-      channel.bind("content-updated", () => {
+      channel.bind("content-updated", (data: { topic?: string }) => {
+        window.dispatchEvent(new CustomEvent("cms-content-updated", { detail: data }))
         if (refreshTimer.current) window.clearTimeout(refreshTimer.current)
         refreshTimer.current = window.setTimeout(() => router.refresh(), 800)
       })

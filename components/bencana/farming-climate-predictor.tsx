@@ -24,6 +24,20 @@ export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLev
 
   // Determine farming & daily life recommendations based on rain precipitation
   const getFarmingStatus = () => {
+    if (riskLevel === "bahaya") {
+      return {
+        planting: { label: "Tunda Aktivitas Tanam", status: "bahaya", color: "bg-rose-50 text-rose-800 border-rose-300", icon: CloudRain, desc: "Status siaga banjir ditetapkan admin desa. Tunda penanaman dan amankan bibit, pupuk, serta alat pertanian dari area rawan." },
+        drying: { label: "Amankan Gabah & Panen", status: "bahaya", color: "bg-rose-50 text-rose-800 border-rose-300", icon: CloudRain, desc: "Hentikan penjemuran. Pindahkan gabah dan hasil panen ke tempat tertutup yang aman dari hujan atau genangan." },
+        residential: { label: "Siaga Banjir", status: "bahaya", color: "bg-rose-100 text-rose-950 border-rose-300", icon: AlertCircle, desc: "Periksa drainase, siapkan dokumen penting dan kebutuhan darurat, serta ikuti arahan petugas desa." }
+      }
+    }
+    if (riskLevel === "waspada") {
+      return {
+        planting: { label: "Tunda Tanam di Area Rawan", status: "waspada", color: "bg-amber-50 text-amber-800 border-amber-300", icon: AlertCircle, desc: "Pantau kondisi saluran air dan hindari menanam di lahan yang berpotensi tergenang." },
+        drying: { label: "Jemur dengan Kesiapsiagaan", status: "waspada", color: "bg-amber-50 text-amber-800 border-amber-300", icon: CloudRain, desc: "Gunakan alas jemur yang mudah dipindahkan dan siapkan pelindung hasil panen." },
+        residential: { label: "Waspada Genangan", status: "waspada", color: "bg-amber-50 text-amber-900 border-amber-300", icon: AlertCircle, desc: "Bersihkan drainase rumah dan pantau informasi kesiapsiagaan dari pemerintah desa." }
+      }
+    }
     if (isHeavyRain) {
       return {
         planting: { label: "Waspada Luapan", status: "waspada", color: "bg-rose-50 text-rose-800 border-rose-200", icon: CloudRain, desc: "Curah hujan sangat tinggi (>50mm). Hindari tanam bibit muda yang rawan hanyut." },
@@ -69,20 +83,20 @@ export function FarmingClimatePredictor({ precipitationSum, weatherCode, riskLev
       </div>
 
       {/* Automatic forecast summary */}
-      <div data-disaster-motion className="flex flex-col gap-3 rounded-3xl border border-emerald-200 bg-emerald-50/60 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+      <div data-disaster-motion className={`flex flex-col gap-3 rounded-3xl border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5 ${riskLevel === "bahaya" ? "border-rose-300 bg-rose-50/70" : riskLevel === "waspada" ? "border-amber-300 bg-amber-50/70" : "border-emerald-200 bg-emerald-50/60"}`}>
         <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-emerald-700 text-white">
+          <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-2xl text-white ${riskLevel === "bahaya" ? "bg-rose-700" : riskLevel === "waspada" ? "bg-amber-700" : "bg-emerald-700"}`}>
             <WeatherIcon className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-xs font-black uppercase text-emerald-950">Prakiraan Cuaca Otomatis Hari Ini</p>
-            <p className="text-xs text-emerald-900/80 font-medium">
+            <p className="text-xs font-black uppercase text-slate-900">{riskLevel === "bahaya" ? "Status Siaga Banjir Desa" : riskLevel === "waspada" ? "Status Waspada Desa" : "Prakiraan Cuaca Otomatis Hari Ini"}</p>
+            <p className="text-xs text-slate-700 font-medium">
               Kondisi: <b>{weatherLabel}</b> · Curah hujan diprakirakan <b>{activeRain} mm/hari</b>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-bold text-emerald-900">
+        <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-900">
           Status 3 hari: <span className={riskLevel === "bahaya" ? "text-rose-700" : riskLevel === "waspada" ? "text-amber-700" : "text-emerald-700"}>{riskLabel}</span>
         </div>
       </div>

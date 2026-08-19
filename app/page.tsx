@@ -69,7 +69,6 @@ export default async function Home() {
       <div className="-mt-[88px]">
         <AnimatedHero content={hero} />
       </div>
-
       <HomeMotion>
       <div className="bg-[#f3f7f3]">
         {stats.length > 0 && <section aria-label="Statistik desa" className="relative z-10 -mt-4 mx-4 grid max-w-7xl grid-cols-2 gap-px overflow-hidden rounded-[24px] bg-slate-200 shadow-xl shadow-slate-900/10 sm:mx-6 md:mx-auto md:grid-cols-4">

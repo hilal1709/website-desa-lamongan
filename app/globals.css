@@ -42,3 +42,16 @@ img {
 ::selection {
   background: rgba(21, 128, 61, 0.16);
 }
+
+@keyframes disaster-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.disaster-ticker {
+  animation: disaster-ticker 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disaster-ticker { animation: none; }
+}
