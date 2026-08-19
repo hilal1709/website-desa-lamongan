@@ -3,6 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { prisma } from "@/app/lib/prisma"
 import { populationAgeGroups, type PopulationAgeGroup, type PopulationDemographicCell } from "@/lib/population-calculations"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
     const balance = await prisma.populationOpeningBalance.upsert({ where: { dusun }, update: { effectiveDate, totalPopulation, demographics }, create: { dusun, effectiveDate, totalPopulation, demographics } })
     revalidateTag("population-events", "max")
     revalidatePath("/infografis")
+    await publishCmsUpdate("population")
     return Response.json(balance)
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Saldo awal tidak valid." }, { status: 400 })
@@ -61,6 +63,7 @@ export async function DELETE(request: Request) {
     await prisma.populationOpeningBalance.delete({ where: { id: balance.id } })
     revalidateTag("population-events", "max")
     revalidatePath("/infografis")
+    await publishCmsUpdate("population")
     return new Response(null, { status: 204 })
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Saldo awal tidak dapat dihapus." }, { status: 400 })

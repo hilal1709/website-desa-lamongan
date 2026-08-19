@@ -3,6 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { assertEventAfterOpeningBalance, validatePopulationEventInput } from "@/lib/population-events"
 import { prisma } from "@/app/lib/prisma"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     await assertEventAfterOpeningBalance(data.dusun, data.eventDate)
     const event = await prisma.populationEvent.create({ data })
     refreshed()
+    await publishCmsUpdate("population")
     return Response.json(event, { status: 201 })
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Data peristiwa tidak valid." }, { status: 400 })

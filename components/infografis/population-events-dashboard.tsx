@@ -71,6 +71,18 @@ export function PopulationEventsDashboard() {
     return () => controller.abort()
   }, [query])
 
+  useEffect(() => {
+    const refreshPopulationData = (event: Event) => {
+      const topic = (event as CustomEvent<{ topic?: string }>).detail?.topic
+      if (topic === "population") void fetch(`/api/infografis/kependudukan?${query}`).then(async (response) => {
+        const body = await response.json()
+        if (response.ok) setData(body)
+      })
+    }
+    window.addEventListener("cms-content-updated", refreshPopulationData)
+    return () => window.removeEventListener("cms-content-updated", refreshPopulationData)
+  }, [query])
+
   const setFilter = (setValue: (value: string) => void) => (value: string) => {
     setValue(value)
     setPage(1)
