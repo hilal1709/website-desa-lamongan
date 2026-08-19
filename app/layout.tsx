@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { SiteShell } from "@/components/layout/site-shell"
 import { prisma } from "@/app/lib/prisma"
+import type { Viewport } from "next"
 
 // Public content is maintained through the CMS. Render at request time so a
 // refresh triggered by the CMS update signal always reads the latest database
@@ -22,6 +23,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#061d20",
 }
 
 export default async function RootLayout({

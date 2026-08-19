@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { PublicContentSync } from "./public-content-sync"
 import { DisasterAnnouncementBanner } from "./disaster-announcement-banner"
 import { CmsPublicUpdateNotifier } from "@/components/admin/cms-public-update-notifier"
+import { InstallAppPrompt } from "./install-app-prompt"
 
 const Navbar = dynamic(() => import("./navbar").then((module) => module.Navbar))
 const Footer = dynamic(() => import("./footer").then((module) => module.Footer))
@@ -22,6 +23,7 @@ export function SiteShell({ children, disasterSetting }: { children: React.React
     <>
       <ScrollToTop />
       <PublicContentSync />
+      <InstallAppPrompt />
       <Navbar />
       <DisasterAnnouncementBanner initialSetting={disasterSetting} />
       <main className="min-h-screen bg-[#f3f7f3]">{children}</main>
