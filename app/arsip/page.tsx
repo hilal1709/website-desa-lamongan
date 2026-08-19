@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
+import dynamicComponent from "next/dynamic"
 import { ArchiveJsonLd } from "@/components/arsip/archive-json-ld"
 import { PageHero } from "@/components/ui/page-hero"
 import { getCmsPage } from "@/lib/cms-pages"
 import { getArchiveDocuments } from "@/lib/archive-data"
 
-export const revalidate = 300
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Arsip Dokumen Publik | Desa Kedungrejo",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: { title: "Arsip Dokumen Publik Desa Kedungrejo", description: "Dokumen publik yang dapat diakses dan diunduh warga.", type: "website" },
 }
 
-const PublicDocumentArchive = dynamic(
+const PublicDocumentArchive = dynamicComponent(
   () => import("@/components/arsip/public-document-archive").then((module) => module.PublicDocumentArchive),
   { loading: () => <div className="mx-auto -mt-10 h-72 max-w-7xl animate-pulse rounded-[2rem] bg-white/70 shadow-sm" /> },
 )

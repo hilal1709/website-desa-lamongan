@@ -4,7 +4,7 @@ import { LayananJsonLd } from "@/components/layanan/layanan-json-ld"
 import { PageHero } from "@/components/ui/page-hero"
 import { getCmsPage } from "@/lib/cms-pages"
 
-export const revalidate = 3600
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Layanan Desa | Kedungrejo",

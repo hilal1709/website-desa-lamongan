@@ -4,7 +4,7 @@ import { cache } from "react"
 import { StrukturPerangkatDesaContent } from "@/components/profil/struktur-perangkat-desa-content"
 import { getCmsPage } from "@/lib/cms-pages"
 
-export const revalidate = 3600
+export const dynamic = "force-dynamic"
 const getStructurePage = cache(() => getCmsPage("struktur-perangkat-desa"))
 
 export async function generateMetadata(): Promise<Metadata> {

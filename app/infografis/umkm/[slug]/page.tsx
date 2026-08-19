@@ -5,6 +5,8 @@ import { notFound } from "next/navigation"
 import { UmkmOrderPanel } from "@/components/umkm/umkm-order-panel"
 import { getCachedUmkmBySlug } from "@/lib/umkm"
 
+export const dynamic = "force-dynamic"
+
 export default async function UmkmProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const business = await getCachedUmkmBySlug(slug)

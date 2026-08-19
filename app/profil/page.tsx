@@ -6,7 +6,9 @@ import { ProfileVideoHero } from "@/components/profil/profile-video-hero"
 import { ProfileMotion } from "@/components/profil/profile-motion"
 import { GovernmentCtaSection, ProfileHistorySection, VisionMissionSection } from "@/components/profil/profile-sections"
 
-export const revalidate = 3600
+// CMS updates use Pusher to refresh open public pages. Render on every
+// request so the refreshed route always reads the newly saved content.
+export const dynamic = "force-dynamic"
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getCmsPage("profil")

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 }
-export const revalidate = 300
+export const dynamic = "force-dynamic"
 
 interface BeritaPageProps {
   searchParams: Promise<{ q?: string | string[]; kategori?: string | string[]; halaman?: string | string[] }>

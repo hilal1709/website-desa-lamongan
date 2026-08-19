@@ -3,6 +3,9 @@ import { InfographicDashboard } from "@/components/infografis/infographic-dashbo
 import { getCachedUmkmData } from "@/lib/umkm"
 import type { Metadata } from "next"
 
+// Re-render after the public Pusher listener receives a CMS update.
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "Infografis Desa | Kedungrejo",
   description: "Data kependudukan, demografi, pendidikan, dan tren penduduk Desa Kedungrejo dalam bentuk infografis interaktif.",
