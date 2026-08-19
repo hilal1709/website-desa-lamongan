@@ -14,13 +14,19 @@ export function CmsImageUpload({ onUploaded }: { onUploaded?: (url: string) => v
     setMessage("")
     const formData = new FormData()
     formData.append("image", file)
-    const response = await fetch("/api/cms/uploads", { method: "POST", body: formData })
-    const payload = await response.json() as { url?: string; message?: string }
-    setUploading(false)
-    if (!response.ok || !payload.url) return setMessage(payload.message ?? "Gambar gagal diunggah.")
-    setUrl(payload.url)
-    setMessage("Gambar siap digunakan.")
-    onUploaded?.(payload.url)
+    try {
+      const response = await fetch("/api/cms/uploads", { method: "POST", body: formData })
+      const raw = await response.text()
+      const payload = raw ? JSON.parse(raw) as { url?: string; message?: string } : {}
+      if (!response.ok || !payload.url) return setMessage(payload.message ?? "Gambar gagal diunggah.")
+      setUrl(payload.url)
+      setMessage("Gambar siap digunakan.")
+      onUploaded?.(payload.url)
+    } catch {
+      setMessage("Respons upload tidak dapat dibaca. Silakan coba lagi.")
+    } finally {
+      setUploading(false)
+    }
   }
 
   const copy = async () => {
