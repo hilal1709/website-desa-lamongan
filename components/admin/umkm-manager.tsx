@@ -19,6 +19,7 @@ async function readResponse<T>(response: Response): Promise<T & { message?: stri
   if (!body) return { message: "Server tidak mengirim respons. Silakan coba lagi." } as T & { message?: string }
   try { return JSON.parse(body) as T & { message?: string } } catch { return { message: "Respons server tidak valid. Silakan coba lagi." } as T & { message?: string } }
 }
+const notifyPublicUpdate = () => window.localStorage.setItem("cms-public-updated", `${Date.now()}`)
 
 export function UmkmManager() {
   const [businesses, setBusinesses] = useState<Business[]>([])
@@ -46,12 +47,12 @@ export function UmkmManager() {
     const data = await readResponse<{ business?: Business }>(response)
     setSaving(false)
     if (!response.ok || !data.business) return setMessage(data.message ?? "Profil UMKM gagal disimpan.")
-    setCreating(null); setEditing(data.business); setMessage("Profil UMKM disimpan."); await load()
+    setCreating(null); setEditing(data.business); setMessage("Profil UMKM disimpan."); notifyPublicUpdate(); await load()
   }
   const removeBusiness = async (id: string) => {
     if (!confirm("Hapus UMKM beserta seluruh produknya?")) return
     const response = await fetch(`/api/cms/umkm?id=${id}`, { method: "DELETE" })
-    if (response.ok) { setEditing(null); setMessage("UMKM dihapus."); await load() } else setMessage("UMKM gagal dihapus.")
+    if (response.ok) { setEditing(null); setMessage("UMKM dihapus."); notifyPublicUpdate(); await load() } else setMessage("UMKM gagal dihapus.")
   }
   const saveProduct = async () => {
     if (!editing || !product) return
@@ -61,12 +62,12 @@ export function UmkmManager() {
     setSaving(false)
     if (!response.ok || !data.product) return setMessage(data.message ?? "Produk gagal disimpan.")
     const next = product.id ? editing.products.map((item) => item.id === product.id ? data.product! : item) : [...editing.products, data.product]
-    setEditing({ ...editing, products: next }); setProduct(null); setMessage("Produk disimpan."); await load()
+    setEditing({ ...editing, products: next }); setProduct(null); setMessage("Produk disimpan."); notifyPublicUpdate(); await load()
   }
   const removeProduct = async (id: string) => {
     if (!confirm("Hapus produk ini?")) return
     const response = await fetch(`/api/cms/umkm/products?id=${id}`, { method: "DELETE" })
-    if (response.ok && editing) { setEditing({ ...editing, products: editing.products.filter((item) => item.id !== id) }); setMessage("Produk dihapus."); await load() } else setMessage("Produk gagal dihapus.")
+    if (response.ok && editing) { setEditing({ ...editing, products: editing.products.filter((item) => item.id !== id) }); setMessage("Produk dihapus."); notifyPublicUpdate(); await load() } else setMessage("Produk gagal dihapus.")
   }
 
   const totalBusinessPages = Math.max(1, Math.ceil(businesses.length / businessesPerPage))

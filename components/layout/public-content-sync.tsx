@@ -24,12 +24,17 @@ export function PublicContentSync() {
     const refreshWhenVisible = () => {
       if (document.visibilityState === "visible") refreshPublicContent()
     }
+    const refreshFromAdminTab = (event: StorageEvent) => {
+      if (event.key === "cms-public-updated") refreshPublicContent()
+    }
     window.addEventListener("visibilitychange", refreshWhenVisible)
+    window.addEventListener("storage", refreshFromAdminTab)
 
     if (!key || !cluster) {
       return () => {
         window.clearInterval(poll)
         window.removeEventListener("visibilitychange", refreshWhenVisible)
+        window.removeEventListener("storage", refreshFromAdminTab)
         if (refreshTimer.current) window.clearTimeout(refreshTimer.current)
       }
     }
@@ -52,6 +57,7 @@ export function PublicContentSync() {
       cancelled = true
       window.clearInterval(poll)
       window.removeEventListener("visibilitychange", refreshWhenVisible)
+      window.removeEventListener("storage", refreshFromAdminTab)
       if (refreshTimer.current) window.clearTimeout(refreshTimer.current)
       disconnect?.()
     }
