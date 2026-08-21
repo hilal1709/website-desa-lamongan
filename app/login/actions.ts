@@ -16,5 +16,5 @@ export async function loginAdmin(_: LoginState, formData: FormData): Promise<Log
   if (!admin) return { error: "Username atau kata sandi tidak valid." }
 
   await createAdminSession(admin.id)
-  redirect("/admin")
+  redirect(admin.role === "PETUGAS_PUSKESMAS" ? "/posyandu-lansia" : "/admin")
 }

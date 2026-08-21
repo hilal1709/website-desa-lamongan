@@ -68,6 +68,26 @@ export type AdminUser = Prisma.AdminUserModel
  */
 export type AdminSession = Prisma.AdminSessionModel
 /**
+ * Model Elderly
+ * 
+ */
+export type Elderly = Prisma.ElderlyModel
+/**
+ * Model ElderlyDisease
+ * 
+ */
+export type ElderlyDisease = Prisma.ElderlyDiseaseModel
+/**
+ * Model PosyanduSession
+ * 
+ */
+export type PosyanduSession = Prisma.PosyanduSessionModel
+/**
+ * Model PosyanduCheck
+ * 
+ */
+export type PosyanduCheck = Prisma.PosyanduCheckModel
+/**
  * Model PopulationOpeningBalance
  * 
  */

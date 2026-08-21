@@ -61,6 +61,10 @@ export const ModelName = {
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
   AdminSession: 'AdminSession',
+  Elderly: 'Elderly',
+  ElderlyDisease: 'ElderlyDisease',
+  PosyanduSession: 'PosyanduSession',
+  PosyanduCheck: 'PosyanduCheck',
   PopulationOpeningBalance: 'PopulationOpeningBalance',
   PopulationEvent: 'PopulationEvent',
   DisasterSetting: 'DisasterSetting',
@@ -188,6 +192,7 @@ export const AdminUserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   name: 'name',
+  role: 'role',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -205,6 +210,64 @@ export const AdminSessionScalarFieldEnum = {
 } as const
 
 export type AdminSessionScalarFieldEnum = (typeof AdminSessionScalarFieldEnum)[keyof typeof AdminSessionScalarFieldEnum]
+
+
+export const ElderlyScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  dusun: 'dusun',
+  birthDate: 'birthDate',
+  address: 'address',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElderlyScalarFieldEnum = (typeof ElderlyScalarFieldEnum)[keyof typeof ElderlyScalarFieldEnum]
+
+
+export const ElderlyDiseaseScalarFieldEnum = {
+  id: 'id',
+  elderlyId: 'elderlyId',
+  diseaseName: 'diseaseName',
+  normalizedName: 'normalizedName',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElderlyDiseaseScalarFieldEnum = (typeof ElderlyDiseaseScalarFieldEnum)[keyof typeof ElderlyDiseaseScalarFieldEnum]
+
+
+export const PosyanduSessionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  sessionDate: 'sessionDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PosyanduSessionScalarFieldEnum = (typeof PosyanduSessionScalarFieldEnum)[keyof typeof PosyanduSessionScalarFieldEnum]
+
+
+export const PosyanduCheckScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  elderlyId: 'elderlyId',
+  recordedById: 'recordedById',
+  systolic: 'systolic',
+  diastolic: 'diastolic',
+  weightKg: 'weightKg',
+  heightCm: 'heightCm',
+  bloodGlucoseMgDl: 'bloodGlucoseMgDl',
+  notes: 'notes',
+  recordedAt: 'recordedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PosyanduCheckScalarFieldEnum = (typeof PosyanduCheckScalarFieldEnum)[keyof typeof PosyanduCheckScalarFieldEnum]
 
 
 export const PopulationOpeningBalanceScalarFieldEnum = {

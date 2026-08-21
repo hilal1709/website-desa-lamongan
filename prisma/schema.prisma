@@ -91,10 +91,13 @@ model AdminUser {
   email        String         @unique
   passwordHash String
   name         String?
+  role         AdminRole      @default(ADMIN)
   isActive     Boolean        @default(true)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   sessions     AdminSession[]
+  createdPosyanduSessions PosyanduSession[] @relation("PosyanduSessionCreator")
+  recordedPosyanduChecks  PosyanduCheck[]   @relation("PosyanduCheckRecorder")
 }
 
 model AdminSession {
@@ -107,6 +110,71 @@ model AdminSession {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model Elderly {
+  id          String           @id @default(cuid())
+  fullName    String
+  dusun       String
+  birthDate   DateTime
+  address     String
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  diseases    ElderlyDisease[]
+  checks      PosyanduCheck[]
+
+  @@index([isActive, dusun, fullName])
+}
+
+model ElderlyDisease {
+  id             String   @id @default(cuid())
+  elderlyId      String
+  diseaseName    String
+  normalizedName String
+  startedAt      DateTime @default(now())
+  endedAt        DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  elderly        Elderly  @relation(fields: [elderlyId], references: [id], onDelete: Restrict)
+
+  @@index([elderlyId, endedAt])
+  @@index([endedAt, normalizedName])
+}
+
+model PosyanduSession {
+  id          String          @id @default(cuid())
+  name        String
+  sessionDate DateTime
+  createdById String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  createdBy   AdminUser       @relation("PosyanduSessionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  checks      PosyanduCheck[]
+
+  @@index([sessionDate])
+}
+
+model PosyanduCheck {
+  id                  String          @id @default(cuid())
+  sessionId           String
+  elderlyId           String
+  recordedById        String
+  systolic            Int
+  diastolic           Int
+  weightKg            Float
+  heightCm            Float
+  bloodGlucoseMgDl    Float
+  notes               String?
+  recordedAt          DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  session             PosyanduSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  elderly             Elderly         @relation(fields: [elderlyId], references: [id], onDelete: Restrict)
+  recordedBy          AdminUser       @relation("PosyanduCheckRecorder", fields: [recordedById], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, elderlyId])
+  @@index([elderlyId, recordedAt])
+  @@index([sessionId, recordedAt])
 }
 
 model PopulationOpeningBalance {
@@ -151,6 +219,11 @@ enum PopulationEventType {
   KEMATIAN
   PINDAH_MASUK
   PINDAH_KELUAR
+}
+
+enum AdminRole {
+  ADMIN
+  PETUGAS_PUSKESMAS
 }
 
 model DisasterSetting {

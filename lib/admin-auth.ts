@@ -3,6 +3,7 @@ import { cookies } from "next/headers"
 
 import { prisma } from "@/app/lib/prisma"
 import { verifyPassword } from "@/lib/auth-password"
+import type { AdminRole } from "@/generated/prisma/client"
 
 const SESSION_COOKIE = "kedungrejo_admin_session"
 const SESSION_MAX_AGE = 60 * 60 * 8
@@ -46,7 +47,7 @@ export async function getCurrentAdmin() {
 
   const session = await prisma.adminSession.findUnique({
     where: { tokenHash: hashToken(token) },
-    include: { user: { select: { id: true, username: true, email: true, name: true, isActive: true } } },
+    include: { user: { select: { id: true, username: true, email: true, name: true, role: true, isActive: true } } },
   })
 
   if (!session || session.expiresAt <= new Date() || !session.user.isActive) {
@@ -55,6 +56,16 @@ export async function getCurrentAdmin() {
   }
 
   return session.user
+}
+
+export async function getCurrentHealthUser() {
+  const user = await getCurrentAdmin()
+  if (!user) return null
+  return user.role === "ADMIN" || user.role === "PETUGAS_PUSKESMAS" ? user : null
+}
+
+export function hasAdminRole(user: { role: AdminRole } | null | undefined) {
+  return user?.role === "ADMIN"
 }
 
 export async function endAdminSession() {

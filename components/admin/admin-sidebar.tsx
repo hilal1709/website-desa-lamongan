@@ -3,11 +3,12 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { ArrowUpRight, BarChart3, ChevronRight, FileText, LayoutDashboard, MessageSquare, Newspaper, Settings, ShieldAlert, Store, type LucideIcon } from "lucide-react"
+import { ArrowUpRight, BarChart3, ChevronRight, FileText, HeartPulse, LayoutDashboard, MessageSquare, Newspaper, Settings, ShieldAlert, Store, type LucideIcon } from "lucide-react"
 
 const menu: { icon: LucideIcon; label: string; href: string }[] = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: BarChart3, label: "Infografis", href: "/admin/infografis" },
+  { icon: HeartPulse, label: "Rekam Medis Lansia", href: "/admin/lansia" },
   { icon: Store, label: "UMKM", href: "/admin/umkm" },
   { icon: ShieldAlert, label: "Bencana & Cuaca", href: "/admin/bencana" },
   { icon: Newspaper, label: "Konten Halaman", href: "/admin/konten" },

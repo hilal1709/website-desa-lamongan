@@ -407,6 +407,10 @@ export const ModelName = {
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
   AdminSession: 'AdminSession',
+  Elderly: 'Elderly',
+  ElderlyDisease: 'ElderlyDisease',
+  PosyanduSession: 'PosyanduSession',
+  PosyanduCheck: 'PosyanduCheck',
   PopulationOpeningBalance: 'PopulationOpeningBalance',
   PopulationEvent: 'PopulationEvent',
   DisasterSetting: 'DisasterSetting',
@@ -428,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "populationOpeningBalance" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
+    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "elderly" | "elderlyDisease" | "posyanduSession" | "posyanduCheck" | "populationOpeningBalance" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1172,6 +1176,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Elderly: {
+      payload: Prisma.$ElderlyPayload<ExtArgs>
+      fields: Prisma.ElderlyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ElderlyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ElderlyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>
+        }
+        findFirst: {
+          args: Prisma.ElderlyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ElderlyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>
+        }
+        findMany: {
+          args: Prisma.ElderlyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>[]
+        }
+        create: {
+          args: Prisma.ElderlyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>
+        }
+        createMany: {
+          args: Prisma.ElderlyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ElderlyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>[]
+        }
+        delete: {
+          args: Prisma.ElderlyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>
+        }
+        update: {
+          args: Prisma.ElderlyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>
+        }
+        deleteMany: {
+          args: Prisma.ElderlyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ElderlyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ElderlyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>[]
+        }
+        upsert: {
+          args: Prisma.ElderlyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyPayload>
+        }
+        aggregate: {
+          args: Prisma.ElderlyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateElderly>
+        }
+        groupBy: {
+          args: Prisma.ElderlyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElderlyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ElderlyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElderlyCountAggregateOutputType> | number
+        }
+      }
+    }
+    ElderlyDisease: {
+      payload: Prisma.$ElderlyDiseasePayload<ExtArgs>
+      fields: Prisma.ElderlyDiseaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ElderlyDiseaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ElderlyDiseaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>
+        }
+        findFirst: {
+          args: Prisma.ElderlyDiseaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ElderlyDiseaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>
+        }
+        findMany: {
+          args: Prisma.ElderlyDiseaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>[]
+        }
+        create: {
+          args: Prisma.ElderlyDiseaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>
+        }
+        createMany: {
+          args: Prisma.ElderlyDiseaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ElderlyDiseaseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>[]
+        }
+        delete: {
+          args: Prisma.ElderlyDiseaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>
+        }
+        update: {
+          args: Prisma.ElderlyDiseaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>
+        }
+        deleteMany: {
+          args: Prisma.ElderlyDiseaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ElderlyDiseaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ElderlyDiseaseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>[]
+        }
+        upsert: {
+          args: Prisma.ElderlyDiseaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElderlyDiseasePayload>
+        }
+        aggregate: {
+          args: Prisma.ElderlyDiseaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateElderlyDisease>
+        }
+        groupBy: {
+          args: Prisma.ElderlyDiseaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElderlyDiseaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ElderlyDiseaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElderlyDiseaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    PosyanduSession: {
+      payload: Prisma.$PosyanduSessionPayload<ExtArgs>
+      fields: Prisma.PosyanduSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PosyanduSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PosyanduSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.PosyanduSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PosyanduSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>
+        }
+        findMany: {
+          args: Prisma.PosyanduSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>[]
+        }
+        create: {
+          args: Prisma.PosyanduSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>
+        }
+        createMany: {
+          args: Prisma.PosyanduSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PosyanduSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.PosyanduSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>
+        }
+        update: {
+          args: Prisma.PosyanduSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PosyanduSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PosyanduSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PosyanduSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PosyanduSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.PosyanduSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePosyanduSession>
+        }
+        groupBy: {
+          args: Prisma.PosyanduSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PosyanduSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PosyanduSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PosyanduSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    PosyanduCheck: {
+      payload: Prisma.$PosyanduCheckPayload<ExtArgs>
+      fields: Prisma.PosyanduCheckFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PosyanduCheckFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PosyanduCheckFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>
+        }
+        findFirst: {
+          args: Prisma.PosyanduCheckFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PosyanduCheckFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>
+        }
+        findMany: {
+          args: Prisma.PosyanduCheckFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>[]
+        }
+        create: {
+          args: Prisma.PosyanduCheckCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>
+        }
+        createMany: {
+          args: Prisma.PosyanduCheckCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PosyanduCheckCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>[]
+        }
+        delete: {
+          args: Prisma.PosyanduCheckDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>
+        }
+        update: {
+          args: Prisma.PosyanduCheckUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>
+        }
+        deleteMany: {
+          args: Prisma.PosyanduCheckDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PosyanduCheckUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PosyanduCheckUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>[]
+        }
+        upsert: {
+          args: Prisma.PosyanduCheckUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PosyanduCheckPayload>
+        }
+        aggregate: {
+          args: Prisma.PosyanduCheckAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePosyanduCheck>
+        }
+        groupBy: {
+          args: Prisma.PosyanduCheckGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PosyanduCheckGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PosyanduCheckCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PosyanduCheckCountAggregateOutputType> | number
+        }
+      }
+    }
     PopulationOpeningBalance: {
       payload: Prisma.$PopulationOpeningBalancePayload<ExtArgs>
       fields: Prisma.PopulationOpeningBalanceFieldRefs
@@ -1758,6 +2058,7 @@ export const AdminUserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   name: 'name',
+  role: 'role',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1775,6 +2076,64 @@ export const AdminSessionScalarFieldEnum = {
 } as const
 
 export type AdminSessionScalarFieldEnum = (typeof AdminSessionScalarFieldEnum)[keyof typeof AdminSessionScalarFieldEnum]
+
+
+export const ElderlyScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  dusun: 'dusun',
+  birthDate: 'birthDate',
+  address: 'address',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElderlyScalarFieldEnum = (typeof ElderlyScalarFieldEnum)[keyof typeof ElderlyScalarFieldEnum]
+
+
+export const ElderlyDiseaseScalarFieldEnum = {
+  id: 'id',
+  elderlyId: 'elderlyId',
+  diseaseName: 'diseaseName',
+  normalizedName: 'normalizedName',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElderlyDiseaseScalarFieldEnum = (typeof ElderlyDiseaseScalarFieldEnum)[keyof typeof ElderlyDiseaseScalarFieldEnum]
+
+
+export const PosyanduSessionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  sessionDate: 'sessionDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PosyanduSessionScalarFieldEnum = (typeof PosyanduSessionScalarFieldEnum)[keyof typeof PosyanduSessionScalarFieldEnum]
+
+
+export const PosyanduCheckScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  elderlyId: 'elderlyId',
+  recordedById: 'recordedById',
+  systolic: 'systolic',
+  diastolic: 'diastolic',
+  weightKg: 'weightKg',
+  heightCm: 'heightCm',
+  bloodGlucoseMgDl: 'bloodGlucoseMgDl',
+  notes: 'notes',
+  recordedAt: 'recordedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PosyanduCheckScalarFieldEnum = (typeof PosyanduCheckScalarFieldEnum)[keyof typeof PosyanduCheckScalarFieldEnum]
 
 
 export const PopulationOpeningBalanceScalarFieldEnum = {
@@ -1988,6 +2347,34 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'AdminRole'
+ */
+export type EnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdminRole'>
+    
+
+
+/**
+ * Reference to a field of type 'AdminRole[]'
+ */
+export type ListEnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdminRole[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'PopulationEventType'
  */
 export type EnumPopulationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PopulationEventType'>
@@ -2012,20 +2399,6 @@ export type EnumDisasterLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputT
  * Reference to a field of type 'DisasterLocationType[]'
  */
 export type ListEnumDisasterLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DisasterLocationType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2189,6 +2562,10 @@ export type GlobalOmitConfig = {
   complaint?: Prisma.ComplaintOmit
   adminUser?: Prisma.AdminUserOmit
   adminSession?: Prisma.AdminSessionOmit
+  elderly?: Prisma.ElderlyOmit
+  elderlyDisease?: Prisma.ElderlyDiseaseOmit
+  posyanduSession?: Prisma.PosyanduSessionOmit
+  posyanduCheck?: Prisma.PosyanduCheckOmit
   populationOpeningBalance?: Prisma.PopulationOpeningBalanceOmit
   populationEvent?: Prisma.PopulationEventOmit
   disasterSetting?: Prisma.DisasterSettingOmit

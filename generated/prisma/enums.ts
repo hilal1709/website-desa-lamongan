@@ -26,3 +26,11 @@ export const PopulationEventType = {
 } as const
 
 export type PopulationEventType = (typeof PopulationEventType)[keyof typeof PopulationEventType]
+
+
+export const AdminRole = {
+  ADMIN: 'ADMIN',
+  PETUGAS_PUSKESMAS: 'PETUGAS_PUSKESMAS'
+} as const
+
+export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
