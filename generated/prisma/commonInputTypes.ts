@@ -218,6 +218,23 @@ export type EnumAdminRoleWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumAdminRoleFilter<$PrismaModel>
 }
 
+export type EnumServiceSubmissionStatusTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ServiceSubmissionStatusType | Prisma.EnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel> | $Enums.ServiceSubmissionStatusType
+}
+
+export type EnumServiceSubmissionStatusTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ServiceSubmissionStatusType | Prisma.EnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumServiceSubmissionStatusTypeWithAggregatesFilter<$PrismaModel> | $Enums.ServiceSubmissionStatusType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel>
+}
+
 export type DateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -543,6 +560,23 @@ export type NestedEnumAdminRoleWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAdminRoleFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAdminRoleFilter<$PrismaModel>
+}
+
+export type NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ServiceSubmissionStatusType | Prisma.EnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel> | $Enums.ServiceSubmissionStatusType
+}
+
+export type NestedEnumServiceSubmissionStatusTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ServiceSubmissionStatusType | Prisma.EnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ServiceSubmissionStatusType[] | Prisma.ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumServiceSubmissionStatusTypeWithAggregatesFilter<$PrismaModel> | $Enums.ServiceSubmissionStatusType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumServiceSubmissionStatusTypeFilter<$PrismaModel>
 }
 
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {

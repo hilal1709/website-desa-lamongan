@@ -87,6 +87,31 @@ export type Complaint = Prisma.ComplaintModel
  */
 export type AdminUser = Prisma.AdminUserModel
 /**
+ * Model VillageService
+ * 
+ */
+export type VillageService = Prisma.VillageServiceModel
+/**
+ * Model ServiceRequirement
+ * 
+ */
+export type ServiceRequirement = Prisma.ServiceRequirementModel
+/**
+ * Model ServiceSubmission
+ * 
+ */
+export type ServiceSubmission = Prisma.ServiceSubmissionModel
+/**
+ * Model ServiceAttachment
+ * 
+ */
+export type ServiceAttachment = Prisma.ServiceAttachmentModel
+/**
+ * Model ServiceSubmissionStatus
+ * 
+ */
+export type ServiceSubmissionStatus = Prisma.ServiceSubmissionStatusModel
+/**
  * Model AdminSession
  * 
  */

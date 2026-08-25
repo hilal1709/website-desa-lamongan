@@ -3,7 +3,7 @@ import type { CmsNewsData } from "@/lib/news-cms"
 import { unstable_cache } from "next/cache"
 
 export type AdminMetric = {
-  key: "complaints" | "population" | "content" | "umkm"
+  key: "complaints" | "population" | "content" | "umkm" | "services"
   value: string
   label: string
   detail: string
@@ -16,11 +16,12 @@ const formatDateTime = (date: Date) => new Intl.DateTimeFormat("id-ID", { dateSt
 
 async function readAdminDashboardData(): Promise<{ metrics: AdminMetric[]; queue: AdminQueueItem[]; updatedAt: string | null }> {
   try {
-    const [complaints, allComplaints, population, businesses, newsStore, pageStore] = await Promise.all([
+    const [complaints, allComplaints, population, businesses, serviceSubmissions, newsStore, pageStore] = await Promise.all([
       prisma.complaint.findMany({ where: { status: { notIn: ["Selesai", "Ditutup"] } }, orderBy: { updatedAt: "desc" }, take: 8, select: { id: true, title: true, category: true, location: true, status: true, createdAt: true } }),
       prisma.complaint.count({ where: { status: { notIn: ["Selesai", "Ditutup"] } } }),
       prisma.statistic.findFirst({ where: { label: { contains: "penduduk", mode: "insensitive" } }, orderBy: { order: "asc" }, select: { value: true, label: true } }),
       prisma.umkm.count({ where: { isPublished: true } }),
+      prisma.serviceSubmission.count({ where: { status: { notIn: ["SELESAI", "DITOLAK"] } } }),
       prisma.cmsNewsStore.findUnique({ where: { id: 1 }, select: { data: true, updatedAt: true } }),
       prisma.cmsPageStore.findUnique({ where: { id: 1 }, select: { updatedAt: true } }),
     ])
@@ -43,6 +44,7 @@ async function readAdminDashboardData(): Promise<{ metrics: AdminMetric[]; queue
         { key: "population", value: populationValue, label: "Warga terdata", detail: populationDetail },
         { key: "content", value: formatNumber(publishedArticles.length), label: "Konten dipublikasikan", detail: `${formatNumber(drafts.length)} draft berita` },
         { key: "umkm", value: formatNumber(businesses), label: "UMKM aktif", detail: "Tampil di katalog publik" },
+        { key: "services", value: formatNumber(serviceSubmissions), label: "Pengajuan aktif", detail: "Layanan administrasi warga" },
       ],
       queue,
       updatedAt: newestUpdate ? formatDateTime(newestUpdate) : null,

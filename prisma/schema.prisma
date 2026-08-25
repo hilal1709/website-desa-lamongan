@@ -98,6 +98,82 @@ model AdminUser {
   sessions     AdminSession[]
   createdPosyanduSessions PosyanduSession[] @relation("PosyanduSessionCreator")
   recordedPosyanduChecks  PosyanduCheck[]   @relation("PosyanduCheckRecorder")
+  serviceStatusUpdates    ServiceSubmissionStatus[] @relation("ServiceStatusUpdater")
+}
+
+model VillageService {
+  id              String              @id @default(cuid())
+  slug            String              @unique
+  title           String
+  description     String
+  icon            String              @default("description")
+  estimatedTime   String              @default("1-2 hari kerja")
+  isActive        Boolean             @default(true)
+  order           Int                 @default(0)
+  requirements    ServiceRequirement[]
+  submissions     ServiceSubmission[]
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([isActive, order])
+}
+
+model ServiceRequirement {
+  id        String         @id @default(cuid())
+  serviceId String
+  title     String
+  isRequired Boolean       @default(true)
+  order     Int            @default(0)
+  service   VillageService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId, order])
+}
+
+model ServiceSubmission {
+  id          String                    @id @default(cuid())
+  trackingCode String                   @unique
+  serviceId   String
+  fullName    String
+  nationalId  String
+  address     String
+  whatsapp    String
+  purpose     String
+  status      ServiceSubmissionStatusType @default(DIAJUKAN)
+  service     VillageService            @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  attachments ServiceAttachment[]
+  history     ServiceSubmissionStatus[]
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+
+  @@index([serviceId, status, createdAt])
+  @@index([whatsapp, trackingCode])
+}
+
+model ServiceAttachment {
+  id           String            @id @default(cuid())
+  submissionId String
+  requirementId String?
+  filename     String
+  mimeType     String
+  size         Int
+  storagePath  String
+  createdAt    DateTime          @default(now())
+  submission   ServiceSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
+model ServiceSubmissionStatus {
+  id           String                      @id @default(cuid())
+  submissionId String
+  status       ServiceSubmissionStatusType
+  note         String?
+  updatedById  String?
+  createdAt    DateTime                    @default(now())
+  submission   ServiceSubmission           @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  updatedBy    AdminUser?                  @relation("ServiceStatusUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@index([submissionId, createdAt])
 }
 
 model AdminSession {
@@ -224,6 +300,15 @@ enum PopulationEventType {
 enum AdminRole {
   ADMIN
   PETUGAS_PUSKESMAS
+}
+
+enum ServiceSubmissionStatusType {
+  DIAJUKAN
+  DIVERIFIKASI
+  PERLU_DILENGKAPI
+  DITOLAK
+  SIAP_DIAMBIL
+  SELESAI
 }
 
 model DisasterSetting {

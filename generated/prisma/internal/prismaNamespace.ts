@@ -406,6 +406,11 @@ export const ModelName = {
   CmsNewsStore: 'CmsNewsStore',
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
+  VillageService: 'VillageService',
+  ServiceRequirement: 'ServiceRequirement',
+  ServiceSubmission: 'ServiceSubmission',
+  ServiceAttachment: 'ServiceAttachment',
+  ServiceSubmissionStatus: 'ServiceSubmissionStatus',
   AdminSession: 'AdminSession',
   Elderly: 'Elderly',
   ElderlyDisease: 'ElderlyDisease',
@@ -432,7 +437,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "adminSession" | "elderly" | "elderlyDisease" | "posyanduSession" | "posyanduCheck" | "populationOpeningBalance" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
+    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "villageService" | "serviceRequirement" | "serviceSubmission" | "serviceAttachment" | "serviceSubmissionStatus" | "adminSession" | "elderly" | "elderlyDisease" | "posyanduSession" | "posyanduCheck" | "populationOpeningBalance" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1099,6 +1104,376 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AdminUserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AdminUserCountAggregateOutputType> | number
+        }
+      }
+    }
+    VillageService: {
+      payload: Prisma.$VillageServicePayload<ExtArgs>
+      fields: Prisma.VillageServiceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VillageServiceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VillageServiceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>
+        }
+        findFirst: {
+          args: Prisma.VillageServiceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VillageServiceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>
+        }
+        findMany: {
+          args: Prisma.VillageServiceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>[]
+        }
+        create: {
+          args: Prisma.VillageServiceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>
+        }
+        createMany: {
+          args: Prisma.VillageServiceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VillageServiceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>[]
+        }
+        delete: {
+          args: Prisma.VillageServiceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>
+        }
+        update: {
+          args: Prisma.VillageServiceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>
+        }
+        deleteMany: {
+          args: Prisma.VillageServiceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VillageServiceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VillageServiceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>[]
+        }
+        upsert: {
+          args: Prisma.VillageServiceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VillageServicePayload>
+        }
+        aggregate: {
+          args: Prisma.VillageServiceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVillageService>
+        }
+        groupBy: {
+          args: Prisma.VillageServiceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VillageServiceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VillageServiceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VillageServiceCountAggregateOutputType> | number
+        }
+      }
+    }
+    ServiceRequirement: {
+      payload: Prisma.$ServiceRequirementPayload<ExtArgs>
+      fields: Prisma.ServiceRequirementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ServiceRequirementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ServiceRequirementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>
+        }
+        findFirst: {
+          args: Prisma.ServiceRequirementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ServiceRequirementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>
+        }
+        findMany: {
+          args: Prisma.ServiceRequirementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>[]
+        }
+        create: {
+          args: Prisma.ServiceRequirementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>
+        }
+        createMany: {
+          args: Prisma.ServiceRequirementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ServiceRequirementCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>[]
+        }
+        delete: {
+          args: Prisma.ServiceRequirementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>
+        }
+        update: {
+          args: Prisma.ServiceRequirementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>
+        }
+        deleteMany: {
+          args: Prisma.ServiceRequirementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ServiceRequirementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ServiceRequirementUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>[]
+        }
+        upsert: {
+          args: Prisma.ServiceRequirementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceRequirementPayload>
+        }
+        aggregate: {
+          args: Prisma.ServiceRequirementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServiceRequirement>
+        }
+        groupBy: {
+          args: Prisma.ServiceRequirementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceRequirementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ServiceRequirementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceRequirementCountAggregateOutputType> | number
+        }
+      }
+    }
+    ServiceSubmission: {
+      payload: Prisma.$ServiceSubmissionPayload<ExtArgs>
+      fields: Prisma.ServiceSubmissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ServiceSubmissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ServiceSubmissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>
+        }
+        findFirst: {
+          args: Prisma.ServiceSubmissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ServiceSubmissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>
+        }
+        findMany: {
+          args: Prisma.ServiceSubmissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>[]
+        }
+        create: {
+          args: Prisma.ServiceSubmissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>
+        }
+        createMany: {
+          args: Prisma.ServiceSubmissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ServiceSubmissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>[]
+        }
+        delete: {
+          args: Prisma.ServiceSubmissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>
+        }
+        update: {
+          args: Prisma.ServiceSubmissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ServiceSubmissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ServiceSubmissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ServiceSubmissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ServiceSubmissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionPayload>
+        }
+        aggregate: {
+          args: Prisma.ServiceSubmissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServiceSubmission>
+        }
+        groupBy: {
+          args: Prisma.ServiceSubmissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceSubmissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ServiceSubmissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceSubmissionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ServiceAttachment: {
+      payload: Prisma.$ServiceAttachmentPayload<ExtArgs>
+      fields: Prisma.ServiceAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ServiceAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ServiceAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.ServiceAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ServiceAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.ServiceAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.ServiceAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.ServiceAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ServiceAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.ServiceAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>
+        }
+        update: {
+          args: Prisma.ServiceAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ServiceAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ServiceAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ServiceAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ServiceAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.ServiceAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServiceAttachment>
+        }
+        groupBy: {
+          args: Prisma.ServiceAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ServiceAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    ServiceSubmissionStatus: {
+      payload: Prisma.$ServiceSubmissionStatusPayload<ExtArgs>
+      fields: Prisma.ServiceSubmissionStatusFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ServiceSubmissionStatusFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ServiceSubmissionStatusFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>
+        }
+        findFirst: {
+          args: Prisma.ServiceSubmissionStatusFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ServiceSubmissionStatusFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>
+        }
+        findMany: {
+          args: Prisma.ServiceSubmissionStatusFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>[]
+        }
+        create: {
+          args: Prisma.ServiceSubmissionStatusCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>
+        }
+        createMany: {
+          args: Prisma.ServiceSubmissionStatusCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ServiceSubmissionStatusCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>[]
+        }
+        delete: {
+          args: Prisma.ServiceSubmissionStatusDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>
+        }
+        update: {
+          args: Prisma.ServiceSubmissionStatusUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>
+        }
+        deleteMany: {
+          args: Prisma.ServiceSubmissionStatusDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ServiceSubmissionStatusUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ServiceSubmissionStatusUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>[]
+        }
+        upsert: {
+          args: Prisma.ServiceSubmissionStatusUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServiceSubmissionStatusPayload>
+        }
+        aggregate: {
+          args: Prisma.ServiceSubmissionStatusAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServiceSubmissionStatus>
+        }
+        groupBy: {
+          args: Prisma.ServiceSubmissionStatusGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceSubmissionStatusGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ServiceSubmissionStatusCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServiceSubmissionStatusCountAggregateOutputType> | number
         }
       }
     }
@@ -2067,6 +2442,76 @@ export const AdminUserScalarFieldEnum = {
 export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
 
 
+export const VillageServiceScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  icon: 'icon',
+  estimatedTime: 'estimatedTime',
+  isActive: 'isActive',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VillageServiceScalarFieldEnum = (typeof VillageServiceScalarFieldEnum)[keyof typeof VillageServiceScalarFieldEnum]
+
+
+export const ServiceRequirementScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  title: 'title',
+  isRequired: 'isRequired',
+  order: 'order'
+} as const
+
+export type ServiceRequirementScalarFieldEnum = (typeof ServiceRequirementScalarFieldEnum)[keyof typeof ServiceRequirementScalarFieldEnum]
+
+
+export const ServiceSubmissionScalarFieldEnum = {
+  id: 'id',
+  trackingCode: 'trackingCode',
+  serviceId: 'serviceId',
+  fullName: 'fullName',
+  nationalId: 'nationalId',
+  address: 'address',
+  whatsapp: 'whatsapp',
+  purpose: 'purpose',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServiceSubmissionScalarFieldEnum = (typeof ServiceSubmissionScalarFieldEnum)[keyof typeof ServiceSubmissionScalarFieldEnum]
+
+
+export const ServiceAttachmentScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  requirementId: 'requirementId',
+  filename: 'filename',
+  mimeType: 'mimeType',
+  size: 'size',
+  storagePath: 'storagePath',
+  createdAt: 'createdAt'
+} as const
+
+export type ServiceAttachmentScalarFieldEnum = (typeof ServiceAttachmentScalarFieldEnum)[keyof typeof ServiceAttachmentScalarFieldEnum]
+
+
+export const ServiceSubmissionStatusScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  status: 'status',
+  note: 'note',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt'
+} as const
+
+export type ServiceSubmissionStatusScalarFieldEnum = (typeof ServiceSubmissionStatusScalarFieldEnum)[keyof typeof ServiceSubmissionStatusScalarFieldEnum]
+
+
 export const AdminSessionScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
@@ -2361,6 +2806,20 @@ export type ListEnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 
 
 /**
+ * Reference to a field of type 'ServiceSubmissionStatusType'
+ */
+export type EnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServiceSubmissionStatusType'>
+    
+
+
+/**
+ * Reference to a field of type 'ServiceSubmissionStatusType[]'
+ */
+export type ListEnumServiceSubmissionStatusTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServiceSubmissionStatusType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2561,6 +3020,11 @@ export type GlobalOmitConfig = {
   cmsNewsStore?: Prisma.CmsNewsStoreOmit
   complaint?: Prisma.ComplaintOmit
   adminUser?: Prisma.AdminUserOmit
+  villageService?: Prisma.VillageServiceOmit
+  serviceRequirement?: Prisma.ServiceRequirementOmit
+  serviceSubmission?: Prisma.ServiceSubmissionOmit
+  serviceAttachment?: Prisma.ServiceAttachmentOmit
+  serviceSubmissionStatus?: Prisma.ServiceSubmissionStatusOmit
   adminSession?: Prisma.AdminSessionOmit
   elderly?: Prisma.ElderlyOmit
   elderlyDisease?: Prisma.ElderlyDiseaseOmit

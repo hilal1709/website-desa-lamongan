@@ -13,6 +13,7 @@ const menu: { icon: LucideIcon; label: string; href: string }[] = [
   { icon: ShieldAlert, label: "Bencana & Cuaca", href: "/admin/bencana" },
   { icon: Newspaper, label: "Konten Halaman", href: "/admin/konten" },
   { icon: Newspaper, label: "Kelola Berita", href: "/admin/berita" },
+  { icon: FileText, label: "Layanan & Pengajuan", href: "/admin/layanan" },
   { icon: FileText, label: "Antrian Layanan", href: "/admin/antrian" },
   { icon: MessageSquare, label: "Modul CMS", href: "/admin/modul" },
   { icon: Settings, label: "Pengaturan", href: "/admin/pengaturan" },

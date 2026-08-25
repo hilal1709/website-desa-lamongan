@@ -34,3 +34,15 @@ export const AdminRole = {
 } as const
 
 export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
+
+
+export const ServiceSubmissionStatusType = {
+  DIAJUKAN: 'DIAJUKAN',
+  DIVERIFIKASI: 'DIVERIFIKASI',
+  PERLU_DILENGKAPI: 'PERLU_DILENGKAPI',
+  DITOLAK: 'DITOLAK',
+  SIAP_DIAMBIL: 'SIAP_DIAMBIL',
+  SELESAI: 'SELESAI'
+} as const
+
+export type ServiceSubmissionStatusType = (typeof ServiceSubmissionStatusType)[keyof typeof ServiceSubmissionStatusType]

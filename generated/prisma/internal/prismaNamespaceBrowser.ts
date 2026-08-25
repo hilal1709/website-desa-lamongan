@@ -60,6 +60,11 @@ export const ModelName = {
   CmsNewsStore: 'CmsNewsStore',
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
+  VillageService: 'VillageService',
+  ServiceRequirement: 'ServiceRequirement',
+  ServiceSubmission: 'ServiceSubmission',
+  ServiceAttachment: 'ServiceAttachment',
+  ServiceSubmissionStatus: 'ServiceSubmissionStatus',
   AdminSession: 'AdminSession',
   Elderly: 'Elderly',
   ElderlyDisease: 'ElderlyDisease',
@@ -199,6 +204,76 @@ export const AdminUserScalarFieldEnum = {
 } as const
 
 export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
+export const VillageServiceScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  icon: 'icon',
+  estimatedTime: 'estimatedTime',
+  isActive: 'isActive',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VillageServiceScalarFieldEnum = (typeof VillageServiceScalarFieldEnum)[keyof typeof VillageServiceScalarFieldEnum]
+
+
+export const ServiceRequirementScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  title: 'title',
+  isRequired: 'isRequired',
+  order: 'order'
+} as const
+
+export type ServiceRequirementScalarFieldEnum = (typeof ServiceRequirementScalarFieldEnum)[keyof typeof ServiceRequirementScalarFieldEnum]
+
+
+export const ServiceSubmissionScalarFieldEnum = {
+  id: 'id',
+  trackingCode: 'trackingCode',
+  serviceId: 'serviceId',
+  fullName: 'fullName',
+  nationalId: 'nationalId',
+  address: 'address',
+  whatsapp: 'whatsapp',
+  purpose: 'purpose',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServiceSubmissionScalarFieldEnum = (typeof ServiceSubmissionScalarFieldEnum)[keyof typeof ServiceSubmissionScalarFieldEnum]
+
+
+export const ServiceAttachmentScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  requirementId: 'requirementId',
+  filename: 'filename',
+  mimeType: 'mimeType',
+  size: 'size',
+  storagePath: 'storagePath',
+  createdAt: 'createdAt'
+} as const
+
+export type ServiceAttachmentScalarFieldEnum = (typeof ServiceAttachmentScalarFieldEnum)[keyof typeof ServiceAttachmentScalarFieldEnum]
+
+
+export const ServiceSubmissionStatusScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  status: 'status',
+  note: 'note',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt'
+} as const
+
+export type ServiceSubmissionStatusScalarFieldEnum = (typeof ServiceSubmissionStatusScalarFieldEnum)[keyof typeof ServiceSubmissionStatusScalarFieldEnum]
 
 
 export const AdminSessionScalarFieldEnum = {

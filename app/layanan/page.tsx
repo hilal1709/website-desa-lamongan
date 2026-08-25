@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
-import { LayananContent } from "@/components/layanan/layanan-content"
-import { LayananJsonLd } from "@/components/layanan/layanan-json-ld"
+import { VillageServiceCatalog } from "@/components/layanan/village-service-catalog"
 import { PageHero } from "@/components/ui/page-hero"
 import { getCmsPage } from "@/lib/cms-pages"
+import { getActiveVillageServices } from "@/lib/village-services"
 
 export const dynamic = "force-dynamic"
 
@@ -17,20 +17,12 @@ export const metadata: Metadata = {
 
 export default async function Layanan() {
   const hero = await getCmsPage("layanan")
-  const section = (key: string) => hero.sections.find((item) => item.key === key)
-  const servicesSection = section("service-cards")
-  const flowSection = section("flow")
+  const services = await getActiveVillageServices()
 
   return (
     <main>
-      <LayananJsonLd services={servicesSection?.items ?? []} />
       <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} image={hero.image} imagePosition={hero.imagePosition} />
-
-      <LayananContent
-        services={servicesSection?.items ?? []}
-        flowTitle={flowSection?.title}
-        flowItems={flowSection?.items ?? []}
-      />
+      <VillageServiceCatalog services={services} />
     </main>
   )
 }
