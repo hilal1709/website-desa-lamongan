@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Save, Plus, FileText } from "lucide-react"
-import { SERVICE_STATUSES, STATUS_LABEL } from "@/lib/village-services"
+import { SERVICE_STATUSES, STATUS_LABEL } from "@/lib/service-status"
 
 type Requirement = { id?: string; title: string; isRequired?: boolean; order?: number }
 type Service = { id: string; slug: string; title: string; description: string; icon: string; estimatedTime: string; isActive: boolean; order: number; requirements: Requirement[] }

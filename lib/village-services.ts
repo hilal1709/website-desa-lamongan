@@ -1,8 +1,8 @@
 import { prisma } from "@/app/lib/prisma"
 import type { ServiceSubmissionStatusType, VillageService } from "@/generated/prisma/client"
+import { SERVICE_STATUSES, STATUS_LABEL } from "@/lib/service-status"
 
-export const SERVICE_STATUSES = ["DIAJUKAN", "DIVERIFIKASI", "PERLU_DILENGKAPI", "DITOLAK", "SIAP_DIAMBIL", "SELESAI"] as const
-export const STATUS_LABEL: Record<ServiceSubmissionStatusType, string> = { DIAJUKAN: "Diajukan", DIVERIFIKASI: "Diverifikasi", PERLU_DILENGKAPI: "Perlu dilengkapi", DITOLAK: "Ditolak", SIAP_DIAMBIL: "Siap diambil", SELESAI: "Selesai" }
+export { SERVICE_STATUSES, STATUS_LABEL }
 
 const defaults = [
   ["surat-keterangan-domisili", "Surat Keterangan Domisili", "Keterangan alamat dan domisili warga untuk kebutuhan administrasi.", "description", "1 hari kerja", ["KTP", "Kartu Keluarga"]],
