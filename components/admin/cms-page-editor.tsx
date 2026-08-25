@@ -1,255 +1,62 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Plus, Save, Trash2 } from "lucide-react"
+import { ArrowUpRight, ExternalLink, Plus, Save, Trash2 } from "lucide-react"
 import type { CmsPageContent } from "@/lib/cms-pages"
 import { CmsImageUpload } from "@/components/admin/cms-image-upload"
 
 const inputClass = "mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-800 outline-none transition focus:border-emerald-700 focus:bg-white"
+type Field = "eyebrow" | "title" | "description" | "action" | "href" | "image" | "imagePosition"
+type ItemField = "title" | "description" | "value" | "detail" | "href" | "image"
+type PageSettings = { slug: string; href: string; summary: string; heroFields?: Field[]; sections?: { key: string; label: string; fields: Field[]; itemFields?: ItemField[] }[]; manage?: { label: string; href: string; description: string } }
+
+const pageSettings: PageSettings[] = [
+  { slug: "home", href: "/", summary: "Hero dan teks pengantar pada beberapa bagian beranda.", heroFields: ["eyebrow", "title", "description", "image", "imagePosition"], sections: [{ key: "services", label: "Pengantar layanan", fields: ["eyebrow", "title", "description", "action", "href"] }, { key: "digital", label: "Desa digital", fields: ["eyebrow", "title", "description", "action", "href"], itemFields: ["title", "description"] }, { key: "news", label: "Pengantar berita", fields: ["eyebrow", "title", "description", "action", "href"] }, { key: "cta", label: "Ajakan di bawah", fields: ["eyebrow", "title"] }], manage: { label: "Layanan & Pengajuan", href: "/admin/layanan", description: "Kartu layanan dan statistik beranda diisi otomatis dari data layanan serta data desa." } },
+  { slug: "profil", href: "/profil", summary: "Teks profil, sejarah, visi-misi, perangkat desa, dan peta wilayah.", heroFields: ["eyebrow", "title", "description"], sections: [{ key: "history", label: "Sejarah desa", fields: ["eyebrow", "title", "description", "image"], itemFields: ["title", "value", "description"] }, { key: "vision-mission", label: "Visi & misi", fields: ["eyebrow", "title", "description"], itemFields: ["title"] }, { key: "government-cta", label: "Ajakan perangkat desa", fields: ["eyebrow", "title", "description", "action", "href"] }, { key: "village-map", label: "Peta wilayah", fields: ["eyebrow", "title", "description", "action", "href"] }] },
+  { slug: "struktur-perangkat-desa", href: "/profil/struktur-perangkat-desa", summary: "Hero dan gambar bagan organisasi perangkat desa.", heroFields: ["eyebrow", "title", "description", "image", "imagePosition"], sections: [{ key: "organization-chart", label: "Bagan organisasi", fields: ["title", "description", "image"], itemFields: ["title"] }] },
+  { slug: "layanan", href: "/layanan", summary: "Hero halaman katalog layanan. Daftar layanan dikelola terpisah.", heroFields: ["eyebrow", "title", "description", "image", "imagePosition"], manage: { label: "Layanan & Pengajuan", href: "/admin/layanan", description: "Tambah, ubah, atau nonaktifkan layanan dari modul Layanan & Pengajuan." } },
+  { slug: "aduan", href: "/aduan", summary: "Hero serta judul formulir dan riwayat aduan.", heroFields: ["eyebrow", "title", "description", "image", "imagePosition"], sections: [{ key: "complaint-form", label: "Form aduan", fields: ["title"] }, { key: "complaint-history", label: "Riwayat aduan", fields: ["title"] }], manage: { label: "Kelola Aduan", href: "/admin/aduan", description: "Daftar aduan warga dan status tindak lanjut dikelola dari modul Kelola Aduan." } },
+  { slug: "arsip", href: "/arsip", summary: "Hero dan catatan singkat pada halaman arsip publik.", heroFields: ["eyebrow", "title", "description", "image", "imagePosition"], sections: [{ key: "notice", label: "Catatan arsip", fields: ["title"] }], manage: { label: "Arsip Dokumen", href: "/admin/arsip", description: "Tambah, ubah, atau unggah dokumen publik dari modul Arsip Dokumen." } },
+
+  { slug: "infografis", href: "/infografis", summary: "Hero halaman infografis. Dashboard datanya dikelola terpisah.", heroFields: ["eyebrow", "title", "description", "image", "imagePosition"], manage: { label: "Infografis", href: "/admin/infografis", description: "Gunakan modul Infografis untuk memperbarui data kependudukan dan dashboard." } },
+  { slug: "berita", href: "/berita", summary: "Berita dan tampilannya dikelola dari modul berita.", manage: { label: "Kelola Berita", href: "/admin/berita", description: "Tambah, edit, hapus artikel, kategori, dan gambar berita dari modul Kelola Berita." } },
+]
+
+const fieldLabels: Record<Field, string> = { eyebrow: "Teks kecil di atas judul", title: "Judul", description: "Deskripsi", action: "Teks tombol", href: "Tujuan tombol / tautan", image: "Gambar", imagePosition: "Posisi gambar" }
+const itemLabels: Record<ItemField, string> = { title: "Judul", description: "Deskripsi", value: "Nilai", detail: "Detail", href: "Tautan", image: "Gambar" }
+
+function TextField({ field, value, onChange }: { field: Field | ItemField; value: string; onChange: (value: string) => void }) {
+  const label = field in fieldLabels ? fieldLabels[field as Field] : itemLabels[field as ItemField]
+  const multiline = field === "description"
+  return <label className={`text-sm font-bold text-slate-700 ${multiline ? "md:col-span-2" : ""}`}>{label}{multiline ? <textarea value={value} onChange={(event) => onChange(event.target.value)} rows={3} className={inputClass} /> : <input value={value} onChange={(event) => onChange(event.target.value)} className={inputClass} />}</label>
+}
 
 export function CmsPageEditor() {
   const searchParams = useSearchParams()
   const [pages, setPages] = useState<CmsPageContent[]>([])
-  const [active, setActive] = useState(0)
-  const [activeSection, setActiveSection] = useState(0)
+  const [activeSlug, setActiveSlug] = useState("home")
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState("")
-
-  useEffect(() => {
-    const controller = new AbortController()
-
-    void fetch("/api/cms/pages", { signal: controller.signal })
-      .then((response) => response.json())
-      .then((payload) => {
-        if (!controller.signal.aborted) setPages(payload.pages ?? [])
-      })
-      .catch((error: unknown) => {
-        if ((error as { name?: string }).name !== "AbortError") console.error("CMS pages could not be loaded", error)
-      })
-
-    return () => controller.abort()
-  }, [])
-
-  useEffect(() => {
-    const slug = searchParams.get("halaman")
-    const index = pages.findIndex((item) => item.slug === slug)
-    if (index >= 0) {
-      const timer = window.setTimeout(() => {
-        setActive(index)
-        setActiveSection(0)
-      }, 0)
-      return () => window.clearTimeout(timer)
-    }
-  }, [pages, searchParams])
-
-  const update = (field: keyof CmsPageContent, value: string) => {
-    setPages((current) => current.map((page, index) => (index === active ? { ...page, [field]: value } : page)))
+  useEffect(() => { const controller = new AbortController(); void fetch("/api/cms/pages", { signal: controller.signal }).then((response) => response.json()).then((payload) => { if (!controller.signal.aborted) setPages(payload.pages ?? []) }).catch((error: unknown) => { if ((error as { name?: string }).name !== "AbortError") console.error("CMS pages could not be loaded", error) }); return () => controller.abort() }, [])
+  useEffect(() => { const slug = searchParams.get("halaman"); if (slug && pageSettings.some((item) => item.slug === slug)) setActiveSlug(slug) }, [searchParams])
+  const visiblePages = useMemo(() => pageSettings.map((settings) => ({ settings, page: pages.find((page) => page.slug === settings.slug) })).filter((item): item is { settings: PageSettings; page: CmsPageContent } => Boolean(item.page)), [pages])
+  const active = visiblePages.find((item) => item.settings.slug === activeSlug) ?? visiblePages[0]
+  const page = active?.page
+  const settings = active?.settings
+  const updatePage = (field: Field, value: string) => setPages((current) => current.map((item) => item.slug === page?.slug ? { ...item, [field]: value } : item))
+  const updateSection = (key: string, field: Field, value: string) => setPages((current) => current.map((item) => item.slug === page?.slug ? { ...item, sections: item.sections.map((section) => section.key === key ? { ...section, [field]: value } : section) } : item))
+  const updateItem = (key: string, index: number, field: ItemField, value: string) => setPages((current) => current.map((item) => item.slug === page?.slug ? { ...item, sections: item.sections.map((section) => section.key === key ? { ...section, items: (section.items ?? []).map((entry, entryIndex) => entryIndex === index ? { ...entry, [field]: value } : entry) } : section) } : item))
+  const addItem = (key: string) => setPages((current) => current.map((item) => item.slug === page?.slug ? { ...item, sections: item.sections.map((section) => section.key === key ? { ...section, items: [...(section.items ?? []), { title: "Misi baru" }] } : section) } : item))
+  const removeItem = (key: string, index: number) => setPages((current) => current.map((item) => item.slug === page?.slug ? { ...item, sections: item.sections.map((section) => section.key === key ? { ...section, items: (section.items ?? []).filter((_, itemIndex) => itemIndex !== index) } : section) } : item))
+  const save = async () => { setSaving(true); setMessage(""); try { const response = await fetch("/api/cms/pages", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages }) }); const payload = await response.json(); setPages(payload.pages ?? pages); setMessage(response.ok ? "Tampilan halaman berhasil disimpan." : payload.message ?? "Tampilan halaman gagal disimpan.") } catch { setMessage("Tampilan halaman gagal disimpan. Coba lagi.") } finally { setSaving(false) } }
+  if (!page || !settings) return <div className="rounded-[28px] border border-slate-200 bg-white p-6 text-sm font-semibold text-slate-500">Memuat tampilan halaman...</div>
+  const renderSection = (sectionSettings: NonNullable<PageSettings["sections"]>[number]) => {
+    const section = page.sections.find((item) => item.key === sectionSettings.key)
+    if (!section) return null
+    const canManageItems = section.key === "vision-mission"
+    return <section key={section.key} className="rounded-2xl border border-slate-200 p-4 sm:p-5"><h3 className="font-black text-slate-950">{sectionSettings.label}</h3><p className="mt-1 text-sm text-slate-500">Bagian ini tampil di halaman publik.</p><div className="mt-4 grid gap-4 md:grid-cols-2">{sectionSettings.fields.map((field) => <TextField key={field} field={field} value={((section as Record<string, unknown>)[field] as string | undefined) ?? ""} onChange={(value) => updateSection(section.key, field, value)} />)}</div>{sectionSettings.fields.includes("image") ? <div className="mt-4"><CmsImageUpload onUploaded={(url) => updateSection(section.key, "image", url)} /></div> : null}{sectionSettings.itemFields && (section.items ?? []).length > 0 ? <div className="mt-5 space-y-4 border-t border-slate-100 pt-5">{section.items?.map((item, index) => <div key={`${section.key}-${index}`} className="rounded-xl bg-slate-50 p-4"><div className="flex items-center justify-between gap-3"><p className="text-xs font-black uppercase tracking-[.14em] text-slate-500">{canManageItems ? `Misi ${index + 1}` : `Item ${index + 1}`}</p>{canManageItems ? <button type="button" onClick={() => removeItem(section.key, index)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50"><Trash2 className="size-3.5" />Hapus</button> : null}</div><div className="mt-3 grid gap-3 md:grid-cols-2">{sectionSettings.itemFields?.map((field) => <TextField key={field} field={field} value={(item[field] as string | undefined) ?? ""} onChange={(value) => updateItem(section.key, index, field, value)} />)}</div></div>)}</div> : null}{canManageItems ? <button type="button" onClick={() => addItem(section.key)} className="mt-4 inline-flex items-center gap-2 rounded-xl border border-emerald-200 px-4 py-2.5 text-sm font-bold text-emerald-800 hover:bg-emerald-50"><Plus className="size-4" />Tambah misi</button> : null}</section>
   }
-
-  const updateSection = (field: "eyebrow" | "title" | "description" | "action" | "href" | "image", value: string) => {
-    setPages((current) =>
-      current.map((page, pageIndex) =>
-        pageIndex === active
-          ? {
-              ...page,
-              sections: page.sections.map((section, sectionIndex) => (sectionIndex === activeSection ? { ...section, [field]: value } : section)),
-            }
-          : page,
-      ),
-    )
-  }
-
-  const updateItem = (itemIndex: number, field: "title" | "icon" | "description" | "value" | "detail" | "href" | "category" | "date" | "image", value: string) => {
-    setPages((current) =>
-      current.map((page, pageIndex) =>
-        pageIndex === active
-          ? {
-              ...page,
-              sections: page.sections.map((section, sectionIndex) =>
-                sectionIndex === activeSection
-                  ? {
-                      ...section,
-                      items: (section.items ?? []).map((item, index) => (index === itemIndex ? { ...item, [field]: value } : item)),
-                    }
-                  : section,
-              ),
-            }
-          : page,
-      ),
-    )
-  }
-
-  const addItem = () => {
-    setPages((current) => current.map((page, pageIndex) => pageIndex === active ? { ...page, sections: page.sections.map((section, sectionIndex) => sectionIndex === activeSection ? { ...section, items: [...(section.items ?? []), { title: "Item baru" }] } : section) } : page))
-  }
-
-  const removeItem = (itemIndex: number) => {
-    setPages((current) => current.map((page, pageIndex) => pageIndex === active ? { ...page, sections: page.sections.map((section, sectionIndex) => sectionIndex === activeSection ? { ...section, items: (section.items ?? []).filter((_, index) => index !== itemIndex) } : section) } : page))
-  }
-
-  const save = async () => {
-    setSaving(true)
-    setMessage("")
-
-    const response = await fetch("/api/cms/pages", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pages }),
-    })
-    const payload = await response.json()
-
-    setPages(payload.pages ?? pages)
-    setSaving(false)
-    setMessage(response.ok ? "Konten halaman berhasil disimpan." : "Konten gagal disimpan.")
-  }
-
-  const page = pages[active]
-  const section = page?.sections?.[activeSection]
-
-  if (!page) {
-    return <div className="rounded-[28px] border border-slate-200 bg-white p-6 text-sm font-semibold text-slate-500">Memuat data CMS...</div>
-  }
-
-  return (
-    <section id="konten-halaman" className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:w-56 lg:grid-cols-1">
-          {pages.map((item, index) => (
-            <button
-              key={item.slug}
-              type="button"
-              onClick={() => {
-                setActive(index)
-                setActiveSection(0)
-              }}
-              className={`rounded-2xl px-4 py-3 text-left text-sm font-bold transition ${
-                active === index ? "bg-emerald-600 text-white" : "bg-slate-50 text-slate-700 hover:bg-emerald-50"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="mb-4 rounded-2xl bg-slate-50 p-4">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Hero halaman</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <label className="text-sm font-bold text-slate-700">
-              Eyebrow
-              <input value={page.eyebrow} onChange={(event) => update("eyebrow", event.target.value)} className={inputClass} />
-            </label>
-            <label className="text-sm font-bold text-slate-700">
-              Posisi gambar
-              <input value={page.imagePosition} onChange={(event) => update("imagePosition", event.target.value)} className={inputClass} />
-            </label>
-            <label className="md:col-span-2 text-sm font-bold text-slate-700">
-              Judul
-              <input value={page.title} onChange={(event) => update("title", event.target.value)} className={inputClass} />
-            </label>
-            <label className="md:col-span-2 text-sm font-bold text-slate-700">
-              Deskripsi
-              <textarea value={page.description} onChange={(event) => update("description", event.target.value)} rows={3} className={inputClass} />
-            </label>
-            <label className="md:col-span-2 text-sm font-bold text-slate-700">
-              URL gambar hero
-              <input value={page.image} onChange={(event) => update("image", event.target.value)} className={inputClass} />
-            </label>
-            <div className="md:col-span-2">
-              <CmsImageUpload onUploaded={(url) => update("image", url)} />
-            </div>
-          </div>
-
-          {page.sections.length ? (
-            <div className="mt-6 border-t border-slate-100 pt-6">
-              <div className="mb-4 flex flex-wrap gap-2">
-                {page.sections.map((item, index) => (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => setActiveSection(index)}
-                    className={`rounded-full px-4 py-2 text-sm font-bold transition ${
-                      activeSection === index ? "bg-slate-950 text-white" : "bg-slate-100 text-slate-600 hover:bg-emerald-50"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-
-              {section ? (
-                <div className="rounded-2xl border border-slate-200 p-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <label className="text-sm font-bold text-slate-700">
-                      Eyebrow section
-                      <input value={section.eyebrow ?? ""} onChange={(event) => updateSection("eyebrow", event.target.value)} className={inputClass} />
-                    </label>
-                    <label className="text-sm font-bold text-slate-700">
-                      Teks tombol
-                      <input value={section.action ?? ""} onChange={(event) => updateSection("action", event.target.value)} className={inputClass} />
-                    </label>
-                    <label className="md:col-span-2 text-sm font-bold text-slate-700">
-                      Judul section
-                      <input value={section.title ?? ""} onChange={(event) => updateSection("title", event.target.value)} className={inputClass} />
-                    </label>
-                    <label className="md:col-span-2 text-sm font-bold text-slate-700">
-                      Deskripsi section
-                      <textarea value={section.description ?? ""} onChange={(event) => updateSection("description", event.target.value)} rows={2} className={inputClass} />
-                    </label>
-                    <label className="md:col-span-2 text-sm font-bold text-slate-700">
-                      URL gambar section
-                      <input value={section.image ?? ""} onChange={(event) => updateSection("image", event.target.value)} className={inputClass} placeholder="/images/contoh.jpg" />
-                    </label>
-                    <div className="md:col-span-2">
-                      <CmsImageUpload onUploaded={(url) => updateSection("image", url)} />
-                    </div>
-                  </div>
-
-                  <div className="mt-5 space-y-4">
-                    {(section.items ?? []).map((item, itemIndex) => (
-                      <div key={`${section.key}-${itemIndex}`} className="rounded-2xl bg-slate-50 p-4">
-                        <div className="flex items-center justify-between gap-3"><p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Item {itemIndex + 1}</p><button type="button" onClick={() => removeItem(itemIndex)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50"><Trash2 className="size-3.5" />Hapus</button></div>
-                        <div className="mt-3 grid gap-3 md:grid-cols-2">
-                          <input value={item.title} onChange={(event) => updateItem(itemIndex, "title", event.target.value)} className={inputClass} placeholder="Judul item" />
-                          <input value={item.icon ?? ""} onChange={(event) => updateItem(itemIndex, "icon", event.target.value)} className={inputClass} placeholder="Ikon: description, badge, favorite, storefront" />
-                          <input value={item.value ?? ""} onChange={(event) => updateItem(itemIndex, "value", event.target.value)} className={inputClass} placeholder="Nilai/statistik" />
-                          <input value={item.detail ?? ""} onChange={(event) => updateItem(itemIndex, "detail", event.target.value)} className={inputClass} placeholder="Detail kecil" />
-                          <input value={item.href ?? ""} onChange={(event) => updateItem(itemIndex, "href", event.target.value)} className={inputClass} placeholder="Link" />
-                          <input value={item.image ?? ""} onChange={(event) => updateItem(itemIndex, "image", event.target.value)} className={`${inputClass} md:col-span-2`} placeholder="URL gambar item" />
-                          <textarea value={item.description ?? ""} onChange={(event) => updateItem(itemIndex, "description", event.target.value)} rows={2} className={`${inputClass} md:col-span-2`} placeholder="Deskripsi" />
-                          <div className="md:col-span-2"><CmsImageUpload onUploaded={(url) => updateItem(itemIndex, "image", url)} /></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <button type="button" onClick={addItem} className="mt-4 inline-flex items-center gap-2 rounded-xl border border-emerald-200 px-4 py-2.5 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"><Plus className="size-4" />Tambah item</button>
-                </div>
-              ) : null}
-            </div>
-          ) : page.slug === "berita" ? (
-            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
-              <p className="text-sm font-bold text-emerald-950">Artikel berita dikelola terpisah.</p>
-              <p className="mt-1 text-sm leading-6 text-emerald-800">Halaman ini hanya mengatur tampilan hero. Untuk menambah, edit, hapus artikel, atau kategori, gunakan Kelola Berita.</p>
-              <Link href="/admin/berita" className="mt-4 inline-flex rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-800">Buka Kelola Berita</Link>
-            </div>
-          ) : (
-            <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5 text-sm font-semibold text-slate-500">
-              Section halaman ini belum disambungkan ke CMS. Hero sudah bisa diedit.
-            </div>
-          )}
-
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <button onClick={save} disabled={saving} className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-800 disabled:opacity-60">
-              <Save className="h-4 w-4" />
-              {saving ? "Menyimpan..." : "Simpan perubahan"}
-            </button>
-            {message ? <p className="text-sm font-semibold text-emerald-700">{message}</p> : null}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
+  return <section id="tampilan-halaman" className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><div className="grid gap-5 xl:grid-cols-[280px_minmax(0,1fr)]"><aside><p className="text-xs font-black uppercase tracking-[.16em] text-emerald-700">Pilih halaman</p><div className="mt-3 space-y-2">{visiblePages.map(({ page: listedPage, settings: listedSettings }) => <button key={listedPage.slug} type="button" onClick={() => setActiveSlug(listedPage.slug)} className={`w-full rounded-2xl border p-4 text-left transition ${listedPage.slug === page.slug ? "border-emerald-600 bg-emerald-50" : "border-slate-200 hover:border-emerald-200 hover:bg-slate-50"}`}><p className="font-black text-slate-950">{listedPage.label}</p><p className="mt-1 text-xs font-semibold text-emerald-700">{listedSettings.href}</p><p className="mt-2 text-xs leading-5 text-slate-500">{listedSettings.summary}</p></button>)}</div></aside><div className="min-w-0"><header className="rounded-2xl bg-slate-950 p-5 text-white"><div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-emerald-300">Tampilan halaman publik</p><h2 className="mt-2 text-2xl font-black">{page.label}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">{settings.summary}</p></div><a href={settings.href} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-black text-slate-950 hover:bg-emerald-300">Lihat halaman <ExternalLink className="size-4" /></a></div><p className="mt-4 border-t border-white/10 pt-3 text-xs text-slate-400">URL publik: <span className="font-bold text-white">{settings.href}</span></p></header>{settings.heroFields ? <section className="mt-5 overflow-hidden rounded-2xl border border-slate-200"><div className="relative min-h-48 bg-emerald-950 p-5 text-white" style={{ backgroundImage: `linear-gradient(90deg, rgba(4, 24, 18, .86), rgba(4, 24, 18, .45)), url(${page.image})`, backgroundPosition: page.imagePosition, backgroundSize: "cover" }}><p className="text-xs font-bold uppercase tracking-[.16em] text-emerald-200">Pratinjau hero</p><p className="mt-4 text-sm font-bold text-emerald-100">{page.eyebrow}</p><h3 className="mt-2 max-w-xl text-2xl font-black">{page.title}</h3><p className="mt-3 max-w-xl text-sm leading-6 text-slate-200">{page.description}</p></div><div className="p-4 sm:p-5"><h3 className="font-black text-slate-950">Hero halaman</h3><p className="mt-1 text-sm text-slate-500">Perubahan berikut langsung memengaruhi bagian pembuka halaman.</p><div className="mt-4 grid gap-4 md:grid-cols-2">{settings.heroFields.map((field) => <TextField key={field} field={field} value={((page as Record<string, unknown>)[field] as string | undefined) ?? ""} onChange={(value) => updatePage(field, value)} />)}</div>{settings.heroFields.includes("image") ? <div className="mt-4"><CmsImageUpload onUploaded={(url) => updatePage("image", url)} /></div> : null}</div></section> : null}{settings.sections?.length ? <div className="mt-5 space-y-5">{settings.sections.map(renderSection)}</div> : null}{settings.manage ? <aside className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><p className="font-black text-emerald-950">Konten lain dikelola terpisah</p><p className="mt-1 text-sm leading-6 text-emerald-900">{settings.manage.description}</p><Link href={settings.manage.href} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-800">Buka {settings.manage.label} <ArrowUpRight className="size-4" /></Link></aside> : null}<div className="mt-6 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5"><button type="button" onClick={save} disabled={saving} className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-800 disabled:opacity-60"><Save className="size-4" />{saving ? "Menyimpan..." : "Simpan perubahan"}</button>{message ? <p role="status" className="text-sm font-semibold text-emerald-700">{message}</p> : null}</div></div></div></section>
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { requireCmsPermission } from "@/lib/api-access"
 
 const validTypes = new Set(["EVAKUASI", "RAWAN", "POSKO"])
 const validOverrides = new Set(["auto", "aman", "waspada", "bahaya"])
@@ -21,6 +22,7 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const { response } = await requireCmsPermission("DISASTER_WEATHER", "update"); if (response) return response
   let body: {
     override?: string
     announcement?: string

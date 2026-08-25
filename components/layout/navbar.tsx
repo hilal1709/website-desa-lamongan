@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation"
 const informationLinks = [
   { label: "Berita", href: "/berita" },
   { label: "Arsip Dokumen", href: "/arsip" },
-  { label: "Infografis Desa", href: "/infografis" },
+  { label: "Data & Infografis Desa", href: "/infografis" },
   { label: "Peta Lokasi Bencana", href: "/peta-bencana" },
 ]
 

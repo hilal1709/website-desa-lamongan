@@ -2,7 +2,8 @@
 
 import { redirect } from "next/navigation"
 
-import { authenticateAdmin, createAdminSession } from "@/lib/admin-auth"
+import { authenticateAdmin, createAdminSession, getCurrentAdmin } from "@/lib/admin-auth"
+import { firstPermittedCmsPath } from "@/lib/access-control"
 
 export type LoginState = { error?: string }
 
@@ -16,5 +17,7 @@ export async function loginAdmin(_: LoginState, formData: FormData): Promise<Log
   if (!admin) return { error: "Username atau kata sandi tidak valid." }
 
   await createAdminSession(admin.id)
-  redirect(admin.role === "PETUGAS_PUSKESMAS" ? "/posyandu-lansia" : "/admin")
+  const user = await getCurrentAdmin()
+  if (!user) redirect("/login")
+  redirect(firstPermittedCmsPath(user) ?? (firstPermittedCmsPath(user) === null ? "/posyandu-lansia" : "/admin"))
 }

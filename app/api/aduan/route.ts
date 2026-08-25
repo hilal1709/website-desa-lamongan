@@ -36,11 +36,11 @@ export async function POST(request: Request) {
 
   const complaint = await prisma.complaint.create({
     data: { title, category, location, contact, description },
-    select: { id: true, title: true, category: true, location: true, status: true, createdAt: true },
+    select: { id: true, title: true, category: true, location: true, status: true, publicResponse: true, respondedAt: true, createdAt: true },
   })
 
   revalidateTag("complaints", "max")
   revalidateTag("admin-dashboard", "max")
 
-  return NextResponse.json({ complaint: { ...complaint, createdAt: complaint.createdAt.toISOString() } }, { status: 201 })
+  return NextResponse.json({ complaint: { ...complaint, createdAt: complaint.createdAt.toISOString(), respondedAt: complaint.respondedAt?.toISOString() ?? null } }, { status: 201 })
 }

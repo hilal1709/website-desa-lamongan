@@ -7,7 +7,7 @@ const getCachedHomeData = unstable_cache(async () => {
       prisma.statistic.findMany({ orderBy: { order: "asc" }, take: 4 }),
       prisma.quickService.findMany({ orderBy: { order: "asc" }, take: 4 }),
       prisma.news.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
-      prisma.document.findMany({ orderBy: { uploadedAt: "desc" }, take: 2 }),
+      prisma.document.findMany({ where: { visibility: "PUBLIC" }, orderBy: { uploadedAt: "desc" }, take: 2 }),
     ])
 
     return { statistics, services, news, documents }

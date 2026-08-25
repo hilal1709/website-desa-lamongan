@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { requireCmsPermission } from "@/lib/api-access"
 
 const limit = { name: 120, slug: 140, category: 80, description: 2000, logoUrl: 500, whatsapp: 32, address: 300, dusun: 100 }
 const text = (value: unknown, field: keyof typeof limit) => typeof value === "string" ? value.trim().slice(0, limit[field]) : ""
@@ -24,8 +25,7 @@ function profileInput(body: Record<string, unknown>) {
 }
 
 async function requireAdmin() {
-  if (await getCurrentAdmin()) return true
-  return false
+  return !(await requireCmsPermission("UMKM")).response
 }
 const databaseError = () => NextResponse.json({ message: "Data UMKM belum dapat dimuat. Silakan coba lagi." }, { status: 500 })
 
@@ -38,7 +38,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!(await requireAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const access = await requireCmsPermission("UMKM", "create"); if (access.response) return access.response
   const input = profileInput(await request.json() as Record<string, unknown>)
   if (!input) return NextResponse.json({ message: "Lengkapi profil UMKM, dusun, tanggal pencatatan, logo, dan nomor WhatsApp yang valid." }, { status: 400 })
   try {
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!(await requireAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const access = await requireCmsPermission("UMKM", "update"); if (access.response) return access.response
   const body = await request.json() as Record<string, unknown>
   const id = typeof body.id === "string" ? body.id : ""
   const input = profileInput(body)
@@ -73,7 +73,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!(await requireAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const access = await requireCmsPermission("UMKM", "delete"); if (access.response) return access.response
   const id = new URL(request.url).searchParams.get("id")
   if (!id) return NextResponse.json({ message: "ID UMKM wajib diisi." }, { status: 400 })
   try {

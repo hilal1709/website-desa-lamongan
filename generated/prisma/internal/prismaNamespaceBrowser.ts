@@ -60,6 +60,9 @@ export const ModelName = {
   CmsNewsStore: 'CmsNewsStore',
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
+  Role: 'Role',
+  AdminUserRole: 'AdminUserRole',
+  RolePermission: 'RolePermission',
   VillageService: 'VillageService',
   ServiceRequirement: 'ServiceRequirement',
   ServiceSubmission: 'ServiceSubmission',
@@ -70,7 +73,11 @@ export const ModelName = {
   ElderlyDisease: 'ElderlyDisease',
   PosyanduSession: 'PosyanduSession',
   PosyanduCheck: 'PosyanduCheck',
+  Child: 'Child',
+  ChildPosyanduSession: 'ChildPosyanduSession',
+  ChildHealthCheck: 'ChildHealthCheck',
   PopulationOpeningBalance: 'PopulationOpeningBalance',
+  Resident: 'Resident',
   PopulationEvent: 'PopulationEvent',
   DisasterSetting: 'DisasterSetting',
   DisasterLocation: 'DisasterLocation',
@@ -140,6 +147,11 @@ export const DocumentScalarFieldEnum = {
   size: 'size',
   icon: 'icon',
   fileUrl: 'fileUrl',
+  visibility: 'visibility',
+  originalName: 'originalName',
+  mimeType: 'mimeType',
+  byteSize: 'byteSize',
+  storagePath: 'storagePath',
   uploadedAt: 'uploadedAt'
 } as const
 
@@ -184,6 +196,8 @@ export const ComplaintScalarFieldEnum = {
   contact: 'contact',
   description: 'description',
   status: 'status',
+  publicResponse: 'publicResponse',
+  respondedAt: 'respondedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -197,13 +211,46 @@ export const AdminUserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   name: 'name',
-  role: 'role',
+  isSuperAdmin: 'isSuperAdmin',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
+export const RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isSystem: 'isSystem',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
+
+
+export const AdminUserRoleScalarFieldEnum = {
+  userId: 'userId',
+  roleId: 'roleId'
+} as const
+
+export type AdminUserRoleScalarFieldEnum = (typeof AdminUserRoleScalarFieldEnum)[keyof typeof AdminUserRoleScalarFieldEnum]
+
+
+export const RolePermissionScalarFieldEnum = {
+  id: 'id',
+  roleId: 'roleId',
+  module: 'module',
+  canView: 'canView',
+  canCreate: 'canCreate',
+  canUpdate: 'canUpdate',
+  canDelete: 'canDelete'
+} as const
+
+export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
 
 
 export const VillageServiceScalarFieldEnum = {
@@ -345,6 +392,56 @@ export const PosyanduCheckScalarFieldEnum = {
 export type PosyanduCheckScalarFieldEnum = (typeof PosyanduCheckScalarFieldEnum)[keyof typeof PosyanduCheckScalarFieldEnum]
 
 
+export const ChildScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  gender: 'gender',
+  dusun: 'dusun',
+  birthDate: 'birthDate',
+  address: 'address',
+  guardianName: 'guardianName',
+  guardianPhone: 'guardianPhone',
+  isActive: 'isActive',
+  publicProfileConsent: 'publicProfileConsent',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChildScalarFieldEnum = (typeof ChildScalarFieldEnum)[keyof typeof ChildScalarFieldEnum]
+
+
+export const ChildPosyanduSessionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  sessionDate: 'sessionDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChildPosyanduSessionScalarFieldEnum = (typeof ChildPosyanduSessionScalarFieldEnum)[keyof typeof ChildPosyanduSessionScalarFieldEnum]
+
+
+export const ChildHealthCheckScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  childId: 'childId',
+  recordedById: 'recordedById',
+  weightKg: 'weightKg',
+  heightCm: 'heightCm',
+  headCircumferenceCm: 'headCircumferenceCm',
+  feeding: 'feeding',
+  interventions: 'interventions',
+  developmentStatus: 'developmentStatus',
+  notes: 'notes',
+  referral: 'referral',
+  recordedAt: 'recordedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChildHealthCheckScalarFieldEnum = (typeof ChildHealthCheckScalarFieldEnum)[keyof typeof ChildHealthCheckScalarFieldEnum]
+
+
 export const PopulationOpeningBalanceScalarFieldEnum = {
   id: 'id',
   dusun: 'dusun',
@@ -356,6 +453,24 @@ export const PopulationOpeningBalanceScalarFieldEnum = {
 } as const
 
 export type PopulationOpeningBalanceScalarFieldEnum = (typeof PopulationOpeningBalanceScalarFieldEnum)[keyof typeof PopulationOpeningBalanceScalarFieldEnum]
+
+
+export const ResidentScalarFieldEnum = {
+  id: 'id',
+  nationalId: 'nationalId',
+  fullName: 'fullName',
+  familyCardNumber: 'familyCardNumber',
+  gender: 'gender',
+  birthDate: 'birthDate',
+  dusun: 'dusun',
+  education: 'education',
+  occupation: 'occupation',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ResidentScalarFieldEnum = (typeof ResidentScalarFieldEnum)[keyof typeof ResidentScalarFieldEnum]
 
 
 export const PopulationEventScalarFieldEnum = {
@@ -372,6 +487,7 @@ export const PopulationEventScalarFieldEnum = {
   originAddress: 'originAddress',
   destinationAddress: 'destinationAddress',
   notes: 'notes',
+  residentId: 'residentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

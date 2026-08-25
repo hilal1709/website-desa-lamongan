@@ -23,8 +23,8 @@ async function main() {
   const passwordHash = await hashPassword(adminPassword)
   await prisma.adminUser.upsert({
     where: { username: adminUsername },
-    update: { email: adminEmail, passwordHash, isActive: true },
-    create: { username: adminUsername, email: adminEmail, passwordHash },
+    update: { email: adminEmail, passwordHash, isActive: true, isSuperAdmin: true },
+    create: { username: adminUsername, email: adminEmail, passwordHash, isSuperAdmin: true, roles: { create: { roleId: "system-administrator" } } },
   })
   console.log(`Admin ${adminUsername} siap digunakan.`)
 }

@@ -3,4 +3,5 @@ export interface PublicDocument {
   title: string
   meta: string
   status?: string
+  available?: boolean
 }

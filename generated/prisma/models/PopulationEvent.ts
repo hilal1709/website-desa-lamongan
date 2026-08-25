@@ -38,6 +38,7 @@ export type PopulationEventMinAggregateOutputType = {
   originAddress: string | null
   destinationAddress: string | null
   notes: string | null
+  residentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +57,7 @@ export type PopulationEventMaxAggregateOutputType = {
   originAddress: string | null
   destinationAddress: string | null
   notes: string | null
+  residentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -74,6 +76,7 @@ export type PopulationEventCountAggregateOutputType = {
   originAddress: number
   destinationAddress: number
   notes: number
+  residentId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -94,6 +97,7 @@ export type PopulationEventMinAggregateInputType = {
   originAddress?: true
   destinationAddress?: true
   notes?: true
+  residentId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +116,7 @@ export type PopulationEventMaxAggregateInputType = {
   originAddress?: true
   destinationAddress?: true
   notes?: true
+  residentId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -130,6 +135,7 @@ export type PopulationEventCountAggregateInputType = {
   originAddress?: true
   destinationAddress?: true
   notes?: true
+  residentId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -221,6 +227,7 @@ export type PopulationEventGroupByOutputType = {
   originAddress: string | null
   destinationAddress: string | null
   notes: string | null
+  residentId: string | null
   createdAt: Date
   updatedAt: Date
   _count: PopulationEventCountAggregateOutputType | null
@@ -260,8 +267,10 @@ export type PopulationEventWhereInput = {
   originAddress?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
   destinationAddress?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
   notes?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
+  residentId?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
+  resident?: Prisma.XOR<Prisma.ResidentNullableScalarRelationFilter, Prisma.ResidentWhereInput> | null
 }
 
 export type PopulationEventOrderByWithRelationInput = {
@@ -278,8 +287,10 @@ export type PopulationEventOrderByWithRelationInput = {
   originAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   destinationAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  residentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  resident?: Prisma.ResidentOrderByWithRelationInput
 }
 
 export type PopulationEventWhereUniqueInput = Prisma.AtLeast<{
@@ -299,8 +310,10 @@ export type PopulationEventWhereUniqueInput = Prisma.AtLeast<{
   originAddress?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
   destinationAddress?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
   notes?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
+  residentId?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
+  resident?: Prisma.XOR<Prisma.ResidentNullableScalarRelationFilter, Prisma.ResidentWhereInput> | null
 }, "id">
 
 export type PopulationEventOrderByWithAggregationInput = {
@@ -317,6 +330,7 @@ export type PopulationEventOrderByWithAggregationInput = {
   originAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   destinationAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  residentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PopulationEventCountOrderByAggregateInput
@@ -341,6 +355,7 @@ export type PopulationEventScalarWhereWithAggregatesInput = {
   originAddress?: Prisma.StringNullableWithAggregatesFilter<"PopulationEvent"> | string | null
   destinationAddress?: Prisma.StringNullableWithAggregatesFilter<"PopulationEvent"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"PopulationEvent"> | string | null
+  residentId?: Prisma.StringNullableWithAggregatesFilter<"PopulationEvent"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PopulationEvent"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PopulationEvent"> | Date | string
 }
@@ -361,6 +376,7 @@ export type PopulationEventCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  resident?: Prisma.ResidentCreateNestedOneWithoutEventsInput
 }
 
 export type PopulationEventUncheckedCreateInput = {
@@ -377,6 +393,7 @@ export type PopulationEventUncheckedCreateInput = {
   originAddress?: string | null
   destinationAddress?: string | null
   notes?: string | null
+  residentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -397,6 +414,7 @@ export type PopulationEventUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resident?: Prisma.ResidentUpdateOneWithoutEventsNestedInput
 }
 
 export type PopulationEventUncheckedUpdateInput = {
@@ -413,6 +431,7 @@ export type PopulationEventUncheckedUpdateInput = {
   originAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   destinationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  residentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -431,6 +450,7 @@ export type PopulationEventCreateManyInput = {
   originAddress?: string | null
   destinationAddress?: string | null
   notes?: string | null
+  residentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -467,8 +487,19 @@ export type PopulationEventUncheckedUpdateManyInput = {
   originAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   destinationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  residentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PopulationEventListRelationFilter = {
+  every?: Prisma.PopulationEventWhereInput
+  some?: Prisma.PopulationEventWhereInput
+  none?: Prisma.PopulationEventWhereInput
+}
+
+export type PopulationEventOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PopulationEventCountOrderByAggregateInput = {
@@ -485,6 +516,7 @@ export type PopulationEventCountOrderByAggregateInput = {
   originAddress?: Prisma.SortOrder
   destinationAddress?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  residentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -503,6 +535,7 @@ export type PopulationEventMaxOrderByAggregateInput = {
   originAddress?: Prisma.SortOrder
   destinationAddress?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  residentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -521,12 +554,211 @@ export type PopulationEventMinOrderByAggregateInput = {
   originAddress?: Prisma.SortOrder
   destinationAddress?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  residentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
+export type PopulationEventCreateNestedManyWithoutResidentInput = {
+  create?: Prisma.XOR<Prisma.PopulationEventCreateWithoutResidentInput, Prisma.PopulationEventUncheckedCreateWithoutResidentInput> | Prisma.PopulationEventCreateWithoutResidentInput[] | Prisma.PopulationEventUncheckedCreateWithoutResidentInput[]
+  connectOrCreate?: Prisma.PopulationEventCreateOrConnectWithoutResidentInput | Prisma.PopulationEventCreateOrConnectWithoutResidentInput[]
+  createMany?: Prisma.PopulationEventCreateManyResidentInputEnvelope
+  connect?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+}
+
+export type PopulationEventUncheckedCreateNestedManyWithoutResidentInput = {
+  create?: Prisma.XOR<Prisma.PopulationEventCreateWithoutResidentInput, Prisma.PopulationEventUncheckedCreateWithoutResidentInput> | Prisma.PopulationEventCreateWithoutResidentInput[] | Prisma.PopulationEventUncheckedCreateWithoutResidentInput[]
+  connectOrCreate?: Prisma.PopulationEventCreateOrConnectWithoutResidentInput | Prisma.PopulationEventCreateOrConnectWithoutResidentInput[]
+  createMany?: Prisma.PopulationEventCreateManyResidentInputEnvelope
+  connect?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+}
+
+export type PopulationEventUpdateManyWithoutResidentNestedInput = {
+  create?: Prisma.XOR<Prisma.PopulationEventCreateWithoutResidentInput, Prisma.PopulationEventUncheckedCreateWithoutResidentInput> | Prisma.PopulationEventCreateWithoutResidentInput[] | Prisma.PopulationEventUncheckedCreateWithoutResidentInput[]
+  connectOrCreate?: Prisma.PopulationEventCreateOrConnectWithoutResidentInput | Prisma.PopulationEventCreateOrConnectWithoutResidentInput[]
+  upsert?: Prisma.PopulationEventUpsertWithWhereUniqueWithoutResidentInput | Prisma.PopulationEventUpsertWithWhereUniqueWithoutResidentInput[]
+  createMany?: Prisma.PopulationEventCreateManyResidentInputEnvelope
+  set?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  disconnect?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  delete?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  connect?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  update?: Prisma.PopulationEventUpdateWithWhereUniqueWithoutResidentInput | Prisma.PopulationEventUpdateWithWhereUniqueWithoutResidentInput[]
+  updateMany?: Prisma.PopulationEventUpdateManyWithWhereWithoutResidentInput | Prisma.PopulationEventUpdateManyWithWhereWithoutResidentInput[]
+  deleteMany?: Prisma.PopulationEventScalarWhereInput | Prisma.PopulationEventScalarWhereInput[]
+}
+
+export type PopulationEventUncheckedUpdateManyWithoutResidentNestedInput = {
+  create?: Prisma.XOR<Prisma.PopulationEventCreateWithoutResidentInput, Prisma.PopulationEventUncheckedCreateWithoutResidentInput> | Prisma.PopulationEventCreateWithoutResidentInput[] | Prisma.PopulationEventUncheckedCreateWithoutResidentInput[]
+  connectOrCreate?: Prisma.PopulationEventCreateOrConnectWithoutResidentInput | Prisma.PopulationEventCreateOrConnectWithoutResidentInput[]
+  upsert?: Prisma.PopulationEventUpsertWithWhereUniqueWithoutResidentInput | Prisma.PopulationEventUpsertWithWhereUniqueWithoutResidentInput[]
+  createMany?: Prisma.PopulationEventCreateManyResidentInputEnvelope
+  set?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  disconnect?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  delete?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  connect?: Prisma.PopulationEventWhereUniqueInput | Prisma.PopulationEventWhereUniqueInput[]
+  update?: Prisma.PopulationEventUpdateWithWhereUniqueWithoutResidentInput | Prisma.PopulationEventUpdateWithWhereUniqueWithoutResidentInput[]
+  updateMany?: Prisma.PopulationEventUpdateManyWithWhereWithoutResidentInput | Prisma.PopulationEventUpdateManyWithWhereWithoutResidentInput[]
+  deleteMany?: Prisma.PopulationEventScalarWhereInput | Prisma.PopulationEventScalarWhereInput[]
+}
+
 export type EnumPopulationEventTypeFieldUpdateOperationsInput = {
   set?: $Enums.PopulationEventType
+}
+
+export type PopulationEventCreateWithoutResidentInput = {
+  id?: string
+  eventDate: Date | string
+  type: $Enums.PopulationEventType
+  dusun: string
+  fullName: string
+  nationalId: string
+  familyCardNumber: string
+  gender: string
+  birthDate: Date | string
+  residenceAddress: string
+  originAddress?: string | null
+  destinationAddress?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PopulationEventUncheckedCreateWithoutResidentInput = {
+  id?: string
+  eventDate: Date | string
+  type: $Enums.PopulationEventType
+  dusun: string
+  fullName: string
+  nationalId: string
+  familyCardNumber: string
+  gender: string
+  birthDate: Date | string
+  residenceAddress: string
+  originAddress?: string | null
+  destinationAddress?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PopulationEventCreateOrConnectWithoutResidentInput = {
+  where: Prisma.PopulationEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.PopulationEventCreateWithoutResidentInput, Prisma.PopulationEventUncheckedCreateWithoutResidentInput>
+}
+
+export type PopulationEventCreateManyResidentInputEnvelope = {
+  data: Prisma.PopulationEventCreateManyResidentInput | Prisma.PopulationEventCreateManyResidentInput[]
+  skipDuplicates?: boolean
+}
+
+export type PopulationEventUpsertWithWhereUniqueWithoutResidentInput = {
+  where: Prisma.PopulationEventWhereUniqueInput
+  update: Prisma.XOR<Prisma.PopulationEventUpdateWithoutResidentInput, Prisma.PopulationEventUncheckedUpdateWithoutResidentInput>
+  create: Prisma.XOR<Prisma.PopulationEventCreateWithoutResidentInput, Prisma.PopulationEventUncheckedCreateWithoutResidentInput>
+}
+
+export type PopulationEventUpdateWithWhereUniqueWithoutResidentInput = {
+  where: Prisma.PopulationEventWhereUniqueInput
+  data: Prisma.XOR<Prisma.PopulationEventUpdateWithoutResidentInput, Prisma.PopulationEventUncheckedUpdateWithoutResidentInput>
+}
+
+export type PopulationEventUpdateManyWithWhereWithoutResidentInput = {
+  where: Prisma.PopulationEventScalarWhereInput
+  data: Prisma.XOR<Prisma.PopulationEventUpdateManyMutationInput, Prisma.PopulationEventUncheckedUpdateManyWithoutResidentInput>
+}
+
+export type PopulationEventScalarWhereInput = {
+  AND?: Prisma.PopulationEventScalarWhereInput | Prisma.PopulationEventScalarWhereInput[]
+  OR?: Prisma.PopulationEventScalarWhereInput[]
+  NOT?: Prisma.PopulationEventScalarWhereInput | Prisma.PopulationEventScalarWhereInput[]
+  id?: Prisma.StringFilter<"PopulationEvent"> | string
+  eventDate?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
+  type?: Prisma.EnumPopulationEventTypeFilter<"PopulationEvent"> | $Enums.PopulationEventType
+  dusun?: Prisma.StringFilter<"PopulationEvent"> | string
+  fullName?: Prisma.StringFilter<"PopulationEvent"> | string
+  nationalId?: Prisma.StringFilter<"PopulationEvent"> | string
+  familyCardNumber?: Prisma.StringFilter<"PopulationEvent"> | string
+  gender?: Prisma.StringFilter<"PopulationEvent"> | string
+  birthDate?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
+  residenceAddress?: Prisma.StringFilter<"PopulationEvent"> | string
+  originAddress?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
+  destinationAddress?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
+  notes?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
+  residentId?: Prisma.StringNullableFilter<"PopulationEvent"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PopulationEvent"> | Date | string
+}
+
+export type PopulationEventCreateManyResidentInput = {
+  id?: string
+  eventDate: Date | string
+  type: $Enums.PopulationEventType
+  dusun: string
+  fullName: string
+  nationalId: string
+  familyCardNumber: string
+  gender: string
+  birthDate: Date | string
+  residenceAddress: string
+  originAddress?: string | null
+  destinationAddress?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PopulationEventUpdateWithoutResidentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumPopulationEventTypeFieldUpdateOperationsInput | $Enums.PopulationEventType
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  nationalId?: Prisma.StringFieldUpdateOperationsInput | string
+  familyCardNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  residenceAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  originAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PopulationEventUncheckedUpdateWithoutResidentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumPopulationEventTypeFieldUpdateOperationsInput | $Enums.PopulationEventType
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  nationalId?: Prisma.StringFieldUpdateOperationsInput | string
+  familyCardNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  residenceAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  originAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PopulationEventUncheckedUpdateManyWithoutResidentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumPopulationEventTypeFieldUpdateOperationsInput | $Enums.PopulationEventType
+  dusun?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  nationalId?: Prisma.StringFieldUpdateOperationsInput | string
+  familyCardNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  residenceAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  originAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -545,8 +777,10 @@ export type PopulationEventSelect<ExtArgs extends runtime.Types.Extensions.Inter
   originAddress?: boolean
   destinationAddress?: boolean
   notes?: boolean
+  residentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  resident?: boolean | Prisma.PopulationEvent$residentArgs<ExtArgs>
 }, ExtArgs["result"]["populationEvent"]>
 
 export type PopulationEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -563,8 +797,10 @@ export type PopulationEventSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   originAddress?: boolean
   destinationAddress?: boolean
   notes?: boolean
+  residentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  resident?: boolean | Prisma.PopulationEvent$residentArgs<ExtArgs>
 }, ExtArgs["result"]["populationEvent"]>
 
 export type PopulationEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -581,8 +817,10 @@ export type PopulationEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   originAddress?: boolean
   destinationAddress?: boolean
   notes?: boolean
+  residentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  resident?: boolean | Prisma.PopulationEvent$residentArgs<ExtArgs>
 }, ExtArgs["result"]["populationEvent"]>
 
 export type PopulationEventSelectScalar = {
@@ -599,15 +837,27 @@ export type PopulationEventSelectScalar = {
   originAddress?: boolean
   destinationAddress?: boolean
   notes?: boolean
+  residentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PopulationEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventDate" | "type" | "dusun" | "fullName" | "nationalId" | "familyCardNumber" | "gender" | "birthDate" | "residenceAddress" | "originAddress" | "destinationAddress" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["populationEvent"]>
+export type PopulationEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventDate" | "type" | "dusun" | "fullName" | "nationalId" | "familyCardNumber" | "gender" | "birthDate" | "residenceAddress" | "originAddress" | "destinationAddress" | "notes" | "residentId" | "createdAt" | "updatedAt", ExtArgs["result"]["populationEvent"]>
+export type PopulationEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  resident?: boolean | Prisma.PopulationEvent$residentArgs<ExtArgs>
+}
+export type PopulationEventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  resident?: boolean | Prisma.PopulationEvent$residentArgs<ExtArgs>
+}
+export type PopulationEventIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  resident?: boolean | Prisma.PopulationEvent$residentArgs<ExtArgs>
+}
 
 export type $PopulationEventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PopulationEvent"
-  objects: {}
+  objects: {
+    resident: Prisma.$ResidentPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     eventDate: Date
@@ -622,6 +872,7 @@ export type $PopulationEventPayload<ExtArgs extends runtime.Types.Extensions.Int
     originAddress: string | null
     destinationAddress: string | null
     notes: string | null
+    residentId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["populationEvent"]>
@@ -1018,6 +1269,7 @@ readonly fields: PopulationEventFieldRefs;
  */
 export interface Prisma__PopulationEventClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  resident<T extends Prisma.PopulationEvent$residentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PopulationEvent$residentArgs<ExtArgs>>): Prisma.Prisma__ResidentClient<runtime.Types.Result.GetResult<Prisma.$ResidentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1060,6 +1312,7 @@ export interface PopulationEventFieldRefs {
   readonly originAddress: Prisma.FieldRef<"PopulationEvent", 'String'>
   readonly destinationAddress: Prisma.FieldRef<"PopulationEvent", 'String'>
   readonly notes: Prisma.FieldRef<"PopulationEvent", 'String'>
+  readonly residentId: Prisma.FieldRef<"PopulationEvent", 'String'>
   readonly createdAt: Prisma.FieldRef<"PopulationEvent", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PopulationEvent", 'DateTime'>
 }
@@ -1079,6 +1332,10 @@ export type PopulationEventFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
+  /**
    * Filter, which PopulationEvent to fetch.
    */
   where: Prisma.PopulationEventWhereUniqueInput
@@ -1097,6 +1354,10 @@ export type PopulationEventFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
+  /**
    * Filter, which PopulationEvent to fetch.
    */
   where: Prisma.PopulationEventWhereUniqueInput
@@ -1114,6 +1375,10 @@ export type PopulationEventFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the PopulationEvent
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
   /**
    * Filter, which PopulationEvent to fetch.
    */
@@ -1163,6 +1428,10 @@ export type PopulationEventFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
+  /**
    * Filter, which PopulationEvent to fetch.
    */
   where?: Prisma.PopulationEventWhereInput
@@ -1210,6 +1479,10 @@ export type PopulationEventFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the PopulationEvent
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
   /**
    * Filter, which PopulationEvents to fetch.
    */
@@ -1259,6 +1532,10 @@ export type PopulationEventCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
+  /**
    * The data needed to create a PopulationEvent.
    */
   data: Prisma.XOR<Prisma.PopulationEventCreateInput, Prisma.PopulationEventUncheckedCreateInput>
@@ -1292,6 +1569,10 @@ export type PopulationEventCreateManyAndReturnArgs<ExtArgs extends runtime.Types
    */
   data: Prisma.PopulationEventCreateManyInput | Prisma.PopulationEventCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1306,6 +1587,10 @@ export type PopulationEventUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the PopulationEvent
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
   /**
    * The data needed to update a PopulationEvent.
    */
@@ -1358,6 +1643,10 @@ export type PopulationEventUpdateManyAndReturnArgs<ExtArgs extends runtime.Types
    * Limit how many PopulationEvents to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1372,6 +1661,10 @@ export type PopulationEventUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the PopulationEvent
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
   /**
    * The filter to search for the PopulationEvent to update in case it exists.
    */
@@ -1399,6 +1692,10 @@ export type PopulationEventDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
+  /**
    * Filter which PopulationEvent to delete.
    */
   where: Prisma.PopulationEventWhereUniqueInput
@@ -1419,6 +1716,25 @@ export type PopulationEventDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * PopulationEvent.resident
+ */
+export type PopulationEvent$residentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Resident
+   */
+  select?: Prisma.ResidentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Resident
+   */
+  omit?: Prisma.ResidentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ResidentInclude<ExtArgs> | null
+  where?: Prisma.ResidentWhereInput
+}
+
+/**
  * PopulationEvent without action
  */
 export type PopulationEventDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1430,4 +1746,8 @@ export type PopulationEventDefaultArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the PopulationEvent
    */
   omit?: Prisma.PopulationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PopulationEventInclude<ExtArgs> | null
 }

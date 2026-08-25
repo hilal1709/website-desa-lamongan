@@ -3,7 +3,7 @@ import { cookies } from "next/headers"
 
 import { prisma } from "@/app/lib/prisma"
 import { verifyPassword } from "@/lib/auth-password"
-import type { AdminRole } from "@/generated/prisma/client"
+import { canAccess, type CurrentAdmin } from "@/lib/access-control"
 
 const SESSION_COOKIE = "kedungrejo_admin_session"
 const SESSION_MAX_AGE = 60 * 60 * 8
@@ -47,7 +47,7 @@ export async function getCurrentAdmin() {
 
   const session = await prisma.adminSession.findUnique({
     where: { tokenHash: hashToken(token) },
-    include: { user: { select: { id: true, username: true, email: true, name: true, role: true, isActive: true } } },
+    include: { user: { select: { id: true, username: true, email: true, name: true, isSuperAdmin: true, isActive: true, roles: { include: { role: { include: { permissions: true } } } } } } },
   })
 
   if (!session || session.expiresAt <= new Date() || !session.user.isActive) {
@@ -55,18 +55,20 @@ export async function getCurrentAdmin() {
     return null
   }
 
-  return session.user
+  return session.user as CurrentAdmin
 }
 
 export async function getCurrentHealthUser() {
   const user = await getCurrentAdmin()
   if (!user) return null
-  return user.role === "ADMIN" || user.role === "PETUGAS_PUSKESMAS" ? user : null
+  return canAccess(user, "ELDERLY_HEALTH") ? user : null
 }
 
-export function hasAdminRole(user: { role: AdminRole } | null | undefined) {
-  return user?.role === "ADMIN"
+export function isSuperAdmin(user: CurrentAdmin | null | undefined) {
+  return user?.isSuperAdmin === true
 }
+
+export function hasAdminRole(user: CurrentAdmin | null | undefined) { return isSuperAdmin(user) }
 
 export async function endAdminSession() {
   const cookieStore = await cookies()

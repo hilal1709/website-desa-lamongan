@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent, useEffect, useMemo, useState } from "react"
-import { Activity, BarChart3, Check, ClipboardPlus, Edit3, HeartPulse, Plus, RefreshCw, Save, Search, Trash2, UserRoundPlus, Users } from "lucide-react"
+import { Activity, BarChart3, Check, ClipboardPlus, Edit3, HeartPulse, Plus, RefreshCw, Save, Search, Trash2, Users } from "lucide-react"
 import { Bar, Line } from "react-chartjs-2"
 
 import "@/components/infografis/chartjs"
@@ -16,7 +16,6 @@ type DiseaseHistory = { id: string; diseaseName: string; startedAt: string; ende
 type Check = { id: string; recordedAt: string; updatedAt: string; systolic: number; diastolic: number; weightKg: number; heightCm: number; bloodGlucoseMgDl: number; notes: string | null }
 type Elderly = { id: string; fullName: string; dusun: string; birthDate: string; address: string; isActive: boolean; diseases: Disease[]; diseaseHistory: DiseaseHistory[]; checks: Check[] }
 type Session = { id: string; name: string; sessionDate: string; createdBy: { name: string | null; username: string }; _count: { checks: number } }
-type Staff = { id: string; username: string; email: string; name: string | null; isActive: boolean; createdAt: string }
 type Dashboard = {
   metrics: { totalElderly: number; checkedElderly: number; attendanceRate: number; sessionCount: number }
   diseaseTop: { label: string; total: number }[]
@@ -29,7 +28,6 @@ const emptyDashboard: Dashboard = { metrics: { totalElderly: 0, checkedElderly: 
 const blankElderly = () => ({ fullName: "", dusun: "", birthDate: "", address: "", diseases: "", isActive: true })
 const blankSession = () => ({ name: "", sessionDate: new Date().toISOString().slice(0, 10) })
 const blankCheck = () => ({ systolic: "", diastolic: "", weightKg: "", heightCm: "", bloodGlucoseMgDl: "", notes: "" })
-const blankStaff = () => ({ username: "", email: "", name: "", password: "", isActive: true })
 
 function dateLabel(value: string) { return new Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(new Date(value)) }
 function age(value: string) { const birth = new Date(value); const today = new Date(); let years = today.getFullYear() - birth.getFullYear(); if (today.getMonth() < birth.getMonth() || (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())) years -= 1; return years }
@@ -38,7 +36,6 @@ function metricLabel(metric: string) { return ({ systolic: "Sistolik", diastolic
 export function ElderlyHealthManager({ canManageAccounts = false, showDashboard = false }: { canManageAccounts?: boolean; showDashboard?: boolean }) {
   const [elderly, setElderly] = useState<Elderly[]>([])
   const [sessions, setSessions] = useState<Session[]>([])
-  const [staff, setStaff] = useState<Staff[]>([])
   const [dashboard, setDashboard] = useState<Dashboard>(emptyDashboard)
   const [selectedSessionId, setSelectedSessionId] = useState("")
   const [activeTab, setActiveTab] = useState<"dashboard" | "lansia" | "posyandu" | "akun">(showDashboard ? "dashboard" : "lansia")
@@ -50,8 +47,6 @@ export function ElderlyHealthManager({ canManageAccounts = false, showDashboard 
   const [sessionForm, setSessionForm] = useState(blankSession)
   const [checkForm, setCheckForm] = useState(blankCheck)
   const [checkingElderlyId, setCheckingElderlyId] = useState<string | null>(null)
-  const [staffForm, setStaffForm] = useState(blankStaff)
-  const [editingStaffId, setEditingStaffId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null)
 
@@ -86,15 +81,9 @@ export function ElderlyHealthManager({ canManageAccounts = false, showDashboard 
     setDashboard(data)
   }
 
-  async function loadStaff() {
-    if (!canManageAccounts) return
-    const data = await request<{ staff: Staff[] }>("/api/admin/akun-petugas")
-    setStaff(data.staff)
-  }
-
   async function loadEverything() {
     try {
-      await Promise.all([loadSessions(), ...(showDashboard ? [loadDashboard()] : []), loadStaff()])
+      await Promise.all([loadSessions(), ...(showDashboard ? [loadDashboard()] : [])])
       await loadElderly()
     } catch (error) { setToast({ message: error instanceof Error ? error.message : "Data kesehatan belum dapat dimuat.", variant: "error" }) }
   }
@@ -114,7 +103,7 @@ export function ElderlyHealthManager({ canManageAccounts = false, showDashboard 
 
   const selectedSession = sessions.find((session) => session.id === selectedSessionId)
   const activeElderly = elderly.filter((person) => person.isActive)
-  const tabs = [...(showDashboard ? [{ id: "dashboard", label: "Dashboard", icon: BarChart3 }] : []), { id: "lansia", label: "Data Lansia", icon: Users }, { id: "posyandu", label: "Posyandu", icon: ClipboardPlus }, ...(canManageAccounts ? [{ id: "akun", label: "Akun Petugas", icon: UserRoundPlus }] : [])] as const
+  const tabs = [...(showDashboard ? [{ id: "dashboard", label: "Dashboard", icon: BarChart3 }] : []), { id: "lansia", label: "Data Lansia", icon: Users }, { id: "posyandu", label: "Posyandu", icon: ClipboardPlus }] as const
 
   async function saveElderly(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true)
@@ -178,13 +167,6 @@ export function ElderlyHealthManager({ canManageAccounts = false, showDashboard 
     } catch (error) { setToast({ message: error instanceof Error ? error.message : "Pemeriksaan tidak dapat disimpan.", variant: "error" }) } finally { setBusy(false) }
   }
 
-  async function saveStaff(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setBusy(true)
-    try {
-      await request(editingStaffId ? `/api/admin/akun-petugas/${editingStaffId}` : "/api/admin/akun-petugas", editingStaffId ? "PATCH" : "POST", staffForm)
-      setStaffForm(blankStaff()); setEditingStaffId(null); await loadStaff(); setToast({ message: "Akun petugas berhasil disimpan.", variant: "success" })
-    } catch (error) { setToast({ message: error instanceof Error ? error.message : "Akun petugas tidak dapat disimpan.", variant: "error" }) } finally { setBusy(false) }
-  }
 
   const diseaseBar = useMemo(() => ({ labels: dashboard.diseaseTop.map((item) => item.label), datasets: [{ label: "Lansia dengan penyakit aktif", data: dashboard.diseaseTop.map((item) => item.total), backgroundColor: "#047857", borderRadius: 8 }] }), [dashboard])
   const attendanceBar = useMemo(() => ({ labels: dashboard.sessionAttendance.map((item) => `${item.name} (${dateLabel(item.date)})`), datasets: [{ label: "Sudah diperiksa", data: dashboard.sessionAttendance.map((item) => item.checked), backgroundColor: "#0f766e", borderRadius: 8 }] }), [dashboard])
@@ -202,7 +184,6 @@ export function ElderlyHealthManager({ canManageAccounts = false, showDashboard 
 
     {activeTab === "posyandu" ? <div className="space-y-5"><form onSubmit={saveSession} className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5"><h2 className="font-black text-slate-900">Buat sesi posyandu</h2><div className="mt-4 grid gap-3 sm:grid-cols-3"><label className="text-xs font-bold text-slate-700 sm:col-span-2">Nama sesi<input required value={sessionForm.name} onChange={(event) => setSessionForm((value) => ({ ...value, name: event.target.value }))} placeholder="Contoh: Posyandu Lansia Balai Desa" className={inputClass} /></label><label className="text-xs font-bold text-slate-700">Tanggal sesi<input required type="date" value={sessionForm.sessionDate} onChange={(event) => setSessionForm((value) => ({ ...value, sessionDate: event.target.value }))} className={inputClass} /></label></div><div className="mt-4"><Button type="submit" disabled={busy}><Plus />Buat sesi</Button></div></form><section className="rounded-2xl border border-slate-200 bg-white p-4"><label className="text-xs font-bold text-slate-700">Sesi aktif<select value={selectedSessionId} onChange={(event) => setSelectedSessionId(event.target.value)} className={inputClass}><option value="">Pilih sesi posyandu</option>{sessions.map((session) => <option key={session.id} value={session.id}>{dateLabel(session.sessionDate)} — {session.name} ({session._count.checks} diperiksa)</option>)}</select></label></section>{selectedSession ? <><header className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-xl font-black text-slate-950">Kartu digital: {selectedSession.name}</h2><p className="mt-1 text-sm text-slate-600">{dateLabel(selectedSession.sessionDate)} · sentuh tombol pemeriksaan untuk mencentang warga dan menyimpan hasilnya.</p></div>{canManageAccounts ? <Button type="button" size="sm" variant="ghost" disabled={busy} onClick={() => void removeSession()} className="text-red-700 hover:bg-red-50 hover:text-red-800"><Trash2 />Hapus sesi</Button> : null}</header><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{activeElderly.map((person) => { const checked = person.checks?.[0]; const editing = checkingElderlyId === person.id; return <article key={person.id} className={`rounded-2xl border p-5 shadow-sm ${checked ? "border-emerald-300 bg-emerald-50/40" : "border-slate-200 bg-white"}`}><div className="flex items-start justify-between gap-3"><div><h3 className="font-black text-slate-900">{person.fullName}</h3><p className="mt-1 text-sm text-slate-500">{person.dusun} · {age(person.birthDate)} tahun</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-black ${checked ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-600"}`}>{checked ? "Sudah diperiksa" : "Belum diperiksa"}</span></div><div className="mt-3 flex flex-wrap gap-1.5">{person.diseases.map((disease) => <span key={disease.id} className="rounded-full bg-rose-50 px-2 py-1 text-xs font-bold text-rose-700">{disease.diseaseName}</span>)}</div>{checked ? <p className="mt-4 text-xs leading-5 text-emerald-900">TD {checked.systolic}/{checked.diastolic} · BB {checked.weightKg} kg · TB {checked.heightCm} cm · Gula {checked.bloodGlucoseMgDl} mg/dL</p> : null}<div className="mt-4"><Button type="button" size="sm" onClick={() => openCheck(person)}><Check />{checked ? "Ubah hasil" : "Centang pemeriksaan"}</Button></div>{editing ? <form onSubmit={saveCheck} className="mt-4 rounded-xl border border-emerald-200 bg-white p-3"><div className="grid grid-cols-2 gap-2"><SmallInput label="Sistolik" value={checkForm.systolic} onChange={(value) => setCheckForm((state) => ({ ...state, systolic: value }))} /><SmallInput label="Diastolik" value={checkForm.diastolic} onChange={(value) => setCheckForm((state) => ({ ...state, diastolic: value }))} /><SmallInput label="Berat (kg)" value={checkForm.weightKg} onChange={(value) => setCheckForm((state) => ({ ...state, weightKg: value }))} /><SmallInput label="Tinggi (cm)" value={checkForm.heightCm} onChange={(value) => setCheckForm((state) => ({ ...state, heightCm: value }))} /><SmallInput label="Gula (mg/dL)" value={checkForm.bloodGlucoseMgDl} onChange={(value) => setCheckForm((state) => ({ ...state, bloodGlucoseMgDl: value }))} /></div><label className="mt-2 block text-xs font-bold text-slate-700">Catatan<textarea value={checkForm.notes} onChange={(event) => setCheckForm((state) => ({ ...state, notes: event.target.value }))} className="mt-1 min-h-16 w-full rounded-lg border border-slate-200 p-2 text-sm" /></label><div className="mt-3 flex gap-2"><Button type="submit" size="sm" disabled={busy}><Save />Simpan</Button><Button type="button" size="sm" variant="ghost" onClick={() => setCheckingElderlyId(null)}>Batal</Button></div></form> : null}</article> })}</div></> : <p className="rounded-2xl border border-dashed border-slate-300 p-10 text-center text-sm text-slate-500">Buat atau pilih sesi posyandu untuk menampilkan kartu digital.</p>}</div> : null}
 
-    {activeTab === "akun" && canManageAccounts ? <div className="space-y-5"><form onSubmit={saveStaff} className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5"><div className="flex items-center justify-between gap-3"><div><h2 className="font-black text-slate-900">{editingStaffId ? "Ubah akun petugas" : "Tambah akun petugas"}</h2><p className="mt-1 text-sm text-slate-600">Petugas hanya dapat mengakses modul rekam medis lansia.</p></div>{editingStaffId ? <Button type="button" variant="outline" onClick={() => { setEditingStaffId(null); setStaffForm(blankStaff()) }}>Batal</Button> : null}</div><div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5"><label className="text-xs font-bold text-slate-700">Nama petugas<input required value={staffForm.name} onChange={(event) => setStaffForm((value) => ({ ...value, name: event.target.value }))} className={inputClass} /></label><label className="text-xs font-bold text-slate-700">Nama pengguna<input required value={staffForm.username} onChange={(event) => setStaffForm((value) => ({ ...value, username: event.target.value }))} className={inputClass} /></label><label className="text-xs font-bold text-slate-700">Email<input required type="email" value={staffForm.email} onChange={(event) => setStaffForm((value) => ({ ...value, email: event.target.value }))} className={inputClass} /></label><label className="text-xs font-bold text-slate-700">{editingStaffId ? "Kata sandi baru (opsional)" : "Kata sandi"}<input required={!editingStaffId} minLength={8} type="password" value={staffForm.password} onChange={(event) => setStaffForm((value) => ({ ...value, password: event.target.value }))} className={inputClass} /></label><label className="text-xs font-bold text-slate-700">Status<select value={staffForm.isActive ? "active" : "inactive"} onChange={(event) => setStaffForm((value) => ({ ...value, isActive: event.target.value === "active" }))} className={inputClass}><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select></label></div><div className="mt-4"><Button type="submit" disabled={busy}><UserRoundPlus />Simpan akun</Button></div></form><section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="border-b border-slate-100 p-5"><h2 className="font-black text-slate-900">Akun petugas puskesmas</h2></div><div className="overflow-x-auto"><table className="min-w-full text-left text-sm"><thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th className="px-4 py-3">Petugas</th><th className="px-4 py-3">Email</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Aksi</th></tr></thead><tbody className="divide-y divide-slate-100">{staff.map((person) => <tr key={person.id}><td className="px-4 py-3"><b className="block text-slate-900">{person.name}</b><span className="text-xs text-slate-500">{person.username}</span></td><td className="px-4 py-3">{person.email}</td><td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${person.isActive ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{person.isActive ? "Aktif" : "Nonaktif"}</span></td><td className="px-4 py-3"><Button type="button" size="sm" variant="outline" onClick={() => { setEditingStaffId(person.id); setStaffForm({ username: person.username, email: person.email, name: person.name ?? "", password: "", isActive: person.isActive }); window.scrollTo({ top: 0, behavior: "smooth" }) }}><Edit3 />Ubah</Button></td></tr>)}{!staff.length ? <tr><td colSpan={4} className="px-4 py-10 text-center text-slate-500">Belum ada akun petugas.</td></tr> : null}</tbody></table></div></section></div> : null}
     {toast ? <Toast message={toast.message} variant={toast.variant} /> : null}
   </section>
 }

@@ -5,7 +5,8 @@ export const getArchiveDocuments = unstable_cache(
   async () => {
     try {
       return await prisma.document.findMany({
-        select: { id: true, title: true, type: true, size: true },
+        where: { visibility: "PUBLIC" },
+        select: { id: true, title: true, type: true, size: true, storagePath: true, fileUrl: true },
         orderBy: { uploadedAt: "desc" },
       })
     } catch {

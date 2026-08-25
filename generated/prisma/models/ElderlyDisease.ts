@@ -425,10 +425,6 @@ export type ElderlyDiseaseUncheckedUpdateManyWithoutElderlyNestedInput = {
   deleteMany?: Prisma.ElderlyDiseaseScalarWhereInput | Prisma.ElderlyDiseaseScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type ElderlyDiseaseCreateWithoutElderlyInput = {
   id?: string
   diseaseName: string

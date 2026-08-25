@@ -28,10 +28,12 @@ export type AggregateDocument = {
 
 export type DocumentAvgAggregateOutputType = {
   id: number | null
+  byteSize: number | null
 }
 
 export type DocumentSumAggregateOutputType = {
   id: number | null
+  byteSize: number | null
 }
 
 export type DocumentMinAggregateOutputType = {
@@ -41,6 +43,11 @@ export type DocumentMinAggregateOutputType = {
   size: string | null
   icon: string | null
   fileUrl: string | null
+  visibility: $Enums.DocumentVisibility | null
+  originalName: string | null
+  mimeType: string | null
+  byteSize: number | null
+  storagePath: string | null
   uploadedAt: Date | null
 }
 
@@ -51,6 +58,11 @@ export type DocumentMaxAggregateOutputType = {
   size: string | null
   icon: string | null
   fileUrl: string | null
+  visibility: $Enums.DocumentVisibility | null
+  originalName: string | null
+  mimeType: string | null
+  byteSize: number | null
+  storagePath: string | null
   uploadedAt: Date | null
 }
 
@@ -61,6 +73,11 @@ export type DocumentCountAggregateOutputType = {
   size: number
   icon: number
   fileUrl: number
+  visibility: number
+  originalName: number
+  mimeType: number
+  byteSize: number
+  storagePath: number
   uploadedAt: number
   _all: number
 }
@@ -68,10 +85,12 @@ export type DocumentCountAggregateOutputType = {
 
 export type DocumentAvgAggregateInputType = {
   id?: true
+  byteSize?: true
 }
 
 export type DocumentSumAggregateInputType = {
   id?: true
+  byteSize?: true
 }
 
 export type DocumentMinAggregateInputType = {
@@ -81,6 +100,11 @@ export type DocumentMinAggregateInputType = {
   size?: true
   icon?: true
   fileUrl?: true
+  visibility?: true
+  originalName?: true
+  mimeType?: true
+  byteSize?: true
+  storagePath?: true
   uploadedAt?: true
 }
 
@@ -91,6 +115,11 @@ export type DocumentMaxAggregateInputType = {
   size?: true
   icon?: true
   fileUrl?: true
+  visibility?: true
+  originalName?: true
+  mimeType?: true
+  byteSize?: true
+  storagePath?: true
   uploadedAt?: true
 }
 
@@ -101,6 +130,11 @@ export type DocumentCountAggregateInputType = {
   size?: true
   icon?: true
   fileUrl?: true
+  visibility?: true
+  originalName?: true
+  mimeType?: true
+  byteSize?: true
+  storagePath?: true
   uploadedAt?: true
   _all?: true
 }
@@ -198,6 +232,11 @@ export type DocumentGroupByOutputType = {
   size: string
   icon: string
   fileUrl: string | null
+  visibility: $Enums.DocumentVisibility
+  originalName: string | null
+  mimeType: string | null
+  byteSize: number | null
+  storagePath: string | null
   uploadedAt: Date
   _count: DocumentCountAggregateOutputType | null
   _avg: DocumentAvgAggregateOutputType | null
@@ -231,6 +270,11 @@ export type DocumentWhereInput = {
   size?: Prisma.StringFilter<"Document"> | string
   icon?: Prisma.StringFilter<"Document"> | string
   fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
+  visibility?: Prisma.EnumDocumentVisibilityFilter<"Document"> | $Enums.DocumentVisibility
+  originalName?: Prisma.StringNullableFilter<"Document"> | string | null
+  mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
+  byteSize?: Prisma.IntNullableFilter<"Document"> | number | null
+  storagePath?: Prisma.StringNullableFilter<"Document"> | string | null
   uploadedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
 }
 
@@ -241,6 +285,11 @@ export type DocumentOrderByWithRelationInput = {
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  originalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
+  byteSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  storagePath?: Prisma.SortOrderInput | Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
 }
 
@@ -254,6 +303,11 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   size?: Prisma.StringFilter<"Document"> | string
   icon?: Prisma.StringFilter<"Document"> | string
   fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
+  visibility?: Prisma.EnumDocumentVisibilityFilter<"Document"> | $Enums.DocumentVisibility
+  originalName?: Prisma.StringNullableFilter<"Document"> | string | null
+  mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
+  byteSize?: Prisma.IntNullableFilter<"Document"> | number | null
+  storagePath?: Prisma.StringNullableFilter<"Document"> | string | null
   uploadedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
 }, "id">
 
@@ -264,6 +318,11 @@ export type DocumentOrderByWithAggregationInput = {
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  originalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
+  byteSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  storagePath?: Prisma.SortOrderInput | Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
   _count?: Prisma.DocumentCountOrderByAggregateInput
   _avg?: Prisma.DocumentAvgOrderByAggregateInput
@@ -282,6 +341,11 @@ export type DocumentScalarWhereWithAggregatesInput = {
   size?: Prisma.StringWithAggregatesFilter<"Document"> | string
   icon?: Prisma.StringWithAggregatesFilter<"Document"> | string
   fileUrl?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
+  visibility?: Prisma.EnumDocumentVisibilityWithAggregatesFilter<"Document"> | $Enums.DocumentVisibility
+  originalName?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
+  mimeType?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
+  byteSize?: Prisma.IntNullableWithAggregatesFilter<"Document"> | number | null
+  storagePath?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   uploadedAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
 }
 
@@ -291,6 +355,11 @@ export type DocumentCreateInput = {
   size: string
   icon: string
   fileUrl?: string | null
+  visibility?: $Enums.DocumentVisibility
+  originalName?: string | null
+  mimeType?: string | null
+  byteSize?: number | null
+  storagePath?: string | null
   uploadedAt?: Date | string
 }
 
@@ -301,6 +370,11 @@ export type DocumentUncheckedCreateInput = {
   size: string
   icon: string
   fileUrl?: string | null
+  visibility?: $Enums.DocumentVisibility
+  originalName?: string | null
+  mimeType?: string | null
+  byteSize?: number | null
+  storagePath?: string | null
   uploadedAt?: Date | string
 }
 
@@ -310,6 +384,11 @@ export type DocumentUpdateInput = {
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumDocumentVisibilityFieldUpdateOperationsInput | $Enums.DocumentVisibility
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  byteSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -320,6 +399,11 @@ export type DocumentUncheckedUpdateInput = {
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumDocumentVisibilityFieldUpdateOperationsInput | $Enums.DocumentVisibility
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  byteSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -330,6 +414,11 @@ export type DocumentCreateManyInput = {
   size: string
   icon: string
   fileUrl?: string | null
+  visibility?: $Enums.DocumentVisibility
+  originalName?: string | null
+  mimeType?: string | null
+  byteSize?: number | null
+  storagePath?: string | null
   uploadedAt?: Date | string
 }
 
@@ -339,6 +428,11 @@ export type DocumentUpdateManyMutationInput = {
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumDocumentVisibilityFieldUpdateOperationsInput | $Enums.DocumentVisibility
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  byteSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -349,6 +443,11 @@ export type DocumentUncheckedUpdateManyInput = {
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumDocumentVisibilityFieldUpdateOperationsInput | $Enums.DocumentVisibility
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  byteSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -359,11 +458,17 @@ export type DocumentCountOrderByAggregateInput = {
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  originalName?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  byteSize?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
 }
 
 export type DocumentAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  byteSize?: Prisma.SortOrder
 }
 
 export type DocumentMaxOrderByAggregateInput = {
@@ -373,6 +478,11 @@ export type DocumentMaxOrderByAggregateInput = {
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  originalName?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  byteSize?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
 }
 
@@ -383,11 +493,29 @@ export type DocumentMinOrderByAggregateInput = {
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  originalName?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  byteSize?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
 }
 
 export type DocumentSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  byteSize?: Prisma.SortOrder
+}
+
+export type EnumDocumentVisibilityFieldUpdateOperationsInput = {
+  set?: $Enums.DocumentVisibility
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 
@@ -399,6 +527,11 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   size?: boolean
   icon?: boolean
   fileUrl?: boolean
+  visibility?: boolean
+  originalName?: boolean
+  mimeType?: boolean
+  byteSize?: boolean
+  storagePath?: boolean
   uploadedAt?: boolean
 }, ExtArgs["result"]["document"]>
 
@@ -409,6 +542,11 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   size?: boolean
   icon?: boolean
   fileUrl?: boolean
+  visibility?: boolean
+  originalName?: boolean
+  mimeType?: boolean
+  byteSize?: boolean
+  storagePath?: boolean
   uploadedAt?: boolean
 }, ExtArgs["result"]["document"]>
 
@@ -419,6 +557,11 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   size?: boolean
   icon?: boolean
   fileUrl?: boolean
+  visibility?: boolean
+  originalName?: boolean
+  mimeType?: boolean
+  byteSize?: boolean
+  storagePath?: boolean
   uploadedAt?: boolean
 }, ExtArgs["result"]["document"]>
 
@@ -429,10 +572,15 @@ export type DocumentSelectScalar = {
   size?: boolean
   icon?: boolean
   fileUrl?: boolean
+  visibility?: boolean
+  originalName?: boolean
+  mimeType?: boolean
+  byteSize?: boolean
+  storagePath?: boolean
   uploadedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "type" | "size" | "icon" | "fileUrl" | "uploadedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "type" | "size" | "icon" | "fileUrl" | "visibility" | "originalName" | "mimeType" | "byteSize" | "storagePath" | "uploadedAt", ExtArgs["result"]["document"]>
 
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Document"
@@ -444,6 +592,11 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     size: string
     icon: string
     fileUrl: string | null
+    visibility: $Enums.DocumentVisibility
+    originalName: string | null
+    mimeType: string | null
+    byteSize: number | null
+    storagePath: string | null
     uploadedAt: Date
   }, ExtArgs["result"]["document"]>
   composites: {}
@@ -874,6 +1027,11 @@ export interface DocumentFieldRefs {
   readonly size: Prisma.FieldRef<"Document", 'String'>
   readonly icon: Prisma.FieldRef<"Document", 'String'>
   readonly fileUrl: Prisma.FieldRef<"Document", 'String'>
+  readonly visibility: Prisma.FieldRef<"Document", 'DocumentVisibility'>
+  readonly originalName: Prisma.FieldRef<"Document", 'String'>
+  readonly mimeType: Prisma.FieldRef<"Document", 'String'>
+  readonly byteSize: Prisma.FieldRef<"Document", 'Int'>
+  readonly storagePath: Prisma.FieldRef<"Document", 'String'>
   readonly uploadedAt: Prisma.FieldRef<"Document", 'DateTime'>
 }
     

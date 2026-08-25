@@ -2,9 +2,11 @@ import { revalidatePath, revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 import { getFreshCmsNews, saveCmsNews, type CmsNewsData } from "@/lib/news-cms"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { requireCmsPermission } from "@/lib/api-access"
 
-export async function GET() { return NextResponse.json(await getFreshCmsNews()) }
+export async function GET() { const { response } = await requireCmsPermission("NEWS"); if (response) return response; return NextResponse.json(await getFreshCmsNews()) }
 export async function PUT(request: Request) {
+  const { response } = await requireCmsPermission("NEWS", "update"); if (response) return response
   const data = await request.json() as CmsNewsData
   if (!Array.isArray(data.categories) || !Array.isArray(data.articles)) return NextResponse.json({ message: "Data berita tidak valid." }, { status: 400 })
   await saveCmsNews({ categories: data.categories.map((item) => item.trim()).filter(Boolean), articles: data.articles })

@@ -32,6 +32,8 @@ export type ComplaintMinAggregateOutputType = {
   contact: string | null
   description: string | null
   status: string | null
+  publicResponse: string | null
+  respondedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +46,8 @@ export type ComplaintMaxAggregateOutputType = {
   contact: string | null
   description: string | null
   status: string | null
+  publicResponse: string | null
+  respondedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +60,8 @@ export type ComplaintCountAggregateOutputType = {
   contact: number
   description: number
   status: number
+  publicResponse: number
+  respondedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +76,8 @@ export type ComplaintMinAggregateInputType = {
   contact?: true
   description?: true
   status?: true
+  publicResponse?: true
+  respondedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +90,8 @@ export type ComplaintMaxAggregateInputType = {
   contact?: true
   description?: true
   status?: true
+  publicResponse?: true
+  respondedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +104,8 @@ export type ComplaintCountAggregateInputType = {
   contact?: true
   description?: true
   status?: true
+  publicResponse?: true
+  respondedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +191,8 @@ export type ComplaintGroupByOutputType = {
   contact: string
   description: string
   status: string
+  publicResponse: string | null
+  respondedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: ComplaintCountAggregateOutputType | null
@@ -212,6 +226,8 @@ export type ComplaintWhereInput = {
   contact?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
   status?: Prisma.StringFilter<"Complaint"> | string
+  publicResponse?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  respondedAt?: Prisma.DateTimeNullableFilter<"Complaint"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
 }
@@ -224,6 +240,8 @@ export type ComplaintOrderByWithRelationInput = {
   contact?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  publicResponse?: Prisma.SortOrderInput | Prisma.SortOrder
+  respondedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -239,6 +257,8 @@ export type ComplaintWhereUniqueInput = Prisma.AtLeast<{
   contact?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
   status?: Prisma.StringFilter<"Complaint"> | string
+  publicResponse?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  respondedAt?: Prisma.DateTimeNullableFilter<"Complaint"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
 }, "id">
@@ -251,6 +271,8 @@ export type ComplaintOrderByWithAggregationInput = {
   contact?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  publicResponse?: Prisma.SortOrderInput | Prisma.SortOrder
+  respondedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ComplaintCountOrderByAggregateInput
@@ -269,6 +291,8 @@ export type ComplaintScalarWhereWithAggregatesInput = {
   contact?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
   description?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
   status?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
+  publicResponse?: Prisma.StringNullableWithAggregatesFilter<"Complaint"> | string | null
+  respondedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Complaint"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Complaint"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Complaint"> | Date | string
 }
@@ -281,6 +305,8 @@ export type ComplaintCreateInput = {
   contact: string
   description: string
   status?: string
+  publicResponse?: string | null
+  respondedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -293,6 +319,8 @@ export type ComplaintUncheckedCreateInput = {
   contact: string
   description: string
   status?: string
+  publicResponse?: string | null
+  respondedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -305,6 +333,8 @@ export type ComplaintUpdateInput = {
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  publicResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -317,6 +347,8 @@ export type ComplaintUncheckedUpdateInput = {
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  publicResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -329,6 +361,8 @@ export type ComplaintCreateManyInput = {
   contact: string
   description: string
   status?: string
+  publicResponse?: string | null
+  respondedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -341,6 +375,8 @@ export type ComplaintUpdateManyMutationInput = {
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  publicResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -353,6 +389,8 @@ export type ComplaintUncheckedUpdateManyInput = {
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  publicResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  respondedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -365,6 +403,8 @@ export type ComplaintCountOrderByAggregateInput = {
   contact?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  publicResponse?: Prisma.SortOrder
+  respondedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -377,6 +417,8 @@ export type ComplaintMaxOrderByAggregateInput = {
   contact?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  publicResponse?: Prisma.SortOrder
+  respondedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -389,8 +431,14 @@ export type ComplaintMinOrderByAggregateInput = {
   contact?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  publicResponse?: Prisma.SortOrder
+  respondedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 
@@ -403,6 +451,8 @@ export type ComplaintSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   contact?: boolean
   description?: boolean
   status?: boolean
+  publicResponse?: boolean
+  respondedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["complaint"]>
@@ -415,6 +465,8 @@ export type ComplaintSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   contact?: boolean
   description?: boolean
   status?: boolean
+  publicResponse?: boolean
+  respondedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["complaint"]>
@@ -427,6 +479,8 @@ export type ComplaintSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   contact?: boolean
   description?: boolean
   status?: boolean
+  publicResponse?: boolean
+  respondedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["complaint"]>
@@ -439,11 +493,13 @@ export type ComplaintSelectScalar = {
   contact?: boolean
   description?: boolean
   status?: boolean
+  publicResponse?: boolean
+  respondedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ComplaintOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "category" | "location" | "contact" | "description" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["complaint"]>
+export type ComplaintOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "category" | "location" | "contact" | "description" | "status" | "publicResponse" | "respondedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["complaint"]>
 
 export type $ComplaintPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Complaint"
@@ -456,6 +512,8 @@ export type $ComplaintPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     contact: string
     description: string
     status: string
+    publicResponse: string | null
+    respondedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["complaint"]>
@@ -888,6 +946,8 @@ export interface ComplaintFieldRefs {
   readonly contact: Prisma.FieldRef<"Complaint", 'String'>
   readonly description: Prisma.FieldRef<"Complaint", 'String'>
   readonly status: Prisma.FieldRef<"Complaint", 'String'>
+  readonly publicResponse: Prisma.FieldRef<"Complaint", 'String'>
+  readonly respondedAt: Prisma.FieldRef<"Complaint", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Complaint", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Complaint", 'DateTime'>
 }

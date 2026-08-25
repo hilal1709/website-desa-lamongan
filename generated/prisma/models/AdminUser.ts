@@ -30,7 +30,7 @@ export type AdminUserMinAggregateOutputType = {
   email: string | null
   passwordHash: string | null
   name: string | null
-  role: $Enums.AdminRole | null
+  isSuperAdmin: boolean | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -42,7 +42,7 @@ export type AdminUserMaxAggregateOutputType = {
   email: string | null
   passwordHash: string | null
   name: string | null
-  role: $Enums.AdminRole | null
+  isSuperAdmin: boolean | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -54,7 +54,7 @@ export type AdminUserCountAggregateOutputType = {
   email: number
   passwordHash: number
   name: number
-  role: number
+  isSuperAdmin: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -68,7 +68,7 @@ export type AdminUserMinAggregateInputType = {
   email?: true
   passwordHash?: true
   name?: true
-  role?: true
+  isSuperAdmin?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -80,7 +80,7 @@ export type AdminUserMaxAggregateInputType = {
   email?: true
   passwordHash?: true
   name?: true
-  role?: true
+  isSuperAdmin?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -92,7 +92,7 @@ export type AdminUserCountAggregateInputType = {
   email?: true
   passwordHash?: true
   name?: true
-  role?: true
+  isSuperAdmin?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -177,7 +177,7 @@ export type AdminUserGroupByOutputType = {
   email: string
   passwordHash: string
   name: string | null
-  role: $Enums.AdminRole
+  isSuperAdmin: boolean
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -210,13 +210,16 @@ export type AdminUserWhereInput = {
   email?: Prisma.StringFilter<"AdminUser"> | string
   passwordHash?: Prisma.StringFilter<"AdminUser"> | string
   name?: Prisma.StringNullableFilter<"AdminUser"> | string | null
-  role?: Prisma.EnumAdminRoleFilter<"AdminUser"> | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFilter<"AdminUser"> | boolean
   isActive?: Prisma.BoolFilter<"AdminUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   sessions?: Prisma.AdminSessionListRelationFilter
+  roles?: Prisma.AdminUserRoleListRelationFilter
   createdPosyanduSessions?: Prisma.PosyanduSessionListRelationFilter
   recordedPosyanduChecks?: Prisma.PosyanduCheckListRelationFilter
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionListRelationFilter
+  recordedChildChecks?: Prisma.ChildHealthCheckListRelationFilter
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusListRelationFilter
 }
 
@@ -226,13 +229,16 @@ export type AdminUserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
+  isSuperAdmin?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.AdminSessionOrderByRelationAggregateInput
+  roles?: Prisma.AdminUserRoleOrderByRelationAggregateInput
   createdPosyanduSessions?: Prisma.PosyanduSessionOrderByRelationAggregateInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckOrderByRelationAggregateInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionOrderByRelationAggregateInput
+  recordedChildChecks?: Prisma.ChildHealthCheckOrderByRelationAggregateInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusOrderByRelationAggregateInput
 }
 
@@ -245,13 +251,16 @@ export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AdminUserWhereInput | Prisma.AdminUserWhereInput[]
   passwordHash?: Prisma.StringFilter<"AdminUser"> | string
   name?: Prisma.StringNullableFilter<"AdminUser"> | string | null
-  role?: Prisma.EnumAdminRoleFilter<"AdminUser"> | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFilter<"AdminUser"> | boolean
   isActive?: Prisma.BoolFilter<"AdminUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   sessions?: Prisma.AdminSessionListRelationFilter
+  roles?: Prisma.AdminUserRoleListRelationFilter
   createdPosyanduSessions?: Prisma.PosyanduSessionListRelationFilter
   recordedPosyanduChecks?: Prisma.PosyanduCheckListRelationFilter
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionListRelationFilter
+  recordedChildChecks?: Prisma.ChildHealthCheckListRelationFilter
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusListRelationFilter
 }, "id" | "username" | "email">
 
@@ -261,7 +270,7 @@ export type AdminUserOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
+  isSuperAdmin?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -279,7 +288,7 @@ export type AdminUserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"AdminUser"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"AdminUser"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"AdminUser"> | string | null
-  role?: Prisma.EnumAdminRoleWithAggregatesFilter<"AdminUser"> | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolWithAggregatesFilter<"AdminUser"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"AdminUser"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
@@ -291,13 +300,16 @@ export type AdminUserCreateInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -307,13 +319,16 @@ export type AdminUserUncheckedCreateInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -323,13 +338,16 @@ export type AdminUserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -339,13 +357,16 @@ export type AdminUserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -355,7 +376,7 @@ export type AdminUserCreateManyInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -367,7 +388,7 @@ export type AdminUserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -379,7 +400,7 @@ export type AdminUserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -391,7 +412,7 @@ export type AdminUserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  isSuperAdmin?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -403,7 +424,7 @@ export type AdminUserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  isSuperAdmin?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -415,15 +436,10 @@ export type AdminUserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  isSuperAdmin?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type AdminUserNullableScalarRelationFilter = {
-  is?: Prisma.AdminUserWhereInput | null
-  isNot?: Prisma.AdminUserWhereInput | null
 }
 
 export type AdminUserScalarRelationFilter = {
@@ -431,8 +447,23 @@ export type AdminUserScalarRelationFilter = {
   isNot?: Prisma.AdminUserWhereInput
 }
 
-export type EnumAdminRoleFieldUpdateOperationsInput = {
-  set?: $Enums.AdminRole
+export type AdminUserNullableScalarRelationFilter = {
+  is?: Prisma.AdminUserWhereInput | null
+  isNot?: Prisma.AdminUserWhereInput | null
+}
+
+export type AdminUserCreateNestedOneWithoutRolesInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRolesInput, Prisma.AdminUserUncheckedCreateWithoutRolesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRolesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutRolesNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRolesInput, Prisma.AdminUserUncheckedCreateWithoutRolesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRolesInput
+  upsert?: Prisma.AdminUserUpsertWithoutRolesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutRolesInput, Prisma.AdminUserUpdateWithoutRolesInput>, Prisma.AdminUserUncheckedUpdateWithoutRolesInput>
 }
 
 export type AdminUserCreateNestedOneWithoutServiceStatusUpdatesInput = {
@@ -493,19 +524,138 @@ export type AdminUserUpdateOneRequiredWithoutRecordedPosyanduChecksNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutRecordedPosyanduChecksInput, Prisma.AdminUserUpdateWithoutRecordedPosyanduChecksInput>, Prisma.AdminUserUncheckedUpdateWithoutRecordedPosyanduChecksInput>
 }
 
-export type AdminUserCreateWithoutServiceStatusUpdatesInput = {
+export type AdminUserCreateNestedOneWithoutCreatedChildPosyanduSessionsInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUncheckedCreateWithoutCreatedChildPosyanduSessionsInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCreatedChildPosyanduSessionsInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutCreatedChildPosyanduSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUncheckedCreateWithoutCreatedChildPosyanduSessionsInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCreatedChildPosyanduSessionsInput
+  upsert?: Prisma.AdminUserUpsertWithoutCreatedChildPosyanduSessionsInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUpdateWithoutCreatedChildPosyanduSessionsInput>, Prisma.AdminUserUncheckedUpdateWithoutCreatedChildPosyanduSessionsInput>
+}
+
+export type AdminUserCreateNestedOneWithoutRecordedChildChecksInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRecordedChildChecksInput, Prisma.AdminUserUncheckedCreateWithoutRecordedChildChecksInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRecordedChildChecksInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutRecordedChildChecksNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRecordedChildChecksInput, Prisma.AdminUserUncheckedCreateWithoutRecordedChildChecksInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRecordedChildChecksInput
+  upsert?: Prisma.AdminUserUpsertWithoutRecordedChildChecksInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutRecordedChildChecksInput, Prisma.AdminUserUpdateWithoutRecordedChildChecksInput>, Prisma.AdminUserUncheckedUpdateWithoutRecordedChildChecksInput>
+}
+
+export type AdminUserCreateWithoutRolesInput = {
   id?: string
   username: string
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserUncheckedCreateWithoutRolesInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserCreateOrConnectWithoutRolesInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutRolesInput, Prisma.AdminUserUncheckedCreateWithoutRolesInput>
+}
+
+export type AdminUserUpsertWithoutRolesInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutRolesInput, Prisma.AdminUserUncheckedUpdateWithoutRolesInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutRolesInput, Prisma.AdminUserUncheckedCreateWithoutRolesInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutRolesInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutRolesInput, Prisma.AdminUserUncheckedUpdateWithoutRolesInput>
+}
+
+export type AdminUserUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserCreateWithoutServiceStatusUpdatesInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
 }
 
 export type AdminUserUncheckedCreateWithoutServiceStatusUpdatesInput = {
@@ -514,13 +664,16 @@ export type AdminUserUncheckedCreateWithoutServiceStatusUpdatesInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type AdminUserCreateOrConnectWithoutServiceStatusUpdatesInput = {
@@ -545,13 +698,16 @@ export type AdminUserUpdateWithoutServiceStatusUpdatesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
 }
 
 export type AdminUserUncheckedUpdateWithoutServiceStatusUpdatesInput = {
@@ -560,13 +716,16 @@ export type AdminUserUncheckedUpdateWithoutServiceStatusUpdatesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type AdminUserCreateWithoutSessionsInput = {
@@ -575,12 +734,15 @@ export type AdminUserCreateWithoutSessionsInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -590,12 +752,15 @@ export type AdminUserUncheckedCreateWithoutSessionsInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -621,12 +786,15 @@ export type AdminUserUpdateWithoutSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -636,12 +804,15 @@ export type AdminUserUncheckedUpdateWithoutSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -651,12 +822,15 @@ export type AdminUserCreateWithoutCreatedPosyanduSessionsInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -666,12 +840,15 @@ export type AdminUserUncheckedCreateWithoutCreatedPosyanduSessionsInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -697,12 +874,15 @@ export type AdminUserUpdateWithoutCreatedPosyanduSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -712,12 +892,15 @@ export type AdminUserUncheckedUpdateWithoutCreatedPosyanduSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -727,12 +910,15 @@ export type AdminUserCreateWithoutRecordedPosyanduChecksInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -742,12 +928,15 @@ export type AdminUserUncheckedCreateWithoutRecordedPosyanduChecksInput = {
   email: string
   passwordHash: string
   name?: string | null
-  role?: $Enums.AdminRole
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
@@ -773,12 +962,15 @@ export type AdminUserUpdateWithoutRecordedPosyanduChecksInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -788,12 +980,191 @@ export type AdminUserUncheckedUpdateWithoutRecordedPosyanduChecksInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserCreateWithoutCreatedChildPosyanduSessionsInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserUncheckedCreateWithoutCreatedChildPosyanduSessionsInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserCreateOrConnectWithoutCreatedChildPosyanduSessionsInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUncheckedCreateWithoutCreatedChildPosyanduSessionsInput>
+}
+
+export type AdminUserUpsertWithoutCreatedChildPosyanduSessionsInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUncheckedUpdateWithoutCreatedChildPosyanduSessionsInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUncheckedCreateWithoutCreatedChildPosyanduSessionsInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutCreatedChildPosyanduSessionsInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutCreatedChildPosyanduSessionsInput, Prisma.AdminUserUncheckedUpdateWithoutCreatedChildPosyanduSessionsInput>
+}
+
+export type AdminUserUpdateWithoutCreatedChildPosyanduSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutCreatedChildPosyanduSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserCreateWithoutRecordedChildChecksInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserUncheckedCreateWithoutRecordedChildChecksInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserCreateOrConnectWithoutRecordedChildChecksInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutRecordedChildChecksInput, Prisma.AdminUserUncheckedCreateWithoutRecordedChildChecksInput>
+}
+
+export type AdminUserUpsertWithoutRecordedChildChecksInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutRecordedChildChecksInput, Prisma.AdminUserUncheckedUpdateWithoutRecordedChildChecksInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutRecordedChildChecksInput, Prisma.AdminUserUncheckedCreateWithoutRecordedChildChecksInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutRecordedChildChecksInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutRecordedChildChecksInput, Prisma.AdminUserUncheckedUpdateWithoutRecordedChildChecksInput>
+}
+
+export type AdminUserUpdateWithoutRecordedChildChecksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutRecordedChildChecksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
@@ -804,15 +1175,21 @@ export type AdminUserUncheckedUpdateWithoutRecordedPosyanduChecksInput = {
 
 export type AdminUserCountOutputType = {
   sessions: number
+  roles: number
   createdPosyanduSessions: number
   recordedPosyanduChecks: number
+  createdChildPosyanduSessions: number
+  recordedChildChecks: number
   serviceStatusUpdates: number
 }
 
 export type AdminUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | AdminUserCountOutputTypeCountSessionsArgs
+  roles?: boolean | AdminUserCountOutputTypeCountRolesArgs
   createdPosyanduSessions?: boolean | AdminUserCountOutputTypeCountCreatedPosyanduSessionsArgs
   recordedPosyanduChecks?: boolean | AdminUserCountOutputTypeCountRecordedPosyanduChecksArgs
+  createdChildPosyanduSessions?: boolean | AdminUserCountOutputTypeCountCreatedChildPosyanduSessionsArgs
+  recordedChildChecks?: boolean | AdminUserCountOutputTypeCountRecordedChildChecksArgs
   serviceStatusUpdates?: boolean | AdminUserCountOutputTypeCountServiceStatusUpdatesArgs
 }
 
@@ -836,6 +1213,13 @@ export type AdminUserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Ty
 /**
  * AdminUserCountOutputType without action
  */
+export type AdminUserCountOutputTypeCountRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminUserRoleWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
 export type AdminUserCountOutputTypeCountCreatedPosyanduSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PosyanduSessionWhereInput
 }
@@ -845,6 +1229,20 @@ export type AdminUserCountOutputTypeCountCreatedPosyanduSessionsArgs<ExtArgs ext
  */
 export type AdminUserCountOutputTypeCountRecordedPosyanduChecksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PosyanduCheckWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountCreatedChildPosyanduSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChildPosyanduSessionWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountRecordedChildChecksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChildHealthCheckWhereInput
 }
 
 /**
@@ -861,13 +1259,16 @@ export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   email?: boolean
   passwordHash?: boolean
   name?: boolean
-  role?: boolean
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sessions?: boolean | Prisma.AdminUser$sessionsArgs<ExtArgs>
+  roles?: boolean | Prisma.AdminUser$rolesArgs<ExtArgs>
   createdPosyanduSessions?: boolean | Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs>
   recordedPosyanduChecks?: boolean | Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs>
+  createdChildPosyanduSessions?: boolean | Prisma.AdminUser$createdChildPosyanduSessionsArgs<ExtArgs>
+  recordedChildChecks?: boolean | Prisma.AdminUser$recordedChildChecksArgs<ExtArgs>
   serviceStatusUpdates?: boolean | Prisma.AdminUser$serviceStatusUpdatesArgs<ExtArgs>
   _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adminUser"]>
@@ -878,7 +1279,7 @@ export type AdminUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   email?: boolean
   passwordHash?: boolean
   name?: boolean
-  role?: boolean
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -890,7 +1291,7 @@ export type AdminUserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   email?: boolean
   passwordHash?: boolean
   name?: boolean
-  role?: boolean
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -902,17 +1303,20 @@ export type AdminUserSelectScalar = {
   email?: boolean
   passwordHash?: boolean
   name?: boolean
-  role?: boolean
+  isSuperAdmin?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "name" | "role" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
+export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "name" | "isSuperAdmin" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
 export type AdminUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.AdminUser$sessionsArgs<ExtArgs>
+  roles?: boolean | Prisma.AdminUser$rolesArgs<ExtArgs>
   createdPosyanduSessions?: boolean | Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs>
   recordedPosyanduChecks?: boolean | Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs>
+  createdChildPosyanduSessions?: boolean | Prisma.AdminUser$createdChildPosyanduSessionsArgs<ExtArgs>
+  recordedChildChecks?: boolean | Prisma.AdminUser$recordedChildChecksArgs<ExtArgs>
   serviceStatusUpdates?: boolean | Prisma.AdminUser$serviceStatusUpdatesArgs<ExtArgs>
   _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -923,8 +1327,11 @@ export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "AdminUser"
   objects: {
     sessions: Prisma.$AdminSessionPayload<ExtArgs>[]
+    roles: Prisma.$AdminUserRolePayload<ExtArgs>[]
     createdPosyanduSessions: Prisma.$PosyanduSessionPayload<ExtArgs>[]
     recordedPosyanduChecks: Prisma.$PosyanduCheckPayload<ExtArgs>[]
+    createdChildPosyanduSessions: Prisma.$ChildPosyanduSessionPayload<ExtArgs>[]
+    recordedChildChecks: Prisma.$ChildHealthCheckPayload<ExtArgs>[]
     serviceStatusUpdates: Prisma.$ServiceSubmissionStatusPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -933,7 +1340,7 @@ export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     email: string
     passwordHash: string
     name: string | null
-    role: $Enums.AdminRole
+    isSuperAdmin: boolean
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1332,8 +1739,11 @@ readonly fields: AdminUserFieldRefs;
 export interface Prisma__AdminUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sessions<T extends Prisma.AdminUser$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  roles<T extends Prisma.AdminUser$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminUserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdPosyanduSessions<T extends Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PosyanduSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recordedPosyanduChecks<T extends Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PosyanduCheckPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdChildPosyanduSessions<T extends Prisma.AdminUser$createdChildPosyanduSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$createdChildPosyanduSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChildPosyanduSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recordedChildChecks<T extends Prisma.AdminUser$recordedChildChecksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$recordedChildChecksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChildHealthCheckPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   serviceStatusUpdates<T extends Prisma.AdminUser$serviceStatusUpdatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$serviceStatusUpdatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceSubmissionStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1369,7 +1779,7 @@ export interface AdminUserFieldRefs {
   readonly email: Prisma.FieldRef<"AdminUser", 'String'>
   readonly passwordHash: Prisma.FieldRef<"AdminUser", 'String'>
   readonly name: Prisma.FieldRef<"AdminUser", 'String'>
-  readonly role: Prisma.FieldRef<"AdminUser", 'AdminRole'>
+  readonly isSuperAdmin: Prisma.FieldRef<"AdminUser", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"AdminUser", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
@@ -1790,6 +2200,30 @@ export type AdminUser$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * AdminUser.roles
+ */
+export type AdminUser$rolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminUserRole
+   */
+  select?: Prisma.AdminUserRoleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminUserRole
+   */
+  omit?: Prisma.AdminUserRoleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserRoleInclude<ExtArgs> | null
+  where?: Prisma.AdminUserRoleWhereInput
+  orderBy?: Prisma.AdminUserRoleOrderByWithRelationInput | Prisma.AdminUserRoleOrderByWithRelationInput[]
+  cursor?: Prisma.AdminUserRoleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdminUserRoleScalarFieldEnum | Prisma.AdminUserRoleScalarFieldEnum[]
+}
+
+/**
  * AdminUser.createdPosyanduSessions
  */
 export type AdminUser$createdPosyanduSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1835,6 +2269,54 @@ export type AdminUser$recordedPosyanduChecksArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.PosyanduCheckScalarFieldEnum | Prisma.PosyanduCheckScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.createdChildPosyanduSessions
+ */
+export type AdminUser$createdChildPosyanduSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChildPosyanduSession
+   */
+  select?: Prisma.ChildPosyanduSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChildPosyanduSession
+   */
+  omit?: Prisma.ChildPosyanduSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChildPosyanduSessionInclude<ExtArgs> | null
+  where?: Prisma.ChildPosyanduSessionWhereInput
+  orderBy?: Prisma.ChildPosyanduSessionOrderByWithRelationInput | Prisma.ChildPosyanduSessionOrderByWithRelationInput[]
+  cursor?: Prisma.ChildPosyanduSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChildPosyanduSessionScalarFieldEnum | Prisma.ChildPosyanduSessionScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.recordedChildChecks
+ */
+export type AdminUser$recordedChildChecksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChildHealthCheck
+   */
+  select?: Prisma.ChildHealthCheckSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChildHealthCheck
+   */
+  omit?: Prisma.ChildHealthCheckOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChildHealthCheckInclude<ExtArgs> | null
+  where?: Prisma.ChildHealthCheckWhereInput
+  orderBy?: Prisma.ChildHealthCheckOrderByWithRelationInput | Prisma.ChildHealthCheckOrderByWithRelationInput[]
+  cursor?: Prisma.ChildHealthCheckWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChildHealthCheckScalarFieldEnum | Prisma.ChildHealthCheckScalarFieldEnum[]
 }
 
 /**

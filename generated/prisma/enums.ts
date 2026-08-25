@@ -28,12 +28,31 @@ export const PopulationEventType = {
 export type PopulationEventType = (typeof PopulationEventType)[keyof typeof PopulationEventType]
 
 
-export const AdminRole = {
-  ADMIN: 'ADMIN',
-  PETUGAS_PUSKESMAS: 'PETUGAS_PUSKESMAS'
+export const CmsModule = {
+  DASHBOARD: 'DASHBOARD',
+  INFOGRAPHICS: 'INFOGRAPHICS',
+  ELDERLY_HEALTH: 'ELDERLY_HEALTH',
+  UMKM: 'UMKM',
+  DISASTER_WEATHER: 'DISASTER_WEATHER',
+  PAGE_CONTENT: 'PAGE_CONTENT',
+  NEWS: 'NEWS',
+  DOCUMENT_ARCHIVE: 'DOCUMENT_ARCHIVE',
+  SERVICE_CATALOG: 'SERVICE_CATALOG',
+  SERVICE_SUBMISSIONS: 'SERVICE_SUBMISSIONS',
+  COMPLAINTS: 'COMPLAINTS',
+  CMS_MODULES: 'CMS_MODULES',
+  SETTINGS: 'SETTINGS'
 } as const
 
-export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
+export type CmsModule = (typeof CmsModule)[keyof typeof CmsModule]
+
+
+export const DocumentVisibility = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE'
+} as const
+
+export type DocumentVisibility = (typeof DocumentVisibility)[keyof typeof DocumentVisibility]
 
 
 export const ServiceSubmissionStatusType = {

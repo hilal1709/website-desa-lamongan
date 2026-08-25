@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic"
 
 export async function PATCH(request: Request, context: RouteContext<"/api/admin/akun-petugas/[id]">) {
   const current = await getCurrentAdmin()
-  if (current?.role !== "ADMIN") return Response.json({ error: "Akses admin diperlukan." }, { status: 403 })
+  if (!current?.isSuperAdmin) return Response.json({ error: "Akses admin diperlukan." }, { status: 403 })
   try {
     const { id } = await context.params
     const body = await request.json() as Record<string, unknown>
@@ -16,7 +16,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/admin/
     const password = typeof body.password === "string" ? body.password : ""
     if (!username || !name || !/^\S+@\S+\.\S+$/.test(email)) throw new Error("Data petugas tidak valid.")
     if (password && password.length < 8) throw new Error("Kata sandi minimal 8 karakter.")
-    const target = await prisma.adminUser.findFirst({ where: { id, role: "PETUGAS_PUSKESMAS" }, select: { id: true } })
+    const target = await prisma.adminUser.findFirst({ where: { id, roles: { some: { roleId: "system-health-staff" } } }, select: { id: true } })
     if (!target) return Response.json({ error: "Akun petugas tidak ditemukan." }, { status: 404 })
     const isActive = typeof body.isActive === "boolean" ? body.isActive : true
     const staff = await prisma.adminUser.update({ where: { id }, data: { username, email, name, isActive, ...(password ? { passwordHash: await hashPassword(password) } : {}) }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })

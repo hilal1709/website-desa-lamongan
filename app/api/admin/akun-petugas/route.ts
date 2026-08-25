@@ -20,12 +20,12 @@ function staffInput(value: unknown, passwordRequired: boolean) {
 
 async function requireAdmin() {
   const user = await getCurrentAdmin()
-  return user?.role === "ADMIN" ? user : null
+  return user?.isSuperAdmin ? user : null
 }
 
 export async function GET() {
   if (!(await requireAdmin())) return Response.json({ error: "Akses admin diperlukan." }, { status: 403 })
-  const staff = await prisma.adminUser.findMany({ where: { role: "PETUGAS_PUSKESMAS" }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true }, orderBy: { createdAt: "desc" } })
+  const staff = await prisma.adminUser.findMany({ where: { roles: { some: { roleId: "system-health-staff" } } }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true }, orderBy: { createdAt: "desc" } })
   return Response.json({ staff })
 }
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   if (!(await requireAdmin())) return Response.json({ error: "Akses admin diperlukan." }, { status: 403 })
   try {
     const data = staffInput(await request.json(), true)
-    const staff = await prisma.adminUser.create({ data: { username: data.username, email: data.email, name: data.name, passwordHash: await hashPassword(data.password!), role: "PETUGAS_PUSKESMAS", isActive: data.isActive }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })
+    const staff = await prisma.adminUser.create({ data: { username: data.username, email: data.email, name: data.name, passwordHash: await hashPassword(data.password!), isActive: data.isActive, roles: { create: { roleId: "system-health-staff" } } }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })
     return Response.json(staff, { status: 201 })
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Akun petugas tidak dapat dibuat." }, { status: 400 })

@@ -9,7 +9,7 @@ export type DataView = "infografis" | "medis" | "umkm"
 
 export function DataSelector({ active, onChange }: { active: DataView; onChange: (view: DataView) => void }) {
   const items = [
-    { id: "infografis" as const, title: "Infografis Desa", icon: BarChart3 },
+    { id: "infografis" as const, title: "Data & Infografis Desa", icon: BarChart3 },
     { id: "medis" as const, title: "Data Rekam Medis", icon: Stethoscope },
     { id: "umkm" as const, title: "Data UMKM", icon: Store },
   ]

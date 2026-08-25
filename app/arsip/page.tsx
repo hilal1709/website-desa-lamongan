@@ -22,7 +22,7 @@ const PublicDocumentArchive = dynamicComponent(
 export default async function Arsip() {
   const [hero, documents] = await Promise.all([getCmsPage("arsip"), getArchiveDocuments()])
   const notice = hero.sections.find((item) => item.key === "notice")
-  const publicDocuments = documents.map((document) => ({ id: document.id, title: document.title, meta: `${document.type} - ${document.size}`, status: "Publik" }))
+  const publicDocuments = documents.map((document) => ({ id: document.id, title: document.title, meta: `${document.type} - ${document.size}`, status: "Publik", available: Boolean(document.storagePath || (document.fileUrl && document.fileUrl !== "#")) }))
 
   return (
     <>

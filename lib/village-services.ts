@@ -18,7 +18,13 @@ const defaults = [
 
 export async function ensureDefaultVillageServices() {
   const count = await prisma.villageService.count()
-  if (count) return
+  if (count) {
+    await Promise.all(defaults.map(async ([slug, , , , , requirements]) => {
+      const service = await prisma.villageService.findUnique({ where: { slug }, select: { id: true, _count: { select: { requirements: true } } } })
+      if (service && service._count.requirements === 0) await prisma.serviceRequirement.createMany({ data: requirements.map((title, order) => ({ serviceId: service.id, title, order })) })
+    }))
+    return
+  }
   await prisma.$transaction(defaults.map(([slug, title, description, icon, estimatedTime, requirements], order) => prisma.villageService.create({
     data: { slug, title, description, icon, estimatedTime, order, requirements: { create: requirements.map((requirement, requirementOrder) => ({ title: requirement, order: requirementOrder })) } },
   })))

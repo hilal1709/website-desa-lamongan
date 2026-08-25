@@ -31,6 +31,7 @@ export function ComplaintHistory({ title = "Aduan terbaru", complaints }: Compla
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-2"><h3 className="font-bold leading-5 text-slate-900">{complaint.title}</h3><StatusBadge tone={complaint.status === "Selesai" ? "emerald" : "amber"}>{complaint.status}</StatusBadge></div>
                 <p className="mt-1.5 text-sm leading-5 text-slate-500">{complaint.category} · {complaint.location} · <time dateTime={complaint.createdAt}>{dateFormatter.format(new Date(complaint.createdAt))}</time></p>
+                {complaint.publicResponse ? <div className="mt-3 rounded-xl bg-emerald-50 px-3 py-2.5 text-sm leading-5 text-emerald-950"><p className="font-bold">Tanggapan petugas</p><p className="mt-1 whitespace-pre-wrap">{complaint.publicResponse}</p></div> : null}
               </div>
             </article>
           ))}

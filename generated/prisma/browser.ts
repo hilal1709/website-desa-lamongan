@@ -63,6 +63,21 @@ export type Complaint = Prisma.ComplaintModel
  */
 export type AdminUser = Prisma.AdminUserModel
 /**
+ * Model Role
+ * 
+ */
+export type Role = Prisma.RoleModel
+/**
+ * Model AdminUserRole
+ * 
+ */
+export type AdminUserRole = Prisma.AdminUserRoleModel
+/**
+ * Model RolePermission
+ * 
+ */
+export type RolePermission = Prisma.RolePermissionModel
+/**
  * Model VillageService
  * 
  */
@@ -113,10 +128,30 @@ export type PosyanduSession = Prisma.PosyanduSessionModel
  */
 export type PosyanduCheck = Prisma.PosyanduCheckModel
 /**
+ * Model Child
+ * 
+ */
+export type Child = Prisma.ChildModel
+/**
+ * Model ChildPosyanduSession
+ * 
+ */
+export type ChildPosyanduSession = Prisma.ChildPosyanduSessionModel
+/**
+ * Model ChildHealthCheck
+ * 
+ */
+export type ChildHealthCheck = Prisma.ChildHealthCheckModel
+/**
  * Model PopulationOpeningBalance
  * 
  */
 export type PopulationOpeningBalance = Prisma.PopulationOpeningBalanceModel
+/**
+ * Model Resident
+ * 
+ */
+export type Resident = Prisma.ResidentModel
 /**
  * Model PopulationEvent
  * 

@@ -2,6 +2,7 @@ import { prisma } from "@/app/lib/prisma"
 import type { Prisma } from "@/generated/prisma/client"
 
 export interface CmsPageContent {
+  [key: string]: unknown
   slug: string
   label: string
   eyebrow: string
@@ -13,6 +14,7 @@ export interface CmsPageContent {
 }
 
 export interface CmsSection {
+  [key: string]: unknown
   key: string
   label: string
   eyebrow?: string
@@ -69,7 +71,7 @@ export const defaultCmsPages: CmsPageContent[] = [
           { title: "Surat Keterangan", description: "Pengantar, domisili, dan kebutuhan administrasi lainnya.", href: "/layanan" },
           { title: "Layanan Kependudukan", description: "Informasi KTP, KK, akta kelahiran, dan pindah datang.", href: "/layanan" },
           { title: "Aduan Warga", description: "Sampaikan masalah lingkungan dan pelayanan.", href: "/aduan" },
-          { title: "Peta & Data Desa", description: "Akses data terbuka dan potensi wilayah desa.", href: "/data-desa" },
+          { title: "Data & Infografis Desa", description: "Akses data terbuka dan potensi wilayah desa.", href: "/infografis" },
         ],
       },
       {

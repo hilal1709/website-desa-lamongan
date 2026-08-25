@@ -1,0 +1,6 @@
+import { prisma } from "@/app/lib/prisma"
+import { getCurrentHealthUser } from "@/lib/admin-auth"
+import { validateChildSessionInput } from "@/lib/child-health"
+export const dynamic = "force-dynamic"
+export async function GET() { if (!(await getCurrentHealthUser())) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 }); return Response.json({ sessions: await prisma.childPosyanduSession.findMany({ orderBy: [{ sessionDate: "desc" }, { createdAt: "desc" }], take: 100, include: { createdBy: { select: { name: true, username: true } }, _count: { select: { checks: true } } } }) }) }
+export async function POST(request: Request) { const user = await getCurrentHealthUser(); if (!user) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 }); try { return Response.json(await prisma.childPosyanduSession.create({ data: { ...validateChildSessionInput(await request.json()), createdById: user.id }, include: { createdBy: { select: { name: true, username: true } }, _count: { select: { checks: true } } } }), { status: 201 }) } catch (error) { return Response.json({ error: error instanceof Error ? error.message : "Sesi posyandu anak tidak valid." }, { status: 400 }) } }

@@ -47,7 +47,14 @@ model Document {
   size       String
   icon       String
   fileUrl    String?
+  visibility DocumentVisibility @default(PUBLIC)
+  originalName String?
+  mimeType     String?
+  byteSize     Int?
+  storagePath  String?
   uploadedAt DateTime @default(now())
+
+  @@index([visibility, uploadedAt])
 }
 
 model Statistic {
@@ -79,6 +86,8 @@ model Complaint {
   contact     String
   description String
   status      String   @default("Baru")
+  publicResponse String?
+  respondedAt  DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -91,14 +100,52 @@ model AdminUser {
   email        String         @unique
   passwordHash String
   name         String?
-  role         AdminRole      @default(ADMIN)
+  isSuperAdmin Boolean        @default(false)
   isActive     Boolean        @default(true)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   sessions     AdminSession[]
+  roles        AdminUserRole[]
   createdPosyanduSessions PosyanduSession[] @relation("PosyanduSessionCreator")
   recordedPosyanduChecks  PosyanduCheck[]   @relation("PosyanduCheckRecorder")
+  createdChildPosyanduSessions ChildPosyanduSession[] @relation("ChildPosyanduSessionCreator")
+  recordedChildChecks ChildHealthCheck[] @relation("ChildHealthCheckRecorder")
   serviceStatusUpdates    ServiceSubmissionStatus[] @relation("ServiceStatusUpdater")
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  isSystem    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  users       AdminUserRole[]
+  permissions RolePermission[]
+}
+
+model AdminUserRole {
+  userId String
+  roleId String
+  user   AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+}
+
+model RolePermission {
+  id        String    @id @default(cuid())
+  roleId    String
+  module    CmsModule
+  canView   Boolean   @default(false)
+  canCreate Boolean   @default(false)
+  canUpdate Boolean   @default(false)
+  canDelete Boolean   @default(false)
+  role      Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, module])
+  @@index([module])
 }
 
 model VillageService {
@@ -253,6 +300,61 @@ model PosyanduCheck {
   @@index([sessionId, recordedAt])
 }
 
+model Child {
+  id                    String             @id @default(cuid())
+  fullName              String
+  gender                String
+  dusun                 String
+  birthDate             DateTime
+  address               String
+  guardianName          String
+  guardianPhone         String
+  isActive              Boolean            @default(true)
+  publicProfileConsent  Boolean            @default(false)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  checks                ChildHealthCheck[]
+
+  @@index([isActive, dusun, fullName])
+}
+
+model ChildPosyanduSession {
+  id          String             @id @default(cuid())
+  name        String
+  sessionDate DateTime
+  createdById String
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  createdBy   AdminUser          @relation("ChildPosyanduSessionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  checks      ChildHealthCheck[]
+
+  @@index([sessionDate])
+}
+
+model ChildHealthCheck {
+  id                  String               @id @default(cuid())
+  sessionId           String
+  childId             String
+  recordedById        String
+  weightKg            Float
+  heightCm            Float
+  headCircumferenceCm Float?
+  feeding             String?
+  interventions       String[]             @default([])
+  developmentStatus   String?
+  notes               String?
+  referral            String?
+  recordedAt          DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  session             ChildPosyanduSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  child               Child                @relation(fields: [childId], references: [id], onDelete: Restrict)
+  recordedBy          AdminUser            @relation("ChildHealthCheckRecorder", fields: [recordedById], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, childId])
+  @@index([childId, recordedAt])
+  @@index([sessionId, recordedAt])
+}
+
 model PopulationOpeningBalance {
   id              String   @id @default(cuid())
   dusun           String   @unique
@@ -261,6 +363,27 @@ model PopulationOpeningBalance {
   demographics    Json?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model Resident {
+  id               String            @id @default(cuid())
+  nationalId       String            @unique
+  fullName         String
+  familyCardNumber String
+  gender           String
+  birthDate        DateTime
+  dusun            String
+  education        String
+  occupation       String
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  events           PopulationEvent[]
+
+  @@index([isActive, dusun])
+  @@index([isActive, education])
+  @@index([isActive, occupation])
+  @@index([familyCardNumber])
 }
 
 model PopulationEvent {
@@ -277,11 +400,14 @@ model PopulationEvent {
   originAddress      String?
   destinationAddress String?
   notes              String?
+  residentId         String?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
+  resident           Resident?           @relation(fields: [residentId], references: [id], onDelete: SetNull)
 
   @@index([eventDate, dusun, type])
   @@index([dusun, eventDate])
+  @@index([residentId])
 }
 
 enum DisasterLocationType {
@@ -297,9 +423,25 @@ enum PopulationEventType {
   PINDAH_KELUAR
 }
 
-enum AdminRole {
-  ADMIN
-  PETUGAS_PUSKESMAS
+enum CmsModule {
+  DASHBOARD
+  INFOGRAPHICS
+  ELDERLY_HEALTH
+  UMKM
+  DISASTER_WEATHER
+  PAGE_CONTENT
+  NEWS
+  DOCUMENT_ARCHIVE
+  SERVICE_CATALOG
+  SERVICE_SUBMISSIONS
+  COMPLAINTS
+  CMS_MODULES
+  SETTINGS
+}
+
+enum DocumentVisibility {
+  PUBLIC
+  PRIVATE
 }
 
 enum ServiceSubmissionStatusType {
