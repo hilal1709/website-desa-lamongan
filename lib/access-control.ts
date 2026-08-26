@@ -5,7 +5,7 @@ export const cmsModules = [
   ["ELDERLY_HEALTH", "Rekam Medis Lansia & Anak", "/admin/lansia"], ["UMKM", "UMKM", "/admin/umkm"],
   ["DISASTER_WEATHER", "Bencana & Cuaca", "/admin/bencana"], ["PAGE_CONTENT", "Tampilan Halaman", "/admin/konten"],
   ["NEWS", "Berita", "/admin/berita"], ["DOCUMENT_ARCHIVE", "Arsip Dokumen", "/admin/arsip"],
-  ["SERVICE_CATALOG", "Katalog Layanan", "/admin/layanan"], ["SERVICE_SUBMISSIONS", "Pengajuan Layanan", "/admin/antrian"],
+  ["SERVICE_CATALOG", "Katalog Layanan", "/admin/layanan"], ["SERVICE_SUBMISSIONS", "Pengajuan Layanan", "/admin/layanan"],
   ["COMPLAINTS", "Aduan", "/admin/aduan"], ["CMS_MODULES", "Modul CMS", "/admin/modul"], ["SETTINGS", "Pengaturan", "/admin/pengaturan"],
 ] as const satisfies readonly (readonly [CmsModule, string, string])[]
 

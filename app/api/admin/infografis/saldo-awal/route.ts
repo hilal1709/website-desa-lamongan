@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic"
 
 function dateValue(value: unknown) {
   const date = typeof value === "string" ? new Date(`${value}T00:00:00.000Z`) : new Date("")
-  if (Number.isNaN(date.getTime())) throw new Error("Tanggal saldo awal tidak valid.")
+  if (Number.isNaN(date.getTime())) throw new Error("Tanggal data dasar tidak valid.")
   return date
 }
 
@@ -34,11 +34,11 @@ export async function POST(request: Request) {
     const dusun = typeof body.dusun === "string" ? body.dusun.trim() : ""
     const totalPopulation = Number(body.totalPopulation)
     const effectiveDate = dateValue(body.effectiveDate)
-    if (!dusun || !Number.isInteger(totalPopulation) || totalPopulation < 0) throw new Error("Dusun dan jumlah saldo awal wajib diisi.")
+    if (!dusun || !Number.isInteger(totalPopulation) || totalPopulation < 0) throw new Error("Dusun dan jumlah penduduk wajib diisi.")
     const demographics = demographicsValue(body.demographics, totalPopulation)
 
     const earliestEvent = await prisma.populationEvent.findFirst({ where: { dusun }, orderBy: { eventDate: "asc" }, select: { eventDate: true } })
-    if (earliestEvent && earliestEvent.eventDate < effectiveDate) throw new Error("Tanggal saldo awal tidak boleh setelah catatan peristiwa yang sudah ada.")
+    if (earliestEvent && earliestEvent.eventDate < effectiveDate) throw new Error("Tanggal data dasar tidak boleh setelah catatan peristiwa yang sudah ada.")
 
     const balance = await prisma.populationOpeningBalance.upsert({ where: { dusun }, update: { effectiveDate, totalPopulation, demographics }, create: { dusun, effectiveDate, totalPopulation, demographics } })
     revalidateTag("population-events", { expire: 0 })
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     await publishCmsUpdate("population")
     return Response.json(balance)
   } catch (error) {
-    return Response.json({ error: error instanceof Error ? error.message : "Saldo awal tidak valid." }, { status: 400 })
+    return Response.json({ error: error instanceof Error ? error.message : "Data dasar tidak valid." }, { status: 400 })
   }
 }
 
@@ -54,11 +54,11 @@ export async function DELETE(request: Request) {
   if (!(await getCurrentAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 })
   try {
     const id = new URL(request.url).searchParams.get("id")?.trim()
-    if (!id) throw new Error("Saldo awal tidak ditemukan.")
+    if (!id) throw new Error("Data dasar tidak ditemukan.")
     const balance = await prisma.populationOpeningBalance.findUnique({ where: { id }, select: { id: true, dusun: true } })
-    if (!balance) throw new Error("Saldo awal tidak ditemukan.")
+    if (!balance) throw new Error("Data dasar tidak ditemukan.")
     const eventCount = await prisma.populationEvent.count({ where: { dusun: balance.dusun } })
-    if (eventCount > 0) throw new Error("Saldo awal tidak dapat dihapus karena dusun ini masih memiliki catatan peristiwa. Hapus catatan peristiwa terlebih dahulu.")
+    if (eventCount > 0) throw new Error("Data dasar tidak dapat dihapus karena dusun ini masih memiliki catatan peristiwa. Hapus catatan peristiwa terlebih dahulu.")
 
     await prisma.populationOpeningBalance.delete({ where: { id: balance.id } })
     revalidateTag("population-events", { expire: 0 })
@@ -66,6 +66,6 @@ export async function DELETE(request: Request) {
     await publishCmsUpdate("population")
     return new Response(null, { status: 204 })
   } catch (error) {
-    return Response.json({ error: error instanceof Error ? error.message : "Saldo awal tidak dapat dihapus." }, { status: 400 })
+    return Response.json({ error: error instanceof Error ? error.message : "Data dasar tidak dapat dihapus." }, { status: 400 })
   }
 }

@@ -27,14 +27,18 @@ function profileInput(body: Record<string, unknown>) {
 async function requireAdmin() {
   return !(await requireCmsPermission("UMKM")).response
 }
-const databaseError = () => NextResponse.json({ message: "Data UMKM belum dapat dimuat. Silakan coba lagi." }, { status: 500 })
+const databaseError = (error?: unknown) => {
+  console.error("Gagal memuat UMKM:", error)
+  const detail = process.env.NODE_ENV === "development" && error instanceof Error ? error.message : ""
+  return NextResponse.json({ message: detail || "Data UMKM belum dapat dimuat. Silakan coba lagi." }, { status: 500 })
+}
 
 export async function GET() {
   if (!(await requireAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
   try {
     const businesses = await prisma.umkm.findMany({ include: { products: { orderBy: { name: "asc" } } }, orderBy: { updatedAt: "desc" } })
     return NextResponse.json({ businesses })
-  } catch { return databaseError() }
+  } catch (error) { return databaseError(error) }
 }
 
 export async function POST(request: Request) {
@@ -49,7 +53,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ business }, { status: 201 })
   } catch (error) {
     if ((error as { code?: string }).code === "P2002") return NextResponse.json({ message: "Slug UMKM sudah digunakan." }, { status: 409 })
-    return databaseError()
+    return databaseError(error)
   }
 }
 
@@ -68,7 +72,7 @@ export async function PUT(request: Request) {
   } catch (error) {
     if ((error as { code?: string }).code === "P2002") return NextResponse.json({ message: "Slug UMKM sudah digunakan." }, { status: 409 })
     if ((error as { code?: string }).code === "P2025") return NextResponse.json({ message: "UMKM tidak ditemukan." }, { status: 404 })
-    return databaseError()
+    return databaseError(error)
   }
 }
 
@@ -82,5 +86,5 @@ export async function DELETE(request: Request) {
     revalidateTag("admin-dashboard", "max")
     await publishCmsUpdate("umkm")
     return new NextResponse(null, { status: 204 })
-  } catch { return databaseError() }
+  } catch (error) { return databaseError(error) }
 }

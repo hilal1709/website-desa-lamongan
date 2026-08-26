@@ -219,8 +219,8 @@ export function validatePopulationEventInput(payload: unknown) {
 
 export async function assertEventAfterOpeningBalance(dusun: string, eventDate: Date, excludeId?: string) {
   const balance = await prisma.populationOpeningBalance.findUnique({ where: { dusun }, select: { effectiveDate: true } })
-  if (!balance) throw new Error("Saldo awal dusun belum diatur.")
-  if (eventDate < balance.effectiveDate) throw new Error("Tanggal peristiwa tidak boleh sebelum saldo awal dusun.")
+  if (!balance) throw new Error("Data dasar dusun belum diatur.")
+  if (eventDate < balance.effectiveDate) throw new Error("Tanggal peristiwa tidak boleh sebelum data dasar dusun.")
 
   if (excludeId) {
     const existing = await prisma.populationEvent.findUnique({ where: { id: excludeId }, select: { id: true } })

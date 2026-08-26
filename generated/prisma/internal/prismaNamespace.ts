@@ -3492,6 +3492,7 @@ export const UmkmProductScalarFieldEnum = {
   description: 'description',
   imageUrl: 'imageUrl',
   price: 'price',
+  variants: 'variants',
   isAvailable: 'isAvailable',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

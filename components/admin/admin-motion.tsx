@@ -17,13 +17,9 @@ export function AdminMotion({ children }: { children: React.ReactNode }) {
     void import("gsap").then(({ default: gsap }) => {
       if (cancelled || !root.current) return
       context = gsap.context(() => {
-        const reveal = gsap.utils.toArray<HTMLElement>("[data-admin-reveal]")
         const cards = gsap.utils.toArray<HTMLElement>("[data-admin-card]")
 
-        gsap.set(reveal, { autoAlpha: 0, y: 16 })
-        gsap.timeline({ defaults: { ease: "power3.out" } })
-          .to("[data-admin-sidebar]", { autoAlpha: 1, x: 0, duration: 0.45 })
-          .to(reveal, { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.06 }, "-=0.18")
+        gsap.to("[data-admin-sidebar]", { autoAlpha: 1, x: 0, duration: 0.45, ease: "power3.out" })
 
         cards.forEach((card) => {
           const icon = card.querySelector("[data-admin-card-icon]")

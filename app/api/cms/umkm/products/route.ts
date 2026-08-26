@@ -12,12 +12,23 @@ function productInput(body: Record<string, unknown>) {
   const description = text(body.description, 1200)
   const imageUrl = text(body.imageUrl, 500)
   const price = Number(body.price)
+  const variants = Array.isArray(body.variants) ? body.variants.flatMap((item) => {
+    if (!item || typeof item !== "object") return []
+    const value = item as Record<string, unknown>
+    const variantName = text(value.name, 80).replace(/\s+/g, " ")
+    const variantPrice = Number(value.price)
+    return variantName && Number.isSafeInteger(variantPrice) && variantPrice > 0 ? [{ name: variantName, price: variantPrice }] : []
+  }).slice(0, 30) : []
   if (!name || !description || !imageUrl || !Number.isSafeInteger(price) || price <= 0) return null
-  return { name, description, imageUrl, price, isAvailable: body.isAvailable !== false }
+  return { name, description, imageUrl, price, variants, isAvailable: body.isAvailable !== false }
 }
 
 async function authorized() { return Boolean(await getCurrentAdmin()) }
-const databaseError = () => NextResponse.json({ message: "Data produk belum dapat diproses. Silakan coba lagi." }, { status: 500 })
+const databaseError = (error?: unknown) => {
+  console.error("Gagal menyimpan produk UMKM:", error)
+  const detail = process.env.NODE_ENV === "development" && error instanceof Error ? error.message : ""
+  return NextResponse.json({ message: detail || "Data produk belum dapat diproses. Silakan coba lagi." }, { status: 500 })
+}
 
 export async function POST(request: Request) {
   if (!(await authorized())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
@@ -30,7 +41,7 @@ export async function POST(request: Request) {
     revalidateTag("umkm", { expire: 0 })
     await publishCmsUpdate("umkm")
     return NextResponse.json({ product }, { status: 201 })
-  } catch { return databaseError() }
+  } catch (error) { return databaseError(error) }
 }
 
 export async function PUT(request: Request) {
@@ -46,7 +57,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ product })
   } catch (error) {
     if ((error as { code?: string }).code === "P2025") return NextResponse.json({ message: "Produk tidak ditemukan." }, { status: 404 })
-    return databaseError()
+    return databaseError(error)
   }
 }
 
@@ -59,5 +70,5 @@ export async function DELETE(request: Request) {
     revalidateTag("umkm", { expire: 0 })
     await publishCmsUpdate("umkm")
     return new NextResponse(null, { status: 204 })
-  } catch { return databaseError() }
+  } catch (error) { return databaseError(error) }
 }

@@ -537,6 +537,7 @@ model UmkmProduct {
   description String
   imageUrl    String
   price       Int
+  variants    Json      @default("[]")
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

@@ -65,6 +65,7 @@ export type UmkmProductCountAggregateOutputType = {
   description: number
   imageUrl: number
   price: number
+  variants: number
   isAvailable: number
   createdAt: number
   updatedAt: number
@@ -111,6 +112,7 @@ export type UmkmProductCountAggregateInputType = {
   description?: true
   imageUrl?: true
   price?: true
+  variants?: true
   isAvailable?: true
   createdAt?: true
   updatedAt?: true
@@ -210,6 +212,7 @@ export type UmkmProductGroupByOutputType = {
   description: string
   imageUrl: string
   price: number
+  variants: runtime.JsonValue
   isAvailable: boolean
   createdAt: Date
   updatedAt: Date
@@ -245,6 +248,7 @@ export type UmkmProductWhereInput = {
   description?: Prisma.StringFilter<"UmkmProduct"> | string
   imageUrl?: Prisma.StringFilter<"UmkmProduct"> | string
   price?: Prisma.IntFilter<"UmkmProduct"> | number
+  variants?: Prisma.JsonFilter<"UmkmProduct">
   isAvailable?: Prisma.BoolFilter<"UmkmProduct"> | boolean
   createdAt?: Prisma.DateTimeFilter<"UmkmProduct"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UmkmProduct"> | Date | string
@@ -258,6 +262,7 @@ export type UmkmProductOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  variants?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -274,6 +279,7 @@ export type UmkmProductWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"UmkmProduct"> | string
   imageUrl?: Prisma.StringFilter<"UmkmProduct"> | string
   price?: Prisma.IntFilter<"UmkmProduct"> | number
+  variants?: Prisma.JsonFilter<"UmkmProduct">
   isAvailable?: Prisma.BoolFilter<"UmkmProduct"> | boolean
   createdAt?: Prisma.DateTimeFilter<"UmkmProduct"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UmkmProduct"> | Date | string
@@ -287,6 +293,7 @@ export type UmkmProductOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  variants?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -307,6 +314,7 @@ export type UmkmProductScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"UmkmProduct"> | string
   imageUrl?: Prisma.StringWithAggregatesFilter<"UmkmProduct"> | string
   price?: Prisma.IntWithAggregatesFilter<"UmkmProduct"> | number
+  variants?: Prisma.JsonWithAggregatesFilter<"UmkmProduct">
   isAvailable?: Prisma.BoolWithAggregatesFilter<"UmkmProduct"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UmkmProduct"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UmkmProduct"> | Date | string
@@ -318,6 +326,7 @@ export type UmkmProductCreateInput = {
   description: string
   imageUrl: string
   price: number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -331,6 +340,7 @@ export type UmkmProductUncheckedCreateInput = {
   description: string
   imageUrl: string
   price: number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -342,6 +352,7 @@ export type UmkmProductUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -355,6 +366,7 @@ export type UmkmProductUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -367,6 +379,7 @@ export type UmkmProductCreateManyInput = {
   description: string
   imageUrl: string
   price: number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -378,6 +391,7 @@ export type UmkmProductUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -390,6 +404,7 @@ export type UmkmProductUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -412,6 +427,7 @@ export type UmkmProductCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  variants?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -497,6 +513,7 @@ export type UmkmProductCreateWithoutUmkmInput = {
   description: string
   imageUrl: string
   price: number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -508,6 +525,7 @@ export type UmkmProductUncheckedCreateWithoutUmkmInput = {
   description: string
   imageUrl: string
   price: number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -549,6 +567,7 @@ export type UmkmProductScalarWhereInput = {
   description?: Prisma.StringFilter<"UmkmProduct"> | string
   imageUrl?: Prisma.StringFilter<"UmkmProduct"> | string
   price?: Prisma.IntFilter<"UmkmProduct"> | number
+  variants?: Prisma.JsonFilter<"UmkmProduct">
   isAvailable?: Prisma.BoolFilter<"UmkmProduct"> | boolean
   createdAt?: Prisma.DateTimeFilter<"UmkmProduct"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UmkmProduct"> | Date | string
@@ -560,6 +579,7 @@ export type UmkmProductCreateManyUmkmInput = {
   description: string
   imageUrl: string
   price: number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -571,6 +591,7 @@ export type UmkmProductUpdateWithoutUmkmInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -582,6 +603,7 @@ export type UmkmProductUncheckedUpdateWithoutUmkmInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -593,6 +615,7 @@ export type UmkmProductUncheckedUpdateManyWithoutUmkmInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
+  variants?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -607,6 +630,7 @@ export type UmkmProductSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   description?: boolean
   imageUrl?: boolean
   price?: boolean
+  variants?: boolean
   isAvailable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -620,6 +644,7 @@ export type UmkmProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   description?: boolean
   imageUrl?: boolean
   price?: boolean
+  variants?: boolean
   isAvailable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -633,6 +658,7 @@ export type UmkmProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   description?: boolean
   imageUrl?: boolean
   price?: boolean
+  variants?: boolean
   isAvailable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -646,12 +672,13 @@ export type UmkmProductSelectScalar = {
   description?: boolean
   imageUrl?: boolean
   price?: boolean
+  variants?: boolean
   isAvailable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UmkmProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "umkmId" | "name" | "description" | "imageUrl" | "price" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["umkmProduct"]>
+export type UmkmProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "umkmId" | "name" | "description" | "imageUrl" | "price" | "variants" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["umkmProduct"]>
 export type UmkmProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   umkm?: boolean | Prisma.UmkmDefaultArgs<ExtArgs>
 }
@@ -674,6 +701,7 @@ export type $UmkmProductPayload<ExtArgs extends runtime.Types.Extensions.Interna
     description: string
     imageUrl: string
     price: number
+    variants: runtime.JsonValue
     isAvailable: boolean
     createdAt: Date
     updatedAt: Date
@@ -1107,6 +1135,7 @@ export interface UmkmProductFieldRefs {
   readonly description: Prisma.FieldRef<"UmkmProduct", 'String'>
   readonly imageUrl: Prisma.FieldRef<"UmkmProduct", 'String'>
   readonly price: Prisma.FieldRef<"UmkmProduct", 'Int'>
+  readonly variants: Prisma.FieldRef<"UmkmProduct", 'Json'>
   readonly isAvailable: Prisma.FieldRef<"UmkmProduct", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"UmkmProduct", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UmkmProduct", 'DateTime'>

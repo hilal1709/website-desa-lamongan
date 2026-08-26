@@ -3,7 +3,7 @@ import "server-only"
 import { prisma } from "@/app/lib/prisma"
 import type { UmkmCatalogItem, UmkmCategoryStat, UmkmProduct, UmkmPublicData } from "@/types"
 
-const publicProduct = { id: true, name: true, description: true, imageUrl: true, price: true, isAvailable: true } as const
+const publicProduct = { id: true, name: true, description: true, imageUrl: true, price: true, variants: true, isAvailable: true } as const
 const emptyUmkmData: UmkmPublicData = { catalog: [], categories: [], hamlets: [], yearly: [], totalBusinesses: 0, totalProducts: 0 }
 
 function normalizedCategory(value: string) {
@@ -48,7 +48,7 @@ export async function getCachedUmkmBySlug(slug: string) {
       where: { slug, isPublished: true },
       select: { id: true, name: true, slug: true, category: true, description: true, logoUrl: true, whatsapp: true, address: true, products: { where: { isAvailable: true }, select: publicProduct, orderBy: { name: "asc" } } },
     })
-    return business ? { ...business, products: business.products as UmkmProduct[] } : null
+    return business ? { ...business, products: business.products.map((product) => ({ ...product, variants: Array.isArray(product.variants) ? product.variants.filter((variant): variant is { name: string; price: number } => Boolean(variant) && typeof variant === "object" && typeof (variant as { name?: unknown }).name === "string" && typeof (variant as { price?: unknown }).price === "number") : [] })) as UmkmProduct[] } : null
   } catch {
     return null
   }

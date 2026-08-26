@@ -15,3 +15,16 @@ export async function PATCH(request: Request, context: RouteContext<"/api/cms/la
     return NextResponse.json({ submission: { ...submission, statusLabel: STATUS_LABEL[submission.status] } })
   } catch { return NextResponse.json({ message: "Pengajuan tidak ditemukan." }, { status: 404 }) }
 }
+
+export async function DELETE(_request: Request, context: RouteContext<"/api/cms/layanan/pengajuan/[id]">) {
+  const user = await getCurrentAdmin()
+  if (!user) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  try {
+    const { id } = await context.params
+    await prisma.serviceSubmission.delete({ where: { id } })
+    return new NextResponse(null, { status: 204 })
+  } catch (error) {
+    if ((error as { code?: string }).code === "P2025") return NextResponse.json({ message: "Pengajuan tidak ditemukan." }, { status: 404 })
+    return NextResponse.json({ message: "Pengajuan tidak dapat dihapus." }, { status: 500 })
+  }
+}
