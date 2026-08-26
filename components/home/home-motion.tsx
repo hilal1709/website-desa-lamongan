@@ -11,11 +11,12 @@ export function HomeMotion({ children }: { children: ReactNode }) {
     let observer: IntersectionObserver | undefined
     let ctx: ReturnType<typeof import("gsap").default.context> | undefined
     let cancelled = false
+    const cleanup: Array<() => void> = []
+    const startAnimation = () => {
+      void import("gsap").then(({ default: gsap }) => {
+        if (!root.current || cancelled) return
 
-    void import("gsap").then(({ default: gsap }) => {
-      if (!root.current || cancelled) return
-
-      ctx = gsap.context(() => {
+        ctx = gsap.context(() => {
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -56,12 +57,44 @@ export function HomeMotion({ children }: { children: ReactNode }) {
       reveal(".home-overview-card", { y: 28, stagger: 0.08 })
       reveal(".home-news-card", { y: 28, stagger: 0.12 })
       reveal(".home-cta", { y: 24, scale: 0.98, duration: 0.65 })
-      }, root)
-    })
+
+      const interactiveCards = gsap.utils.toArray<HTMLElement>(".home-interactive-card", root.current)
+      interactiveCards.forEach((card) => {
+        const glow = card.querySelector<HTMLElement>(".home-card-glow")
+        const enter = () => {
+          gsap.to(card, { y: -7, scale: 1.012, duration: 0.28, ease: "power2.out", overwrite: "auto" })
+          if (glow) gsap.to(glow, { autoAlpha: 1, scale: 1.15, duration: 0.35, overwrite: "auto" })
+        }
+        const leave = () => {
+          gsap.to(card, { x: 0, y: 0, rotateX: 0, rotateY: 0, scale: 1, duration: 0.42, ease: "power3.out", overwrite: "auto" })
+          if (glow) gsap.to(glow, { autoAlpha: 0.45, scale: 1, duration: 0.35, overwrite: "auto" })
+        }
+        const move = (event: MouseEvent) => {
+          const bounds = card.getBoundingClientRect()
+          gsap.to(card, { rotateY: ((event.clientX - bounds.left) / bounds.width - 0.5) * 5, rotateX: ((event.clientY - bounds.top) / bounds.height - 0.5) * -5, transformPerspective: 900, duration: 0.35, ease: "power2.out", overwrite: "auto" })
+        }
+        card.addEventListener("mouseenter", enter)
+        card.addEventListener("mouseleave", leave)
+        card.addEventListener("mousemove", move)
+        cleanup.push(() => {
+          card.removeEventListener("mouseenter", enter)
+          card.removeEventListener("mouseleave", leave)
+          card.removeEventListener("mousemove", move)
+        })
+      })
+        }, root)
+      })
+    }
+
+    // Hero motion is loaded separately. Defer below-the-fold GSAP work so it
+    // cannot compete with the image and primary actions during first paint.
+    const animationTimer = window.setTimeout(startAnimation, 150)
 
     return () => {
       cancelled = true
+      window.clearTimeout(animationTimer)
       observer?.disconnect()
+      cleanup.forEach((dispose) => dispose())
       ctx?.revert()
     }
   }, [])

@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma"
 import type { Prisma } from "@/generated/prisma/client"
+import { unstable_cache } from "next/cache"
 
 export interface CmsPageContent {
   [key: string]: unknown
@@ -458,8 +459,15 @@ async function readCmsPages() {
   }
 }
 
+// Public pages share the same CMS payload. Cache it independently from the
+// admin reader; the CMS route invalidates this tag immediately after a save.
+const getCachedCmsPages = unstable_cache(readCmsPages, ["cms-pages"], {
+  revalidate: 300,
+  tags: ["cms-pages"],
+})
+
 export async function getCmsPages() {
-  return readCmsPages()
+  return getCachedCmsPages()
 }
 
 // The editor must always receive the current list, including pages added after
