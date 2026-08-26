@@ -24,6 +24,9 @@ export interface CmsSection {
   action?: string
   href?: string
   image?: string
+  captionEyebrow?: string
+  captionTitle?: string
+  storyLine?: string
   items?: CmsSectionItem[]
 }
 
@@ -123,6 +126,9 @@ export const defaultCmsPages: CmsPageContent[] = [
         title: "Tumbuh bersama sejak 1928.",
         description: "Desa Kedungrejo berkembang dari permukiman agraris yang dikelilingi persawahan subur. Hari ini, desa kami memadukan kearifan lokal dengan tata kelola digital untuk memberikan hidup yang lebih baik bagi setiap keluarga.",
         image: "/images/pesona-potensi-desa-poster.jpg",
+        captionEyebrow: "Kedungrejo · Modo · Lamongan",
+        captionTitle: "Kearifan lokal yang tumbuh bersama peluang baru.",
+        storyLine: "Berakar pada gotong royong, bergerak untuk masa depan.",
         items: [
           { title: "4.862", description: "Warga bertetangga" },
           { title: "72 ha", description: "Lahan produktif" },

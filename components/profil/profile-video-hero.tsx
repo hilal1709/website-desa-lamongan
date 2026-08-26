@@ -1,130 +1,23 @@
 "use client"
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Maximize, Play, Volume2 } from "lucide-react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { ProfileCloseIcon, ProfileMaximizeIcon, ProfilePlayIcon, ProfileVolumeIcon } from "@/components/profil/profile-icons"
 
-interface ProfileVideoHeroProps {
-  eyebrow: string
-  title: string
-  description: string
-}
-
+interface ProfileVideoHeroProps { eyebrow: string; title: string; description: string }
 const videoSource = "/videos/pesona-potensi-desa.mp4"
 const posterSource = "/images/pesona-potensi-desa-poster.jpg"
 
 export function ProfileVideoHero({ eyebrow, title, description }: ProfileVideoHeroProps) {
   const rootRef = useRef<HTMLElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
   const [hasVideoError, setHasVideoError] = useState(false)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    const resumeAmbientPlayback = () => {
-      if (document.fullscreenElement) return
-
-      video.controls = false
-      video.muted = true
-      video.loop = true
-      void video.play().catch(() => undefined)
-    }
-
-    document.addEventListener("fullscreenchange", resumeAmbientPlayback)
-    return () => document.removeEventListener("fullscreenchange", resumeAmbientPlayback)
-  }, [])
-
-  useLayoutEffect(() => {
-    if (!rootRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    let context: ReturnType<typeof import("gsap").default.context> | undefined
-    let cancelled = false
-
-    void import("gsap").then(({ default: gsap }) => {
-      if (!rootRef.current || cancelled) return
-
-      context = gsap.context(() => {
-        const timeline = gsap.timeline({ defaults: { ease: "power3.out" } })
-        timeline
-          .from(".profile-video-hero-media", { autoAlpha: 0.6, scale: 1.08, duration: 1.25 })
-          .from(".profile-video-hero-copy > p, .profile-video-hero-copy > h1", { autoAlpha: 0, y: 26, duration: 0.72, stagger: 0.12 }, "-=0.7")
-      }, rootRef)
-    })
-
-    return () => {
-      cancelled = true
-      context?.revert()
-    }
-  }, [])
-
-  const watchWithSound = async () => {
-    const video = videoRef.current
-    if (!video || hasVideoError) return
-
-    video.muted = false
-    video.volume = 1
-    video.loop = false
-    video.controls = true
-    video.currentTime = 0
-
-    try {
-      await video.play()
-
-      if (video.requestFullscreen) {
-        await video.requestFullscreen()
-      } else {
-        const safariVideo = video as HTMLVideoElement & { webkitEnterFullscreen?: () => void }
-        safariVideo.webkitEnterFullscreen?.()
-      }
-    } catch {
-      // Native controls remain available if fullscreen playback is unavailable.
-    }
-  }
-
-  return (
-    <header ref={rootRef} className="relative -mt-[88px] flex min-h-[500px] items-center overflow-hidden bg-[#071b1d] px-4 pb-12 pt-[136px] text-white sm:min-h-[600px] sm:px-5 sm:pb-20 sm:pt-[168px] lg:min-h-[640px]">
-      {hasVideoError ? (
-        <img src={posterSource} alt="Pemandangan Desa Kedungrejo" className="profile-video-hero-media absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-[60%_center]" />
-      ) : (
-        <video
-          ref={videoRef}
-          className="profile-video-hero-media absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-[60%_center]"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={posterSource}
-          aria-hidden="true"
-          onError={() => setHasVideoError(true)}
-        >
-          <source src={videoSource} type="video/mp4" />
-          Browser Anda belum mendukung pemutaran video.
-        </video>
-      )}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,18,15,0.82),rgba(8,34,23,0.62),rgba(8,36,19,0.48)),linear-gradient(180deg,rgba(5,24,18,0.26),rgba(5,24,18,0.34)_42%,rgba(5,24,18,0.76))]" />
-
-      <div className="profile-video-hero-copy relative mx-auto w-full max-w-4xl">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300 sm:text-sm sm:tracking-[0.2em]">{eyebrow}</p>
-        <h1 className="mt-3 max-w-3xl text-3xl font-black leading-[1.08] tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">{title}</h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:mt-5 sm:text-lg sm:leading-8">{description}</p>
-
-        <button
-          type="button"
-          onClick={watchWithSound}
-          disabled={hasVideoError}
-          className="mt-7 inline-flex w-full items-center justify-between gap-3 rounded-2xl border border-white/25 bg-white/12 px-4 py-3.5 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-60 min-[420px]:w-auto min-[420px]:justify-start sm:mt-8 sm:px-5"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-400 text-emerald-950">
-            <Play className="h-4 w-4 fill-current" aria-hidden="true" />
-          </span>
-          <span className="flex flex-col items-start">
-            <span className="inline-flex items-center gap-1.5"><Volume2 className="h-4 w-4" aria-hidden="true" /> Lihat video full</span>
-            <span className="mt-0.5 text-xs font-medium text-white/75">Putar dengan suara</span>
-          </span>
-          <Maximize className="ml-1 h-4 w-4 text-white/80" aria-hidden="true" />
-        </button>
-      </div>
-    </header>
-  )
+  const [isVideoOpen, setIsVideoOpen] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
+  const closeVideo = useCallback(() => { if (isClosing) return; if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setIsVideoOpen(false); return }; setIsClosing(true); void import("gsap").then(({ default: gsap }) => { if (!modalRef.current) return; gsap.to(".profile-video-dialog-card", { autoAlpha: 0, y: 16, scale: 0.98, duration: 0.2, ease: "power2.in" }); gsap.to(".profile-video-dialog-backdrop", { autoAlpha: 0, duration: 0.2, onComplete: () => { setIsClosing(false); setIsVideoOpen(false) } }) }) }, [isClosing])
+  useEffect(() => { if (!isVideoOpen) return; const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") closeVideo() }; document.body.style.overflow = "hidden"; document.addEventListener("keydown", closeOnEscape); return () => { document.body.style.overflow = ""; document.removeEventListener("keydown", closeOnEscape) } }, [isVideoOpen, closeVideo])
+  useLayoutEffect(() => { if (!rootRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; let context: ReturnType<typeof import("gsap").default.context> | undefined; let cancelled = false; void import("gsap").then(({ default: gsap }) => { if (!rootRef.current || cancelled) return; context = gsap.context(() => { gsap.timeline({ defaults: { ease: "power3.out" } }).from(".profile-video-hero-media", { autoAlpha: 0.6, scale: 1.08, duration: 1.25 }).from(".profile-video-hero-copy > p, .profile-video-hero-copy > h1", { autoAlpha: 0, y: 26, duration: 0.72, stagger: 0.12 }, "-=0.7") }, rootRef) }); return () => { cancelled = true; context?.revert() } }, [])
+  useLayoutEffect(() => { if (!isVideoOpen || !modalRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; let context: ReturnType<typeof import("gsap").default.context> | undefined; void import("gsap").then(({ default: gsap }) => { if (modalRef.current) context = gsap.context(() => { gsap.fromTo(".profile-video-dialog-backdrop", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22 }); gsap.fromTo(".profile-video-dialog-card", { autoAlpha: 0, y: 28, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: "power3.out" }) }, modalRef) }); return () => context?.revert() }, [isVideoOpen])
+  return <header ref={rootRef} className="relative -mt-[88px] flex min-h-[500px] items-center overflow-hidden bg-[#071b1d] px-3 pb-10 pt-[128px] text-white min-[390px]:px-4 sm:min-h-[600px] sm:px-5 sm:pb-20 sm:pt-[168px] lg:min-h-[640px]">{hasVideoError ? <img src={posterSource} alt="Pemandangan Desa Kedungrejo" className="profile-video-hero-media absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-[60%_center]" /> : <video className="profile-video-hero-media absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-[60%_center]" autoPlay muted loop playsInline preload="metadata" poster={posterSource} aria-hidden="true" onError={() => setHasVideoError(true)}><source src={videoSource} type="video/mp4" /></video>}<div className="absolute inset-0 bg-emerald-950/65" /><div className="profile-video-hero-copy relative mx-auto w-full max-w-4xl"><p className="break-words text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-300 min-[390px]:text-xs sm:text-sm sm:tracking-[0.2em]">{eyebrow}</p><h1 className="mt-3 max-w-3xl break-words text-[clamp(2rem,9vw,3.75rem)] font-black leading-[1.08] tracking-tight sm:mt-4">{title}</h1><p className="mt-4 max-w-2xl break-words text-[15px] leading-7 text-slate-200 sm:mt-5 sm:text-lg sm:leading-8">{description}</p><button type="button" onClick={() => setIsVideoOpen(true)} disabled={hasVideoError} className="mt-7 inline-flex w-full items-center justify-between gap-3 rounded-2xl border border-white/25 bg-white/12 px-4 py-3.5 text-left text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60 min-[420px]:w-auto min-[420px]:justify-start sm:mt-8 sm:px-5"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-400 text-emerald-950"><ProfilePlayIcon className="h-4 w-4" /></span><span className="flex flex-col items-start"><span className="inline-flex items-center gap-1.5"><ProfileVolumeIcon className="h-4 w-4" /> Lihat video full</span><span className="mt-0.5 text-xs font-medium text-white/75">Putar dengan suara</span></span><ProfileMaximizeIcon className="ml-1 h-4 w-4 text-white/80" /></button></div>{isVideoOpen ? <div ref={modalRef} className="fixed inset-0 z-[70] flex items-center justify-center p-2 min-[390px]:p-3 sm:p-6" role="presentation"><button type="button" aria-label="Tutup video" onClick={closeVideo} className="profile-video-dialog-backdrop absolute inset-0 bg-slate-950/85 backdrop-blur-md" /><Card role="dialog" aria-modal="true" aria-labelledby="profile-video-dialog-title" className="profile-video-dialog-card relative max-h-[calc(100dvh-1rem)] w-full max-w-5xl overflow-y-auto rounded-2xl border-white/15 bg-slate-950 text-white shadow-2xl min-[390px]:rounded-[2rem]"><CardContent className="p-0"><div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 min-[390px]:px-5 min-[390px]:py-4 sm:px-6"><div className="min-w-0"><p className="truncate text-[10px] font-bold uppercase tracking-[.14em] text-emerald-300 min-[390px]:text-xs">Pesona Kedungrejo</p><h2 id="profile-video-dialog-title" className="mt-1 truncate text-base font-black min-[390px]:text-lg">Video profil desa</h2></div><Button type="button" variant="ghost" size="icon" onClick={closeVideo} className="shrink-0 rounded-xl text-white hover:bg-white/10 hover:text-white" aria-label="Tutup video"><ProfileCloseIcon className="size-5" /></Button></div><video className="aspect-video w-full bg-black" controls autoPlay playsInline preload="none" poster={posterSource}><source src={videoSource} type="video/mp4" /></video></CardContent></Card></div> : null}</header>
 }

@@ -6,7 +6,7 @@ export default function ProfilLoading() {
   return (
     <main aria-busy="true" aria-live="polite" className="min-h-screen bg-[#f4f8f4]">
       <section className="relative -mt-[88px] min-h-[500px] overflow-hidden bg-emerald-950 px-4 pb-12 pt-[136px] text-white sm:min-h-[600px] sm:px-5 sm:pb-16 sm:pt-[168px] lg:min-h-[640px]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(52,211,153,0.25),transparent_28%),linear-gradient(120deg,#06251e,#0a4632)]" />
+        <div className="absolute inset-0 bg-emerald-950" />
         <div className="relative mx-auto max-w-7xl">
           <p className="sr-only" role="status">Memuat profil Desa Kedungrejo</p>
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/30 bg-emerald-300/10">

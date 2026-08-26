@@ -6,7 +6,7 @@ export default function StrukturPerangkatDesaLoading() {
   return (
     <main aria-busy="true" aria-live="polite" className="min-h-screen bg-[#f4f8f4]">
       <section className="relative -mt-[88px] min-h-[520px] overflow-hidden bg-emerald-950 px-5 pb-16 pt-[156px] text-white sm:min-h-[600px] sm:pb-20 sm:pt-[168px] lg:min-h-[640px]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(52,211,153,0.25),transparent_28%),linear-gradient(120deg,#06251e,#0a4632)]" />
+        <div className="absolute inset-0 bg-emerald-950" />
         <div className="relative mx-auto max-w-7xl">
           <p className="sr-only" role="status">Memuat struktur perangkat desa</p>
           <div className="grid h-12 w-12 place-items-center rounded-2xl border border-emerald-300/30 bg-emerald-300/10">

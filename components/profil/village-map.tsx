@@ -140,34 +140,34 @@ export function VillageMap({ eyebrow, title, description, action, href }: Villag
     }
   }, [leafletLoaded])
 
-  return <section ref={sectionElement} className="relative z-0 mt-10 pt-2 sm:mt-12">
+  return <section ref={sectionElement} className="relative z-0 mt-10 min-w-0 pt-2 sm:mt-12">
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div>
+      <div className="min-w-0">
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-600 sm:text-sm sm:tracking-wider">{eyebrow}</p>
-        <h2 className="mt-3 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">{title}</h2>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">{description}</p>
+        <h2 className="mt-3 break-words text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">{title}</h2>
+        <p className="mt-3 max-w-2xl break-words text-sm leading-6 text-slate-600 sm:text-base">{description}</p>
       </div>
       <a
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 sm:w-auto"
+        className="inline-flex w-full shrink-0 items-center justify-center rounded-2xl bg-emerald-600 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 sm:w-auto sm:rounded-full"
       >
         {action}
       </a>
     </div>
     <div className="mt-5 flex flex-wrap gap-2" aria-label="Keterangan peta">
-      <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800">Garis kuning: batas Desa Kedungrejo (BIG, September 2023)</span>
+      <span className="inline-flex max-w-full rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold leading-5 text-emerald-800 sm:rounded-full">Garis kuning: batas Desa Kedungrejo (BIG, September 2023)</span>
       {hamletReferences.map((hamlet) => (
-        <span key={hamlet.name} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
+        <span key={hamlet.name} className="inline-flex max-w-full items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
           <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: hamlet.color }} />
           {hamlet.name.replace("Dusun ", "")}
         </span>
       ))}
     </div>
     <style>{`.village-map-hamlet-label { border: 0; border-radius: 9999px; background: rgba(15, 23, 42, 0.88); color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.24); font-weight: 700; padding: 5px 8px; } .village-map-hamlet-label::before { display: none; }`}</style>
-    <div className="mt-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-2xl shadow-slate-900/20">
-      {shouldLoadMap && !mapLoadError ? <div ref={mapElement} aria-label="Peta satelit Desa Kedungrejo" className="h-[340px] w-full sm:h-[500px] lg:h-[620px]"/> : <div className="flex h-[340px] w-full items-center justify-center bg-[linear-gradient(120deg,#e2e8f0,#f8fafc,#d1fae5)] p-6 text-center text-sm font-semibold text-slate-500 sm:h-[500px] lg:h-[620px]" aria-label={mapLoadError ? "Peta tidak dapat dimuat" : "Memuat peta desa"}>{mapLoadError ? "Peta belum dapat dimuat. Periksa koneksi internet Anda." : <span className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />}</div>}
+    <div className="mt-7 overflow-hidden rounded-3xl border border-slate-200 bg-slate-100 shadow-xl shadow-slate-900/15 min-[390px]:mt-8 min-[390px]:rounded-[2rem] sm:shadow-2xl sm:shadow-slate-900/20">
+      {shouldLoadMap && !mapLoadError ? <div ref={mapElement} aria-label="Peta satelit Desa Kedungrejo" className="h-[300px] w-full min-[390px]:h-[340px] sm:h-[500px] lg:h-[620px]"/> : <div className="flex h-[300px] w-full items-center justify-center bg-slate-100 p-6 text-center text-sm font-semibold text-slate-500 min-[390px]:h-[340px] sm:h-[500px] lg:h-[620px]" aria-label={mapLoadError ? "Peta tidak dapat dimuat" : "Memuat peta desa"}>{mapLoadError ? "Peta belum dapat dimuat. Periksa koneksi internet Anda." : <span className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />}</div>}
     </div>
   </section>
 }
