@@ -77,6 +77,16 @@ export type CmsPageStore = Prisma.CmsPageStoreModel
  */
 export type CmsNewsStore = Prisma.CmsNewsStoreModel
 /**
+ * Model SiteSetting
+ * 
+ */
+export type SiteSetting = Prisma.SiteSettingModel
+/**
+ * Model SiteRedirect
+ * 
+ */
+export type SiteRedirect = Prisma.SiteRedirectModel
+/**
  * Model Complaint
  * 
  */

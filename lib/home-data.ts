@@ -1,19 +1,48 @@
 import { prisma } from "@/app/lib/prisma"
 import { unstable_cache } from "next/cache"
+import { getActiveVillageServices } from "@/lib/village-services"
+import { getNewsPageData } from "@/lib/news-data"
+
+const number = new Intl.NumberFormat("id-ID")
+
+async function getResidentMetrics() {
+  try {
+    const now = new Date()
+    const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1))
+    const activeResidents = { isActive: true }
+    const [population, households, hamlets, genders, monthlyServiceSubmissions] = await Promise.all([
+      prisma.resident.count({ where: activeResidents }),
+      prisma.resident.findMany({ where: activeResidents, distinct: ["familyCardNumber"], select: { id: true } }),
+      prisma.resident.groupBy({ by: ["dusun"], where: activeResidents, _count: { _all: true } }),
+      prisma.resident.groupBy({ by: ["gender"], where: activeResidents, _count: { _all: true } }),
+      prisma.serviceSubmission.count({ where: { createdAt: { gte: monthStart } } }),
+    ])
+    const genderCount = (gender: string) => genders.find((item) => item.gender === gender)?._count._all ?? 0
+
+    return { population, households: households.length, hamlets: hamlets.length, male: genderCount("Laki-laki"), female: genderCount("Perempuan"), monthlyServiceSubmissions }
+  } catch {
+    return { population: 0, households: 0, hamlets: 0, male: 0, female: 0, monthlyServiceSubmissions: 0 }
+  }
+}
 
 const getCachedHomeData = unstable_cache(async () => {
-  try {
-    const [statistics, services, news, documents] = await Promise.all([
-      prisma.statistic.findMany({ orderBy: { order: "asc" }, take: 4 }),
-      prisma.quickService.findMany({ orderBy: { order: "asc" }, take: 4 }),
-      prisma.news.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
-      prisma.document.findMany({ where: { visibility: "PUBLIC" }, orderBy: { uploadedAt: "desc" }, take: 2 }),
-    ])
+  const [metrics, services, newsPage, documents] = await Promise.all([
+    getResidentMetrics(),
+    getActiveVillageServices().catch(() => []),
+    getNewsPageData().catch(() => ({ featured: null, articles: [], count: 0, categories: [], page: 1, totalPages: 1 })),
+    prisma.document.findMany({ where: { visibility: "PUBLIC" }, orderBy: { uploadedAt: "desc" }, take: 2 }).catch(() => []),
+  ])
 
-    return { statistics, services, news, documents }
-  } catch {
-    return { statistics: [], services: [], news: [], documents: [] }
-  }
+  const statistics = [
+    { label: "Penduduk", value: number.format(metrics.population) },
+    { label: "Kepala Keluarga", value: number.format(metrics.households) },
+    { label: "Layanan bulan ini", value: number.format(metrics.monthlyServiceSubmissions) },
+    { label: "Dusun", value: number.format(metrics.hamlets) },
+  ]
+  const residentSummary = { population: metrics.population, households: metrics.households, male: metrics.male, female: metrics.female }
+  const news = [newsPage.featured, ...newsPage.articles].filter((item): item is NonNullable<typeof item> => item !== null).slice(0, 3)
+
+  return { statistics, residentSummary, services, news, documents }
 }, ["home-data"], { revalidate: 300, tags: ["home-data"] })
 
 export async function getHomeData() {

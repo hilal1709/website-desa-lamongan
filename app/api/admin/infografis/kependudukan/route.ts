@@ -10,6 +10,7 @@ import { PopulationEventType } from "@/generated/prisma/client"
 export const dynamic = "force-dynamic"
 
 function refreshed() {
+  revalidateTag("home-data", "max")
   revalidateTag("population-events", { expire: 0 })
   revalidatePath("/infografis")
 }

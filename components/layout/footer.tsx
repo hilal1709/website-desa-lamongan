@@ -1,8 +1,9 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react"
+import type { SiteSettings } from "@/lib/site-settings"
 
-export function Footer() {
+export function Footer({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="mt-12 border-t border-slate-200 bg-[#071b1d] text-slate-300">
       <div className="mx-auto max-w-7xl px-5 py-12">
@@ -12,31 +13,26 @@ export function Footer() {
               <div className="flex h-20 w-[57px] shrink-0 items-center justify-center">
                 <Image
                   src="/images/logokedungrejo.png"
-                  alt="Lambang Desa Kedungrejo"
+                  alt={`Lambang ${settings.villageName}`}
                   width={57}
                   height={80}
                   className="h-auto w-full"
                 />
               </div>
               <div>
-                <p className="text-xl font-black text-white">Kedungrejo</p>
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Desa digital</p>
+                <p className="text-xl font-black text-white">{settings.villageName.replace(/^Desa\s+/i, "")}</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{settings.regency || "Desa digital"}</p>
               </div>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-6 text-slate-400">
-              Mewujudkan pelayanan publik yang terbuka, tanggap, dan dekat dengan warga.
+              {settings.tagline}
             </p>
           </div>
 
           <div>
             <p className="font-bold text-white">Jelajahi</p>
             <div className="mt-4 space-y-3 text-sm">
-              {[
-                ["Profil Desa", "/profil"],
-                ["Berita Desa", "/berita"],
-                ["Layanan Publik", "/layanan"],
-                ["Data Desa", "/data-desa"],
-              ].map(([label, href]) => (
+              {settings.footerLinks.map(({ label, href }) => (
                 <Link className="block text-slate-300 transition hover:text-emerald-400" href={href} key={href}>
                   {label}
                 </Link>
@@ -47,9 +43,10 @@ export function Footer() {
           <div>
             <p className="font-bold text-white">Kontak</p>
             <div className="mt-4 space-y-3 text-sm text-slate-400">
-              <p className="flex gap-2"><MapPin size={16} className="mt-0.5 text-emerald-400" /> Jl. Raya Kedungrejo No. 01</p>
-              <p className="flex gap-2"><Phone size={16} className="mt-0.5 text-emerald-400" /> (0333) 123456</p>
-              <p className="flex gap-2"><Mail size={16} className="mt-0.5 text-emerald-400" /> desa@kedungrejo.id</p>
+              {settings.officeAddress ? <p className="flex gap-2"><MapPin size={16} className="mt-0.5 text-emerald-400" /> {settings.officeAddress}</p> : null}
+              {settings.phone ? <p className="flex gap-2"><Phone size={16} className="mt-0.5 text-emerald-400" /> {settings.phone}</p> : null}
+              {settings.email ? <p className="flex gap-2"><Mail size={16} className="mt-0.5 text-emerald-400" /> {settings.email}</p> : null}
+              {settings.serviceHours ? <p className="text-xs text-slate-500">{settings.serviceHours}</p> : null}
             </div>
           </div>
 
@@ -66,7 +63,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 px-5 py-6 text-center text-xs text-slate-500">
-        © 2025 Pemerintah Desa Kedungrejo. Hak cipta dilindungi.
+        © {new Date().getFullYear()} Pemerintah {settings.villageName}. Hak cipta dilindungi.
       </div>
     </footer>
   )

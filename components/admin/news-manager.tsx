@@ -34,7 +34,7 @@ export function NewsManager() {
   }, [])
   const save = async (next = data) => { const response = await fetch("/api/cms/news", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(next) }); if (response.ok) { setData(next); setArticlePage(1); setMessage("Perubahan berita disimpan.") } }
   const update = <K extends keyof CmsNewsArticle>(key: K, value: CmsNewsArticle[K]) => setArticle((current) => current ? { ...current, [key]: value } : current)
-  const saveArticle = async () => { if (!article?.title.trim() || !article.category) return setMessage("Judul dan kategori wajib diisi."); const next = { ...data, articles: data.articles.some((item) => item.id === article.id) ? data.articles.map((item) => item.id === article.id ? article : item) : [article, ...data.articles] }; await save(next); setArticle(null) }
+  const saveArticle = async () => { if (!article?.title.trim() || !article.category) return setMessage("Judul dan kategori wajib diisi."); const previous = data.articles.find((item) => item.id === article.id); const savedArticle = article.published && (!previous?.published || !article.publishedAt) ? { ...article, publishedAt: new Date().toISOString() } : article; const next = { ...data, articles: previous ? data.articles.map((item) => item.id === savedArticle.id ? savedArticle : item) : [savedArticle, ...data.articles] }; await save(next); setArticle(null) }
   const addCategory = async () => { const value = category.trim(); if (!value || data.categories.includes(value)) return; await save({ ...data, categories: [...data.categories, value] }); setCategory("") }
   const removeCategory = async (value: string) => {
     const used = data.articles.some((item) => item.category === value)

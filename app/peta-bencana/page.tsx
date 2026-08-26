@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { DisasterPage } from "@/components/bencana/disaster-page"
+import { getCmsPage } from "@/lib/cms-pages"
 
 export const metadata: Metadata = {
   title: "Peta Lokasi Bencana dan Cuaca Kedungrejo",
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function PetaBencanaPage() {
-  return <DisasterPage />
+export const dynamic = "force-dynamic"
+
+export default async function PetaBencanaPage() {
+  return <DisasterPage hero={await getCmsPage("peta-bencana")} />
 }

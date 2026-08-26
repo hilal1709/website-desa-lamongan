@@ -1,7 +1,7 @@
 import { prisma } from "@/app/lib/prisma"
 import type { Prisma } from "@/generated/prisma/client"
 
-export type CmsNewsArticle = { id: string; title: string; slug: string; excerpt: string; content: string; image: string; category: string; published: boolean; createdAt: string }
+export type CmsNewsArticle = { id: string; title: string; slug: string; excerpt: string; content: string; image: string; category: string; published: boolean; createdAt: string; publishedAt?: string }
 export type CmsNewsData = { categories: string[]; articles: CmsNewsArticle[] }
 
 const initial: CmsNewsData = { categories: ["Pembangunan", "Pertanian", "Kesehatan"], articles: [] }

@@ -58,6 +58,8 @@ export const ModelName = {
   Statistic: 'Statistic',
   CmsPageStore: 'CmsPageStore',
   CmsNewsStore: 'CmsNewsStore',
+  SiteSetting: 'SiteSetting',
+  SiteRedirect: 'SiteRedirect',
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
   Role: 'Role',
@@ -186,6 +188,48 @@ export const CmsNewsStoreScalarFieldEnum = {
 } as const
 
 export type CmsNewsStoreScalarFieldEnum = (typeof CmsNewsStoreScalarFieldEnum)[keyof typeof CmsNewsStoreScalarFieldEnum]
+
+
+export const SiteSettingScalarFieldEnum = {
+  id: 'id',
+  villageName: 'villageName',
+  district: 'district',
+  regency: 'regency',
+  province: 'province',
+  officeAddress: 'officeAddress',
+  phone: 'phone',
+  email: 'email',
+  serviceHours: 'serviceHours',
+  tagline: 'tagline',
+  instagramUrl: 'instagramUrl',
+  facebookUrl: 'facebookUrl',
+  youtubeUrl: 'youtubeUrl',
+  siteTitle: 'siteTitle',
+  siteDescription: 'siteDescription',
+  publicAnnouncement: 'publicAnnouncement',
+  maintenanceMode: 'maintenanceMode',
+  maintenanceMessage: 'maintenanceMessage',
+  siteUrl: 'siteUrl',
+  seoKeywords: 'seoKeywords',
+  seoImageUrl: 'seoImageUrl',
+  allowIndexing: 'allowIndexing',
+  googleVerification: 'googleVerification',
+  footerLinks: 'footerLinks',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
+
+
+export const SiteRedirectScalarFieldEnum = {
+  id: 'id',
+  source: 'source',
+  destination: 'destination',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteRedirectScalarFieldEnum = (typeof SiteRedirectScalarFieldEnum)[keyof typeof SiteRedirectScalarFieldEnum]
 
 
 export const ComplaintScalarFieldEnum = {

@@ -34,5 +34,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: error instanceof Error ? error.message : "Pengajuan belum dapat disimpan." }, { status: 503 })
   }
   revalidateTag("admin-dashboard", "max")
+  revalidateTag("home-data", "max")
   return NextResponse.json({ trackingCode: submission.trackingCode, status: "Diajukan" }, { status: 201 })
 }

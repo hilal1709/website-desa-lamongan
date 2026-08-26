@@ -78,6 +78,42 @@ model CmsNewsStore {
   updatedAt DateTime @updatedAt
 }
 
+model SiteSetting {
+  id                  Int      @id @default(1)
+  villageName         String   @default("Desa Kedungrejo")
+  district            String   @default("Kecamatan Modo")
+  regency             String   @default("Kabupaten Lamongan")
+  province            String   @default("Jawa Timur")
+  officeAddress       String   @default("Jl. Raya Kedungrejo No. 01")
+  phone               String   @default("")
+  email               String   @default("")
+  serviceHours        String   @default("")
+  tagline             String   @default("Mewujudkan pelayanan publik yang terbuka, tanggap, dan dekat dengan warga.")
+  instagramUrl        String?
+  facebookUrl         String?
+  youtubeUrl          String?
+  siteTitle           String   @default("Desa Kedungrejo")
+  siteDescription     String   @default("Website resmi Desa Kedungrejo")
+  publicAnnouncement  String?
+  maintenanceMode     Boolean  @default(false)
+  maintenanceMessage  String   @default("Website sedang dalam pemeliharaan. Silakan kembali beberapa saat lagi.")
+  siteUrl             String   @default("")
+  seoKeywords         String[] @default([])
+  seoImageUrl         String?
+  allowIndexing       Boolean  @default(true)
+  googleVerification  String?
+  footerLinks         Json     @default("[]")
+  updatedAt           DateTime @updatedAt
+}
+
+model SiteRedirect {
+  id          String   @id @default(cuid())
+  source      String   @unique
+  destination String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Complaint {
   id          String   @id @default(cuid())
   title       String

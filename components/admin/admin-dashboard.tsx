@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { AdminMetricGrid, AdminQuickLinks } from "@/components/admin/admin-dashboard-panels"
-import type { AdminMetric } from "@/lib/admin-data"
+import { AdminActivityPanel, AdminAttentionPanel, AdminMetricGrid, AdminQuickLinks } from "@/components/admin/admin-dashboard-panels"
+import type { AdminActivity, AdminAttentionGroup, AdminMetric } from "@/lib/admin-data"
 
-export function AdminDashboard({ metrics, updatedAt }: { metrics: AdminMetric[]; updatedAt: string | null }) {
+export function AdminDashboard({ metrics, attention, activity, updatedAt }: { metrics: AdminMetric[]; attention: AdminAttentionGroup[]; activity: AdminActivity[]; updatedAt: string | null }) {
   return <section aria-labelledby="dashboard-cms-title" className="py-1 sm:py-2">
     <header data-admin-reveal className="relative overflow-hidden rounded-[28px] bg-slate-950 px-5 py-6 text-white shadow-xl shadow-slate-950/15 sm:px-7 sm:py-7">
       <div className="absolute -right-10 -top-16 h-44 w-44 rounded-full bg-emerald-400/20 blur-2xl" />
@@ -13,7 +13,9 @@ export function AdminDashboard({ metrics, updatedAt }: { metrics: AdminMetric[];
         <Button asChild className="shrink-0 bg-emerald-400 text-slate-950 hover:bg-emerald-300"><Link href="/admin/berita"><Plus aria-hidden="true" />Tulis berita</Link></Button>
       </div>
     </header>
+    <AdminAttentionPanel attention={attention} />
     <AdminMetricGrid metrics={metrics} />
+    <AdminActivityPanel activity={activity} />
     {updatedAt ? <p data-admin-reveal className="mt-3 text-xs font-medium text-slate-500">Data CMS terakhir diperbarui: {updatedAt}</p> : null}
     <AdminQuickLinks />
   </section>

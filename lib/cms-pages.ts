@@ -370,6 +370,28 @@ export const defaultCmsPages: CmsPageContent[] = [
     ],
   },
   {
+    slug: "peta-bencana",
+    label: "Peta Lokasi Bencana",
+    eyebrow: "Informasi Digital Desa",
+    title: "Peta Bencana dan Kalender Iklim Kedungrejo",
+    description: "Pantau prakiraan cuaca realtime, titik evakuasi, serta informasi kesiapsiagaan warga dalam satu halaman.",
+    image: "/images/peta-bencana-hero.png",
+    imagePosition: "center",
+    sections: [
+      {
+        key: "emergency-assistance",
+        label: "Banner bantuan darurat",
+        eyebrow: "Bantuan Khusus Sektor Pertanian & Petani",
+        title: "Sawah Terendam & Butuh Bantuan Bibit Padi?",
+        description: "Jika lahan pertanian warga Desa Kedungrejo terdampak luapan banjir dan membutuhkan pasokan bibit padi pengganti, Pemerintah Desa berkoordinasi langsung dengan Dinas Ketahanan Pangan dan Pertanian (Dinkpp) Kabupaten Lamongan.",
+        items: [
+          { title: "Kontak Dinkpp Lamongan", href: "https://dinkpp.lamongankab.go.id" },
+          { title: "Call Center BPBD / Posko (0322) 321 123", href: "tel:0322321123" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "stunting",
     label: "Stunting",
     eyebrow: "Dashboard Kesehatan",

@@ -6,6 +6,7 @@ import { PageHero } from "@/components/ui/page-hero"
 import { WeatherForecast } from "@/components/bencana/weather-forecast"
 import { DisasterPageMotion } from "@/components/bencana/disaster-page-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import type { CmsPageContent } from "@/lib/cms-pages"
 
 type RiskLevel = "aman" | "waspada" | "bahaya"
 type WeatherUpdate = { risk: RiskLevel; precipitationToday: number; weatherCode: number }
@@ -15,14 +16,14 @@ const DisasterMap = dynamic(() => import("@/components/bencana/disaster-map").th
 const FarmingClimatePredictor = dynamic(() => import("@/components/bencana/farming-climate-predictor").then((module) => module.FarmingClimatePredictor), { loading: LoadingBlock })
 const EmergencyAssistance = dynamic(() => import("@/components/bencana/emergency-assistance").then((module) => module.EmergencyAssistance), { loading: LoadingBlock })
 
-export function DisasterPage() {
+export function DisasterPage({ hero }: { hero: CmsPageContent }) {
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("aman")
   const [weather, setWeather] = useState({ precipitationToday: 0, weatherCode: 0 })
   const handleWeatherUpdate = useCallback(({ precipitationToday, weatherCode }: WeatherUpdate) => setWeather({ precipitationToday, weatherCode }), [])
 
   return (
     <>
-      <PageHero eyebrow="Informasi Digital Desa" title="Peta Bencana dan Kalender Iklim Kedungrejo" description="Pantau prakiraan cuaca realtime, titik evakuasi, serta informasi kesiapsiagaan warga dalam satu halaman." image="/images/peta-bencana-hero.png" imageAlt="Sawah dan permukiman Desa Kedungrejo saat cuaca mendung" imagePosition="center" />
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} image={hero.image} imageAlt="Sawah dan permukiman Desa Kedungrejo saat cuaca mendung" imagePosition={hero.imagePosition} />
 
       <DisasterPageMotion>
         <main className="mx-auto max-w-7xl space-y-8 overflow-x-hidden px-4 py-8 sm:space-y-12 sm:px-6 sm:py-12 lg:px-8">
@@ -39,7 +40,7 @@ export function DisasterPage() {
             </Card>
           </section>
 
-          <section data-disaster-motion aria-label="Bantuan dan layanan darurat"><EmergencyAssistance /></section>
+          <section data-disaster-motion aria-label="Bantuan dan layanan darurat"><EmergencyAssistance content={hero.sections.find((section) => section.key === "emergency-assistance")} /></section>
         </main>
       </DisasterPageMotion>
     </>

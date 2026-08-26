@@ -404,6 +404,8 @@ export const ModelName = {
   Statistic: 'Statistic',
   CmsPageStore: 'CmsPageStore',
   CmsNewsStore: 'CmsNewsStore',
+  SiteSetting: 'SiteSetting',
+  SiteRedirect: 'SiteRedirect',
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
   Role: 'Role',
@@ -444,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "complaint" | "adminUser" | "role" | "adminUserRole" | "rolePermission" | "villageService" | "serviceRequirement" | "serviceSubmission" | "serviceAttachment" | "serviceSubmissionStatus" | "adminSession" | "elderly" | "elderlyDisease" | "posyanduSession" | "posyanduCheck" | "child" | "childPosyanduSession" | "childHealthCheck" | "populationOpeningBalance" | "resident" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
+    modelProps: "announcement" | "quickService" | "news" | "document" | "statistic" | "cmsPageStore" | "cmsNewsStore" | "siteSetting" | "siteRedirect" | "complaint" | "adminUser" | "role" | "adminUserRole" | "rolePermission" | "villageService" | "serviceRequirement" | "serviceSubmission" | "serviceAttachment" | "serviceSubmissionStatus" | "adminSession" | "elderly" | "elderlyDisease" | "posyanduSession" | "posyanduCheck" | "child" | "childPosyanduSession" | "childHealthCheck" | "populationOpeningBalance" | "resident" | "populationEvent" | "disasterSetting" | "disasterLocation" | "umkm" | "umkmProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -963,6 +965,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CmsNewsStoreCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CmsNewsStoreCountAggregateOutputType> | number
+        }
+      }
+    }
+    SiteSetting: {
+      payload: Prisma.$SiteSettingPayload<ExtArgs>
+      fields: Prisma.SiteSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SiteSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SiteSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.SiteSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SiteSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>
+        }
+        findMany: {
+          args: Prisma.SiteSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>[]
+        }
+        create: {
+          args: Prisma.SiteSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>
+        }
+        createMany: {
+          args: Prisma.SiteSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SiteSettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>[]
+        }
+        delete: {
+          args: Prisma.SiteSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>
+        }
+        update: {
+          args: Prisma.SiteSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.SiteSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SiteSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SiteSettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.SiteSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.SiteSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSiteSetting>
+        }
+        groupBy: {
+          args: Prisma.SiteSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SiteSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteSettingCountAggregateOutputType> | number
+        }
+      }
+    }
+    SiteRedirect: {
+      payload: Prisma.$SiteRedirectPayload<ExtArgs>
+      fields: Prisma.SiteRedirectFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SiteRedirectFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SiteRedirectFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>
+        }
+        findFirst: {
+          args: Prisma.SiteRedirectFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SiteRedirectFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>
+        }
+        findMany: {
+          args: Prisma.SiteRedirectFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>[]
+        }
+        create: {
+          args: Prisma.SiteRedirectCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>
+        }
+        createMany: {
+          args: Prisma.SiteRedirectCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SiteRedirectCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>[]
+        }
+        delete: {
+          args: Prisma.SiteRedirectDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>
+        }
+        update: {
+          args: Prisma.SiteRedirectUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>
+        }
+        deleteMany: {
+          args: Prisma.SiteRedirectDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SiteRedirectUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SiteRedirectUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>[]
+        }
+        upsert: {
+          args: Prisma.SiteRedirectUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteRedirectPayload>
+        }
+        aggregate: {
+          args: Prisma.SiteRedirectAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSiteRedirect>
+        }
+        groupBy: {
+          args: Prisma.SiteRedirectGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteRedirectGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SiteRedirectCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteRedirectCountAggregateOutputType> | number
         }
       }
     }
@@ -2942,6 +3092,48 @@ export const CmsNewsStoreScalarFieldEnum = {
 export type CmsNewsStoreScalarFieldEnum = (typeof CmsNewsStoreScalarFieldEnum)[keyof typeof CmsNewsStoreScalarFieldEnum]
 
 
+export const SiteSettingScalarFieldEnum = {
+  id: 'id',
+  villageName: 'villageName',
+  district: 'district',
+  regency: 'regency',
+  province: 'province',
+  officeAddress: 'officeAddress',
+  phone: 'phone',
+  email: 'email',
+  serviceHours: 'serviceHours',
+  tagline: 'tagline',
+  instagramUrl: 'instagramUrl',
+  facebookUrl: 'facebookUrl',
+  youtubeUrl: 'youtubeUrl',
+  siteTitle: 'siteTitle',
+  siteDescription: 'siteDescription',
+  publicAnnouncement: 'publicAnnouncement',
+  maintenanceMode: 'maintenanceMode',
+  maintenanceMessage: 'maintenanceMessage',
+  siteUrl: 'siteUrl',
+  seoKeywords: 'seoKeywords',
+  seoImageUrl: 'seoImageUrl',
+  allowIndexing: 'allowIndexing',
+  googleVerification: 'googleVerification',
+  footerLinks: 'footerLinks',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
+
+
+export const SiteRedirectScalarFieldEnum = {
+  id: 'id',
+  source: 'source',
+  destination: 'destination',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteRedirectScalarFieldEnum = (typeof SiteRedirectScalarFieldEnum)[keyof typeof SiteRedirectScalarFieldEnum]
+
+
 export const ComplaintScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -3666,6 +3858,8 @@ export type GlobalOmitConfig = {
   statistic?: Prisma.StatisticOmit
   cmsPageStore?: Prisma.CmsPageStoreOmit
   cmsNewsStore?: Prisma.CmsNewsStoreOmit
+  siteSetting?: Prisma.SiteSettingOmit
+  siteRedirect?: Prisma.SiteRedirectOmit
   complaint?: Prisma.ComplaintOmit
   adminUser?: Prisma.AdminUserOmit
   role?: Prisma.RoleOmit

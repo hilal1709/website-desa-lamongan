@@ -1,10 +1,10 @@
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
 import { requireCmsPermission } from "@/lib/api-access"
 import { parseResidentInput, residentData } from "@/lib/residents"
 import { publishCmsUpdate } from "@/lib/pusher"
 
-function refreshed() { revalidatePath("/infografis"); void publishCmsUpdate("population") }
+function refreshed() { revalidateTag("home-data", "max"); revalidatePath("/infografis"); void publishCmsUpdate("population") }
 
 export async function GET(request: Request) {
   const access = await requireCmsPermission("INFOGRAPHICS"); if (access.response) return access.response

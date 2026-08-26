@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react"
+import { ArrowRight, MapPin, ShieldCheck, Sparkles } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import type { CmsPageContent } from "@/lib/cms-pages"
@@ -37,22 +37,23 @@ export function AnimatedHero({ content }: { content: CmsPageContent }) {
   }, [])
 
   return (
-    <section ref={root} className="relative isolate overflow-hidden bg-[#071b1d] text-white">
+    <section ref={root} className="home-hero relative isolate overflow-hidden bg-[#071b1d] text-white">
       <Image
         src={content.image}
         alt="Hamparan sawah Desa Kedungrejo"
         fill
-        priority
+        preload
         sizes="100vw"
         className="home-hero-image absolute inset-0 -z-20 h-full w-full object-cover opacity-100"
         style={{ objectPosition: content.imagePosition }}
       />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(4,18,15,0.72),rgba(8,34,23,0.52),rgba(8,36,19,0.38)),linear-gradient(180deg,rgba(5,24,18,0.18),rgba(5,24,18,0.26)_42%,rgba(5,24,18,0.66))]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(2,24,20,0.88),rgba(5,47,32,0.62)_53%,rgba(6,37,25,0.28)),linear-gradient(180deg,rgba(5,24,18,0.16),rgba(5,24,18,0.26)_42%,rgba(5,24,18,0.74))]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-[#f3f7f3] via-[#f3f7f3]/30 to-transparent" />
 
       <div className="mx-auto flex min-h-[520px] max-w-7xl items-center px-4 py-20 sm:min-h-[560px] sm:px-6 lg:min-h-[620px] lg:px-8">
         <div className="w-full">
           <div className="max-w-3xl">
-            <div className="hero-badge mt-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-100 backdrop-blur-sm">
+            <div className="hero-badge mt-3 inline-flex items-center gap-2 rounded-full border border-emerald-200/25 bg-emerald-300/10 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-50 backdrop-blur-md">
               <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
               {content.eyebrow}
             </div>
@@ -80,10 +81,14 @@ export function AnimatedHero({ content }: { content: CmsPageContent }) {
               </Button>
             </div>
 
-            <div className="hero-animate mt-10 flex flex-wrap items-center gap-5 text-sm text-slate-200">
+            <div className="hero-animate mt-10 flex flex-wrap items-center gap-3 text-sm text-slate-100">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-300" />
                 Layanan cepat
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2">
+                <MapPin className="h-4 w-4 text-emerald-300" />
+                Lamongan, Jawa Timur
               </span>
             </div>
           </div>
