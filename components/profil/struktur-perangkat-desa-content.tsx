@@ -1,7 +1,6 @@
 "use client"
 
 import { useLayoutEffect, useRef, useState } from "react"
-
 import { OrganizationDiagram } from "@/components/profil/organization-diagram"
 import { PageHero } from "@/components/ui/page-hero"
 import type { CmsPageContent } from "@/lib/cms-pages"
@@ -12,6 +11,8 @@ export function StrukturPerangkatDesaContent({ page }: { page: CmsPageContent })
   const diagram = page.sections.find((section) => section.key === "organization-chart")
   const image = diagram?.image ?? page.image
   const title = diagram?.title ?? page.title
+  const enlargeLabel = diagram?.items?.[0]?.title?.trim() || "Perbesar gambar"
+  const downloadLabel = diagram?.items?.[1]?.title?.trim() || "Unduh gambar"
 
   useLayoutEffect(() => {
     if (!rootRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
@@ -26,9 +27,10 @@ export function StrukturPerangkatDesaContent({ page }: { page: CmsPageContent })
         const timeline = gsap.timeline({ defaults: { ease: "power3.out" } })
         timeline
           .from(".structure-intro", { opacity: 0, y: 24, duration: 0.65 })
-          .from(".structure-card", { opacity: 0, y: 38, scale: 0.98, duration: 0.8 }, "-=0.25")
-          .from(".structure-toolbar", { x: 14, duration: 0.45 }, "-=0.35")
-          .from(".structure-image", { opacity: 0, y: 28, scale: 0.985, duration: 0.85 }, "-=0.25")
+          .from(".structure-stat", { opacity: 0, y: 20, duration: 0.45, stagger: 0.1 }, "-=0.3")
+          .from(".structure-card", { opacity: 0, y: 38, scale: 0.98, duration: 0.8 }, "-=0.2")
+          .from(".structure-image-frame", { opacity: 0, y: 28, scale: 0.985, duration: 0.85 }, "-=0.25")
+          .from(".structure-legend > *", { opacity: 0, y: 12, duration: 0.35, stagger: 0.08 }, "-=0.42")
       }, rootRef)
     })
 
@@ -38,27 +40,6 @@ export function StrukturPerangkatDesaContent({ page }: { page: CmsPageContent })
     }
   }, [])
 
-  useLayoutEffect(() => {
-    if (!isDialogOpen || !rootRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    let cancelled = false
-    let context: ReturnType<typeof import("gsap").default.context> | undefined
-
-    void import("gsap").then(({ default: gsap }) => {
-      if (!rootRef.current || cancelled) return
-
-      context = gsap.context(() => {
-        gsap.fromTo("[role='dialog']", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out" })
-        gsap.fromTo(".structure-modal-panel", { opacity: 0, y: 22, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.38, ease: "power3.out", delay: 0.05 })
-      }, rootRef)
-    })
-
-    return () => {
-      cancelled = true
-      context?.revert()
-    }
-  }, [isDialogOpen])
-
   return (
     <>
       <PageHero eyebrow={page.eyebrow} title={page.title} description={page.description} image={page.image} imagePosition={page.imagePosition} />
@@ -67,8 +48,8 @@ export function StrukturPerangkatDesaContent({ page }: { page: CmsPageContent })
           image={image}
           title={title}
           description={diagram?.description}
-          enlargeLabel={diagram?.items?.[0]?.title}
-          downloadLabel={diagram?.items?.[1]?.title}
+          enlargeLabel={enlargeLabel}
+          downloadLabel={downloadLabel}
           isOpen={isDialogOpen}
           onOpen={() => setIsDialogOpen(true)}
           onClose={() => setIsDialogOpen(false)}
