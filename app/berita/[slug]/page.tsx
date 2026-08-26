@@ -6,6 +6,7 @@ import { formatNewsDate } from "@/components/news/news-card"
 import { NewsJsonLd } from "@/components/news/news-json-ld"
 import { PageHero } from "@/components/ui/page-hero"
 import { getPublishedArticle, getRelatedArticles } from "@/lib/news-data"
+import { createNewsArticleMetadata } from "@/lib/news-seo"
 
 interface ArticlePageProps { params: Promise<{ slug: string }> }
 
@@ -14,8 +15,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const article = await getPublishedArticle(slug)
   if (!article) return { title: "Berita tidak ditemukan", robots: { index: false, follow: false } }
 
-  const description = article.excerpt || `Berita Desa Kedungrejo: ${article.title}`
-  return { title: `${article.title} | Berita Desa Kedungrejo`, description, alternates: { canonical: `/berita/${article.slug}` }, openGraph: { type: "article", locale: "id_ID", title: article.title, description, publishedTime: article.created_at, images: article.image_url ? [{ url: article.image_url, alt: article.title }] : undefined }, twitter: { card: "summary_large_image", title: article.title, description, images: article.image_url ? [article.image_url] : undefined } }
+  return createNewsArticleMetadata(article)
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {

@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma"
 import type { Prisma } from "@/generated/prisma/client"
+import { unstable_cache } from "next/cache"
 
 export type CmsNewsArticle = { id: string; title: string; slug: string; excerpt: string; content: string; image: string; category: string; published: boolean; createdAt: string; publishedAt?: string }
 export type CmsNewsData = { categories: string[]; articles: CmsNewsArticle[] }
@@ -23,8 +24,8 @@ async function readNews(): Promise<CmsNewsData> {
     return initial
   }
 }
-// News is public CMS content. Keep the read uncached so a router refresh from
-// the CMS notification immediately reflects the successful database write.
-export const getCmsNews = () => readNews()
+// Public news is shared across visitors. CMS writes invalidate this tag in the
+// news route handler, while the short TTL protects the database as a fallback.
+export const getCmsNews = unstable_cache(readNews, ["cms-news"], { revalidate: 300, tags: ["cms-news"] })
 export const getFreshCmsNews = () => readNews()
 export async function saveCmsNews(data: CmsNewsData) { await prisma.cmsNewsStore.upsert({ where: { id: 1 }, create: { id: 1, data: data as unknown as Prisma.InputJsonValue }, update: { data: data as unknown as Prisma.InputJsonValue } }) }
