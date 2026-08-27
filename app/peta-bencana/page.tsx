@@ -13,8 +13,25 @@ export const metadata: Metadata = {
   },
 }
 
-export const dynamic = "force-dynamic"
+// CMS hero content is cached separately and this shell can be regenerated
+// periodically instead of rendering on every public request.
+export const revalidate = 300
 
 export default async function PetaBencanaPage() {
-  return <DisasterPage hero={await getCmsPage("peta-bencana")} />
+  const hero = await getCmsPage("peta-bencana")
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Peta Lokasi Bencana dan Cuaca Kedungrejo",
+    description: metadata.description,
+    about: { "@type": "GovernmentService", name: "Informasi kesiapsiagaan bencana Desa Kedungrejo" },
+    primaryImageOfPage: hero.image,
+  }
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <DisasterPage hero={hero} />
+    </>
+  )
 }

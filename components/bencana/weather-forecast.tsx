@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { CloudRain, Sun, CloudLightning, Droplets, ShieldAlert, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react"
+import { DisasterAlertIcon, DisasterCheckIcon, DisasterCloudLightningIcon, DisasterCloudRainIcon, DisasterDropletsIcon, DisasterRefreshIcon, DisasterShieldAlertIcon, DisasterSunIcon } from "@/components/bencana/disaster-icons"
+import type { DisasterRiskLevel, DisasterWeatherUpdate } from "@/components/bencana/disaster-types"
 
 export interface WeatherDay {
   date: string
@@ -17,14 +18,14 @@ export function WeatherForecast({
   onRiskChange,
   onWeatherUpdate
 }: {
-  onRiskChange: (level: "aman" | "waspada" | "bahaya") => void
-  onWeatherUpdate?: (data: { risk: "aman" | "waspada" | "bahaya"; precipitationToday: number; weatherCode: number }) => void
+  onRiskChange: (level: DisasterRiskLevel) => void
+  onWeatherUpdate?: (data: DisasterWeatherUpdate) => void
 }) {
   const [days, setDays] = useState<WeatherDay[]>([])
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState<7 | 14>(7)
-  const [currentRisk, setCurrentRisk] = useState<"aman" | "waspada" | "bahaya">("aman")
-  const [manualOverride, setManualOverride] = useState<"auto" | "aman" | "waspada" | "bahaya">("auto")
+  const [currentRisk, setCurrentRisk] = useState<DisasterRiskLevel>("aman")
+  const [manualOverride, setManualOverride] = useState<"auto" | DisasterRiskLevel>("auto")
   const [lastUpdated, setLastUpdated] = useState("")
   const [error, setError] = useState("")
 
@@ -35,13 +36,13 @@ export function WeatherForecast({
       setLoading(true)
       try {
         const [response, disasterResponse] = await Promise.all([
-          fetch(`/api/weather?period=${period}`, { cache: "no-store" }),
+          fetch(`/api/weather?period=${period}`, { cache: "force-cache" }),
           fetch("/api/bencana", { cache: "no-store" }),
         ])
         if (!response.ok) throw new Error("Permintaan data cuaca gagal")
         const data = await response.json()
         const disasterData = disasterResponse.ok
-          ? await disasterResponse.json() as { setting?: { override?: "auto" | "aman" | "waspada" | "bahaya" } }
+          ? await disasterResponse.json() as { setting?: { override?: "auto" | DisasterRiskLevel } }
           : undefined
 
         if (!data?.daily?.time) throw new Error("Data prakiraan cuaca tidak tersedia")
@@ -68,7 +69,7 @@ export function WeatherForecast({
 
           // Determine overall risk level based on max precipitation in next 3 days
           const maxRainNext3 = Math.max(...parsedDays.slice(0, 3).map((d) => d.precipitation))
-          let risk: "aman" | "waspada" | "bahaya" = "aman"
+          let risk: DisasterRiskLevel = "aman"
           if (maxRainNext3 >= 50) {
             risk = "bahaya"
           } else if (maxRainNext3 >= 20) {
@@ -104,7 +105,9 @@ export function WeatherForecast({
       if ((event as CustomEvent<{ topic?: string }>).detail?.topic === "disaster") void fetchForecast()
     }
     window.addEventListener("cms-content-updated", refreshFromRealtimeEvent)
-    const refreshInterval = window.setInterval(() => void fetchForecast(), 60 * 1000)
+    const refreshInterval = window.setInterval(() => {
+      if (document.visibilityState === "visible") void fetchForecast()
+    }, 5 * 60 * 1000)
     return () => {
       active = false
       window.removeEventListener("cms-content-updated", refreshFromRealtimeEvent)
@@ -115,22 +118,22 @@ export function WeatherForecast({
   // Get Weather Icon & Label based on Open-Meteo WMO weather code
   const getWeatherInfo = (code: number, rain: number) => {
     if (code >= 95) {
-      return { label: "Hujan Badai / Petir", icon: CloudLightning, color: "text-amber-600 bg-amber-50" }
+      return { label: "Hujan Badai / Petir", icon: DisasterCloudLightningIcon, color: "text-amber-600 bg-amber-50" }
     }
     if (code >= 61 || rain >= 15) {
-      return { label: "Hujan Lebat", icon: CloudRain, color: "text-blue-600 bg-blue-50" }
+      return { label: "Hujan Lebat", icon: DisasterCloudRainIcon, color: "text-blue-600 bg-blue-50" }
     }
     if (code >= 51 || rain > 0) {
-      return { label: "Hujan Ringan", icon: Droplets, color: "text-teal-600 bg-teal-50" }
+      return { label: "Hujan Ringan", icon: DisasterDropletsIcon, color: "text-teal-600 bg-teal-50" }
     }
-    return { label: "Cerah / Berawan", icon: Sun, color: "text-amber-500 bg-amber-50" }
+    return { label: "Cerah / Berawan", icon: DisasterSunIcon, color: "text-amber-500 bg-amber-50" }
   }
 
   return (
     <div className="space-y-6">
       {/* REALTIME ALERT BANNER AUTOMATIC FROM API */}
       <div data-disaster-motion
-        className={`rounded-3xl p-6 text-white shadow-lg transition-all duration-300 ${
+        className={`rounded-3xl p-4 text-white shadow-lg transition-all duration-300 sm:p-6 ${
           currentRisk === "bahaya"
             ? "bg-gradient-to-r from-red-800 to-rose-900 border border-red-700 shadow-red-900/20"
             : currentRisk === "waspada"
@@ -139,22 +142,22 @@ export function WeatherForecast({
         }`}
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-4">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/15 backdrop-blur-md">
+          <div className="flex min-w-0 items-start gap-3 sm:gap-4">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15 backdrop-blur-md sm:h-12 sm:w-12">
               {currentRisk === "bahaya" ? (
-                <ShieldAlert className="h-7 w-7 text-white animate-pulse" />
+                <DisasterShieldAlertIcon className="h-7 w-7 animate-pulse text-white" />
               ) : currentRisk === "waspada" ? (
-                <AlertTriangle className="h-7 w-7 text-yellow-200" />
+                <DisasterAlertIcon className="h-7 w-7 text-yellow-200" />
               ) : (
-                <CheckCircle2 className="h-7 w-7 text-emerald-200" />
+                <DisasterCheckIcon className="h-7 w-7 text-emerald-200" />
               )}
             </div>
 
-            <div>
+            <div className="min-w-0">
               <span className="inline-block rounded-full bg-white/20 px-3 py-0.5 text-xs font-black uppercase tracking-wider text-white">
                 {manualOverride === "auto" ? "Status Prakiraan Cuaca Kedungrejo" : "Status Bencana dari Admin Desa"}
               </span>
-              <h3 className="mt-1 text-2xl font-black tracking-tight">
+              <h3 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">
                 {currentRisk === "bahaya"
                   ? manualOverride === "bahaya" ? "Siaga Banjir: Peringatan Darurat Desa" : "Siaga Banjir: Curah Hujan Tinggi Diprakirakan"
                   : currentRisk === "waspada"
@@ -171,7 +174,7 @@ export function WeatherForecast({
             </div>
           </div>
 
-          <div className="shrink-0 text-right sm:border-l sm:border-white/20 sm:pl-5">
+          <div className="shrink-0 border-t border-white/20 pt-3 text-left sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0 sm:text-right">
             <p className="text-[11px] font-bold uppercase tracking-wider text-white/70">Diperbarui Otomatis</p>
             <p className="text-xs font-black text-white mt-0.5">{lastUpdated ? `Data ${lastUpdated.replaceAll("-", "/")}` : "Memuat data realtime"}</p>
           </div>
@@ -179,8 +182,8 @@ export function WeatherForecast({
       </div>
 
       {/* FORECAST PERIOD SELECTOR & CARDS */}
-      <div data-disaster-motion className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-4">
+      <div data-disaster-motion className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div className="flex flex-col gap-4 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-lg font-black text-slate-900">Prakiraan Cuaca & Curah Hujan Kedungrejo</h3>
             <p className="text-xs text-slate-500 font-medium">
@@ -189,11 +192,11 @@ export function WeatherForecast({
           </div>
 
           {/* Filter Period Buttons */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-400">Periode:</span>
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+            <span className="col-span-2 text-xs font-bold text-slate-400 sm:col-auto">Periode:</span>
             <button
               onClick={() => setPeriod(7)}
-              className={`rounded-2xl px-3.5 py-2 text-xs font-extrabold transition ${
+              className={`min-w-0 rounded-2xl px-2 py-2 text-xs font-extrabold transition sm:px-3.5 ${
                 period === 7 ? "bg-emerald-800 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
             >
@@ -201,7 +204,7 @@ export function WeatherForecast({
             </button>
             <button
               onClick={() => setPeriod(14)}
-              className={`rounded-2xl px-3.5 py-2 text-xs font-extrabold transition ${
+              className={`min-w-0 rounded-2xl px-2 py-2 text-xs font-extrabold transition sm:px-3.5 ${
                 period === 14 ? "bg-emerald-800 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
             >
@@ -213,13 +216,13 @@ export function WeatherForecast({
         {/* Forecast Days Cards */}
         {loading ? (
           <div className="flex h-40 items-center justify-center text-slate-400">
-            <RefreshCw className="h-6 w-6 animate-spin text-emerald-600" />
+            <DisasterRefreshIcon className="h-6 w-6 animate-spin text-emerald-600" />
             <span className="ml-2 text-sm font-bold">Mengambil data prakiraan cuaca...</span>
           </div>
         ) : error ? (
           <p className="py-10 text-center text-sm font-semibold text-rose-700">{error}</p>
         ) : (
-          <div className="mt-5 grid gap-3 grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 overflow-x-auto">
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
             {days.map((day) => {
               const info = getWeatherInfo(day.weatherCode, day.precipitation)
               const Icon = info.icon
@@ -239,11 +242,11 @@ export function WeatherForecast({
                     <span className="text-[11px] font-black uppercase text-slate-500">{day.dayName}</span>
                     <p className="text-[10px] text-slate-400">{day.date.replaceAll("-", "/")}</p>
 
-                    <div className="mt-3 flex items-center gap-2">
+                  <div className="mt-3 flex min-w-0 items-center gap-2">
                       <div className={`grid h-8 w-8 place-items-center rounded-xl ${info.color}`}>
                         <Icon className="h-4 w-4" />
                       </div>
-                      <span className="text-xs font-bold text-slate-800">{info.label}</span>
+                      <span className="min-w-0 text-xs font-bold text-slate-800">{info.label}</span>
                     </div>
                   </div>
 

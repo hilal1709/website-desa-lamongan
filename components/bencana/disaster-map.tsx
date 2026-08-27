@@ -1,19 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { MapPin } from "lucide-react"
+import { DisasterMapPinIcon } from "@/components/bencana/disaster-icons"
 import { Button } from "@/components/ui/button"
+import type { DisasterLocation, DisasterRiskLevel } from "@/components/bencana/disaster-types"
 
-type DisasterLocation = {
-  id: string
-  name: string
-  description: string | null
-  type: "EVAKUASI" | "RAWAN" | "POSKO"
-  latitude: number
-  longitude: number
-}
-
-export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "bahaya" }) {
+export function DisasterMap({ riskLevel }: { riskLevel: DisasterRiskLevel }) {
   const [isClient, setIsClient] = useState(false)
   const [filterType, setFilterType] = useState<"all" | "evakuasi" | "rawan" | "posko">("all")
   const [tileType, setTileType] = useState<"street" | "satellite">("street")
@@ -46,7 +38,9 @@ export function DisasterMap({ riskLevel }: { riskLevel: "aman" | "waspada" | "ba
       if ((event as CustomEvent<{ topic?: string }>).detail?.topic === "disaster") void loadLocations()
     }
     window.addEventListener("cms-content-updated", refreshFromRealtimeEvent)
-    const refresh = window.setInterval(() => void loadLocations(), 60_000)
+    const refresh = window.setInterval(() => {
+      if (document.visibilityState === "visible") void loadLocations()
+    }, 5 * 60_000)
     return () => { cancelled = true; window.removeEventListener("cms-content-updated", refreshFromRealtimeEvent); window.clearInterval(refresh) }
   }, [])
 
@@ -89,7 +83,7 @@ function LeafletMapContainer({
   locationsError,
   L
 }: {
-  riskLevel: "aman" | "waspada" | "bahaya"
+  riskLevel: DisasterRiskLevel
   filterType: "all" | "evakuasi" | "rawan" | "posko"
   setFilterType: (val: "all" | "evakuasi" | "rawan" | "posko") => void
   tileType: "street" | "satellite"
@@ -180,17 +174,17 @@ function LeafletMapContainer({
 
   return (
     <section className="space-y-3 sm:space-y-4" aria-label="Peta interaktif lokasi bencana">
-      <nav data-disaster-motion data-motion-kind="map" aria-label="Filter titik peta" className="flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-3.5">
+      <nav data-disaster-motion data-motion-kind="map" aria-label="Filter titik peta" className="flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm lg:flex-row lg:items-center lg:justify-between sm:p-3.5">
         <div className="min-w-0">
           <span className="mb-2 block text-[11px] font-black uppercase tracking-wider text-slate-500 sm:mb-0 sm:inline sm:text-xs">Filter Marker:</span>
-          <div className="flex flex-wrap gap-1 sm:mt-2 sm:gap-1.5">
+          <div className="grid grid-cols-2 gap-1 sm:mt-2 sm:flex sm:flex-wrap sm:gap-1.5">
             <Button
               type="button"
               size="sm"
               variant={filterType === "all" ? "default" : "secondary"}
               onClick={() => setFilterType("all")}
               aria-pressed={filterType === "all"}
-              className={filterType === "all" ? "bg-slate-900 text-white hover:bg-slate-800" : "text-[11px] sm:text-xs"}
+              className={filterType === "all" ? "w-full bg-slate-900 text-white hover:bg-slate-800 sm:w-auto" : "w-full text-[11px] sm:w-auto sm:text-xs"}
             >
               Semua
             </Button>
@@ -200,7 +194,7 @@ function LeafletMapContainer({
               variant={filterType === "evakuasi" ? "default" : "outline"}
               onClick={() => setFilterType("evakuasi")}
               aria-pressed={filterType === "evakuasi"}
-              className={filterType === "evakuasi" ? "bg-blue-600 text-white hover:bg-blue-700" : "border-blue-100 bg-blue-50 text-[11px] text-blue-800 hover:bg-blue-100 sm:text-xs"}
+              className={filterType === "evakuasi" ? "w-full bg-blue-600 text-white hover:bg-blue-700 sm:w-auto" : "w-full border-blue-100 bg-blue-50 text-[11px] text-blue-800 hover:bg-blue-100 sm:w-auto sm:text-xs"}
             >
               Evakuasi
             </Button>
@@ -210,7 +204,7 @@ function LeafletMapContainer({
               variant={filterType === "rawan" ? "default" : "outline"}
               onClick={() => setFilterType("rawan")}
               aria-pressed={filterType === "rawan"}
-              className={filterType === "rawan" ? "bg-rose-600 text-white hover:bg-rose-700" : "border-rose-100 bg-rose-50 text-[11px] text-rose-800 hover:bg-rose-100 sm:text-xs"}
+              className={filterType === "rawan" ? "w-full bg-rose-600 text-white hover:bg-rose-700 sm:w-auto" : "w-full border-rose-100 bg-rose-50 text-[11px] text-rose-800 hover:bg-rose-100 sm:w-auto sm:text-xs"}
             >
               Zona Rawan
             </Button>
@@ -220,21 +214,21 @@ function LeafletMapContainer({
               variant={filterType === "posko" ? "default" : "outline"}
               onClick={() => setFilterType("posko")}
               aria-pressed={filterType === "posko"}
-              className={filterType === "posko" ? "bg-emerald-700 text-white hover:bg-emerald-800" : "text-[11px] sm:text-xs"}
+              className={filterType === "posko" ? "w-full bg-emerald-700 text-white hover:bg-emerald-800 sm:w-auto" : "w-full text-[11px] sm:w-auto sm:text-xs"}
             >
               Posko Desa
             </Button>
           </div>
         </div>
 
-        <div className="flex w-full items-center justify-between gap-2 border-t border-slate-100 pt-2 sm:w-auto sm:justify-end sm:border-0 sm:pt-0">
+        <div className="grid w-full grid-cols-2 gap-2 border-t border-slate-100 pt-2 lg:w-auto lg:border-0 lg:pt-0">
           <Button
             type="button"
             size="sm"
             variant="secondary"
             onClick={() => setTileType(tileType === "street" ? "satellite" : "street")}
             aria-label={tileType === "street" ? "Ubah ke tampilan satelit" : "Ubah ke tampilan peta jalan"}
-            className="border border-slate-200 bg-slate-50 text-[11px] text-slate-700 hover:bg-slate-100 sm:text-xs"
+            className="w-full border border-slate-200 bg-slate-50 text-[11px] text-slate-700 hover:bg-slate-100 sm:text-xs"
           >
             {tileType === "street" ? "Satelit" : "Peta Jalan"}
           </Button>
@@ -243,16 +237,16 @@ function LeafletMapContainer({
             href={googleMapsUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-emerald-600 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-sm transition hover:bg-emerald-700 sm:text-xs"
+            className="inline-flex min-w-0 items-center justify-center gap-1 rounded-xl bg-emerald-600 px-2 py-1.5 text-[11px] font-extrabold text-white shadow-sm transition hover:bg-emerald-700 sm:px-3 sm:text-xs"
           >
-            <MapPin className="h-3.5 w-3.5" />
+            <DisasterMapPinIcon className="h-3.5 w-3.5" />
             <span>Google Maps</span>
           </a>
         </div>
       </nav>
 
       <figure data-disaster-motion data-motion-kind="map" className="relative overflow-hidden rounded-2xl border border-slate-200 shadow-md sm:rounded-3xl">
-        <div id="kedungrejo-disaster-map" role="application" aria-label="Peta lokasi bencana Desa Kedungrejo" className="h-[300px] w-full z-0 sm:h-[480px]" />
+        <div id="kedungrejo-disaster-map" role="application" aria-label="Peta lokasi bencana Desa Kedungrejo" className="z-0 h-[320px] w-full sm:h-[440px] lg:h-[480px]" />
 
         <figcaption data-disaster-float className="absolute bottom-2 left-2 z-[400] max-w-[calc(100%-1rem)] rounded-xl border border-slate-200/90 bg-white/95 p-2.5 shadow-lg backdrop-blur-md sm:bottom-3 sm:left-3 sm:max-w-xs sm:rounded-2xl sm:p-3">
           <div className="space-y-1 text-[11px] sm:text-xs font-bold text-slate-700">
