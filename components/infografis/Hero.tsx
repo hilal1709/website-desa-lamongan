@@ -11,6 +11,7 @@ export async function Hero() {
       description={hero.description}
       image={hero.image}
       imagePosition={hero.imagePosition}
+      overlayClassName="bg-emerald-950/70"
     />
   )
 }

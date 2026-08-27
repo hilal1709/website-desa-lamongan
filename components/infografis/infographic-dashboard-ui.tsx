@@ -1,7 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { BarChart3, Home, Printer, Stethoscope, Store, UserCheck, Users } from "lucide-react"
+import { BarChart3, Home, Printer, Stethoscope, Store, UserCheck, Users } from "./infographic-icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 

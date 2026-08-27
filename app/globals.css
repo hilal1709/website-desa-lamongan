@@ -52,6 +52,43 @@ img {
   animation: disaster-ticker 18s linear infinite;
 }
 
+/* Keep UMKM chart bars in a single solid colour. */
+[aria-label="Visualisasi UMKM"] .bg-gradient-to-t {
+  background-image: none;
+  background-color: #047857;
+}
+
+[aria-label="Visualisasi UMKM"] .bg-gradient-to-r {
+  background-image: none;
+  background-color: #059669;
+}
+
+.infographic-motion-root,
+.infographic-motion-root [data-infographic-motion] {
+  min-width: 0;
+}
+
+.infographic-motion-root canvas {
+  max-width: 100% !important;
+}
+
+@media (max-width: 640px) {
+  .infographic-motion-root [role="tablist"] {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    scrollbar-width: thin;
+  }
+
+  .infographic-motion-root [role="tablist"] > button {
+    flex: 0 0 auto;
+  }
+
+  .infographic-motion-root [aria-label^="Paginasi"] {
+    padding-inline: 0.75rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .disaster-ticker { animation: none; }
 }

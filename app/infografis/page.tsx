@@ -2,6 +2,7 @@ import { Hero } from "@/components/infografis/Hero"
 import { InfographicDashboard } from "@/components/infografis/infographic-dashboard"
 import { getCachedUmkmData } from "@/lib/umkm"
 import { getPublicElderlyHealth } from "@/lib/public-elderly-health"
+import { createInfographicDatasetJsonLd } from "@/lib/infographic-seo"
 import type { Metadata } from "next"
 
 // Re-render after the public Pusher listener receives a CMS update.
@@ -28,7 +29,8 @@ export default async function InfografisPage({ searchParams }: { searchParams: P
   return (
     <>
       <Hero />
-      <main className="bg-slate-50 px-3 py-7 sm:px-5 sm:py-10 lg:py-14" suppressHydrationWarning>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(createInfographicDatasetJsonLd()) }} />
+      <main id="main-content" className="bg-slate-50 px-3 py-7 sm:px-5 sm:py-10 lg:py-14" suppressHydrationWarning>
         <div className="mx-auto max-w-7xl">
           <InfographicDashboard umkm={umkm} elderlyHealth={elderlyHealth} initialData={initialData} initialUmkmSection={initialUmkmSection} />
         </div>

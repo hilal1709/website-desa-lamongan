@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma"
+import { unstable_cache } from "next/cache"
 import { ageInMonths } from "@/lib/child-health"
 import { aggregateChildMeasurementTrend } from "@/lib/child-health"
 
@@ -20,7 +21,7 @@ export type PublicElderlyHealth = {
   }
 }
 
-export async function getPublicElderlyHealth(): Promise<PublicElderlyHealth> {
+async function readPublicElderlyHealth(): Promise<PublicElderlyHealth> {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const [elderly, nextSession, sessions, children, activeChildren, childSessions, nextChildSession] = await Promise.all([prisma.elderly.findMany({
@@ -66,3 +67,5 @@ export async function getPublicElderlyHealth(): Promise<PublicElderlyHealth> {
     },
   }
 }
+
+export const getPublicElderlyHealth = unstable_cache(readPublicElderlyHealth, ["public-elderly-health"], { revalidate: 60, tags: ["public-elderly-health"] })

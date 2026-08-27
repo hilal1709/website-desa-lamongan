@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { Bar, Line } from "react-chartjs-2"
-import { FileSpreadsheet, FileText, UsersRound } from "lucide-react"
+import { FileSpreadsheet, FileText, UsersRound } from "./infographic-icons"
 
 import { Button } from "@/components/ui/button"
 import "./chartjs"
@@ -134,7 +134,7 @@ export function PopulationEventsDashboard() {
     </div>
 
     {message ? <p className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">{message}</p> : null}
-    {loading && !data ? <p className="mt-5 text-sm font-medium text-slate-500">Memuat dinamika kependudukan...</p> : null}
+    {loading && !data ? <PopulationEventsLoading /> : null}
     {data ? <>
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{cards.map((card) => <article key={card.label} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-xs font-bold text-slate-500">{card.label}</p><p className={`mt-2 text-2xl font-black ${card.tone}`}>{card.value > 0 ? "+" : ""}{formatter.format(card.value)}{card.label === "Jumlah penduduk otomatis" ? " jiwa" : ""}</p></article>)}</div>
       <div className="mt-6 grid gap-5 lg:grid-cols-2">
@@ -145,4 +145,8 @@ export function PopulationEventsDashboard() {
       <article className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"><header className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5"><div><h3 className="font-black text-slate-900">Detail peristiwa</h3><p className="mt-1 text-sm text-slate-500">{formatter.format(data.pagination.totalRecords)} catatan sesuai filter</p></div><UsersRound className="text-emerald-700" /></header><div className="overflow-x-auto"><table className="min-w-full text-left text-sm"><thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr>{["Tanggal", "Peristiwa", "Nama", "Jenis kelamin", "Tahun lahir", "Dusun"].map((heading) => <th key={heading} className="whitespace-nowrap px-4 py-3 font-bold">{heading}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{data.records.length ? data.records.map((record) => <tr key={record.id} className="text-slate-700"><td className="whitespace-nowrap px-4 py-3">{new Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(new Date(`${record.eventDate}T00:00:00Z`))}</td><td className="whitespace-nowrap px-4 py-3 font-semibold">{record.typeLabel}</td><td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">{record.fullName}</td><td className="whitespace-nowrap px-4 py-3">{record.gender}</td><td className="whitespace-nowrap px-4 py-3">{record.birthYear}</td><td className="whitespace-nowrap px-4 py-3">{record.dusun}</td></tr>) : <tr><td colSpan={6} className="px-4 py-10 text-center text-slate-500">Belum ada peristiwa pada filter ini.</td></tr>}</tbody></table></div>{data.pagination.totalPages > 1 ? <footer className="flex items-center justify-between border-t border-slate-100 p-4"><Button type="button" variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((current) => current - 1)}>Sebelumnya</Button><span className="text-sm font-medium text-slate-600">Halaman {data.pagination.page} dari {data.pagination.totalPages}</span><Button type="button" variant="outline" size="sm" disabled={page >= data.pagination.totalPages} onClick={() => setPage((current) => current + 1)}>Berikutnya</Button></footer> : null}</article>
     </> : null}
   </section>
+}
+
+function PopulationEventsLoading() {
+  return <section aria-busy="true" aria-live="polite" className="mt-5"><p className="sr-only" role="status">Memuat dinamika kependudukan</p><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{Array.from({ length: 8 }).map((_, index) => <article key={index} data-infographic-motion className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className="block h-3 w-28 animate-pulse rounded-full bg-slate-200" /><span className="mt-3 block h-8 w-16 animate-pulse rounded-lg bg-emerald-100" /></article>)}</div><div className="mt-6 grid gap-5 lg:grid-cols-2">{Array.from({ length: 2 }).map((_, index) => <article key={index} data-infographic-motion className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><span className="block h-5 w-48 animate-pulse rounded-lg bg-slate-200" /><span className="mt-5 block h-72 animate-pulse rounded-2xl bg-slate-100" /></article>)}</div><article data-infographic-motion className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><span className="block h-5 w-72 max-w-full animate-pulse rounded-lg bg-slate-200" /><span className="mt-5 block h-96 animate-pulse rounded-2xl bg-slate-100" /></article></section>
 }

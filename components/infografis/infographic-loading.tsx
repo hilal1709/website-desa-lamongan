@@ -1,7 +1,7 @@
 "use client"
 
 import { useLayoutEffect, useRef } from "react"
-import { BarChart3 } from "lucide-react"
+import { BarChart3 } from "./infographic-icons"
 
 export function InfographicLoading() {
   const root = useRef<HTMLDivElement>(null)

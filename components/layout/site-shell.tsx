@@ -7,6 +7,7 @@ import { DisasterAnnouncementBanner } from "./disaster-announcement-banner"
 import { CmsPublicUpdateNotifier } from "@/components/admin/cms-public-update-notifier"
 import { InstallAppPrompt } from "./install-app-prompt"
 import { PublicAnnouncementBanner } from "./public-announcement-banner"
+import { ConfirmActionGuard } from "@/components/ui/confirm-action-guard"
 import type { SiteSettings } from "@/lib/site-settings"
 
 const Navbar = dynamic(() => import("./navbar").then((module) => module.Navbar))
@@ -20,7 +21,9 @@ export function SiteShell({ children, disasterSetting, siteSettings }: { childre
   const isAdmin = pathname.startsWith("/admin")
   const isMaintenance = pathname === "/maintenance"
 
-  if (isAdmin) return <><CmsPublicUpdateNotifier /><main className="min-h-screen bg-[#f3f7f3]">{children}</main></>
+  const hasGuardedDeletes = ["/admin/infografis", "/admin/umkm", "/admin/anak", "/admin/lansia"].includes(pathname)
+
+  if (isAdmin) return <><CmsPublicUpdateNotifier /><main className="min-h-screen bg-[#f3f7f3]">{hasGuardedDeletes ? <ConfirmActionGuard>{children}</ConfirmActionGuard> : children}</main></>
   if (isMaintenance) return <>{children}</>
 
   return (
