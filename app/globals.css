@@ -73,6 +73,27 @@ img {
 }
 
 @media (max-width: 640px) {
+  /* Layanan: keep cards, tracker fields, and notification content inside the viewport. */
+  .service-catalog-grid > *,
+  .service-catalog-card,
+  .service-tracking-panel,
+  .submission-form-card,
+  .submission-intro {
+    min-width: 0;
+  }
+
+  .service-tracking-panel input,
+  .service-tracking-panel button,
+  .submission-form-card input,
+  .submission-form-card textarea,
+  .submission-form-card button {
+    font-size: 16px;
+  }
+
+  .submission-notification-card {
+    width: min(100% - 2rem, 28rem);
+  }
+
   .infographic-motion-root [role="tablist"] {
     flex-wrap: nowrap;
     overflow-x: auto;

@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma"
+import { unstable_cache } from "next/cache"
 import type { ServiceSubmissionStatusType, VillageService } from "@/generated/prisma/client"
 import { SERVICE_STATUSES, STATUS_LABEL } from "@/lib/service-status"
 
@@ -30,9 +31,18 @@ export async function ensureDefaultVillageServices() {
   })))
 }
 
+async function readActiveVillageServices() {
+  return prisma.villageService.findMany({ where: { isActive: true }, include: { requirements: { orderBy: { order: "asc" } } }, orderBy: { order: "asc" } })
+}
+
+const getCachedActiveVillageServices = unstable_cache(readActiveVillageServices, ["village-services"], {
+  revalidate: 300,
+  tags: ["village-services"],
+})
+
 export async function getActiveVillageServices() {
   await ensureDefaultVillageServices()
-  return prisma.villageService.findMany({ where: { isActive: true }, include: { requirements: { orderBy: { order: "asc" } } }, orderBy: { order: "asc" } })
+  return getCachedActiveVillageServices()
 }
 
 export async function getVillageServiceBySlug(slug: string) {
