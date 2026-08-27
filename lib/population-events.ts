@@ -40,6 +40,11 @@ export type PublicPopulationEvent = {
   dusun: string
 }
 
+export function normalizePopulationHamlet(value: string) {
+  const name = value.trim().replace(/\s+/g, " ").replace(/^dusun\s+/i, "")
+  if (!name) return ""
+  return `Dusun ${name.toLocaleLowerCase("id-ID").replace(/(^|[\s-])\S/g, (letter) => letter.toLocaleUpperCase("id-ID"))}`
+}
 
 export function parsePopulationFilters(params: URLSearchParams): PopulationEventFilters {
   const nowYear = new Date().getFullYear()
@@ -53,7 +58,7 @@ export function parsePopulationFilters(params: URLSearchParams): PopulationEvent
   return {
     year: Number.isInteger(parsedYear) && parsedYear >= 2000 && parsedYear <= 2100 ? parsedYear : nowYear,
     month: Number.isInteger(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12 ? parsedMonth : null,
-    dusun: value("dusun") || null,
+    dusun: value("dusun") ? normalizePopulationHamlet(value("dusun")) : null,
     type: populationEventTypes.includes(typeValue as PopulationEventType) ? (typeValue as PopulationEventType) : null,
     page: Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1,
     pageSize: Number.isInteger(parsedPageSize) && parsedPage > 0 ? Math.min(parsedPageSize, 50) : 10,
@@ -141,22 +146,50 @@ export async function getPublicPopulationEventDashboard(filters: PopulationEvent
   ])
 
   const summary = summarizePopulationFlow(rangeEvents)
-  const populationByHamlet = calculatePopulationByHamlet(balances, cumulativeEvents)
-  const demographics = calculatePopulationDemographics(balances.map((balance) => ({ ...balance, demographics: demographicCells(balance.demographics) })), cumulativeEvents, endInclusive)
+  const normalizedBalances = balances.map((balance) => ({ ...balance, dusun: normalizePopulationHamlet(balance.dusun) }))
+  const normalizedEvents = cumulativeEvents.map((event) => ({ ...event, dusun: normalizePopulationHamlet(event.dusun) }))
+  const populationByHamlet = calculatePopulationByHamlet(normalizedBalances, normalizedEvents)
+  const demographics = calculatePopulationDemographics(normalizedBalances.map((balance) => ({ ...balance, demographics: demographicCells(balance.demographics) })), normalizedEvents, endInclusive)
   const monthly = Array.from({ length: 12 }, (_, index) => ({ month: index + 1, ...emptyCounts() }))
   for (const event of rangeEvents) monthly[event.eventDate.getUTCMonth()][event.type] += 1
-  const byHamlet = [...new Set(rangeEvents.map((event) => event.dusun))]
+  const normalizedRangeEvents = rangeEvents.map((event) => ({ ...event, dusun: normalizePopulationHamlet(event.dusun) }))
+  const byHamlet = [...new Set(normalizedRangeEvents.map((event) => event.dusun))]
     .sort((a, b) => a.localeCompare(b, "id"))
-    .map((dusun) => ({ dusun, ...summarizePopulationFlow(rangeEvents.filter((event) => event.dusun === dusun)).counts }))
+    .map((dusun) => ({ dusun, ...summarizePopulationFlow(normalizedRangeEvents.filter((event) => event.dusun === dusun)).counts }))
 
   return {
     filters,
     summary: { ...summary, totalPopulation: populationByHamlet.reduce((sum, item) => sum + item.totalPopulation, 0), populationByHamlet, demographics },
     monthly,
     byHamlet,
-    records: records.map(toPublicRecord),
+    records: records.map((record) => toPublicRecord({ ...record, dusun: normalizePopulationHamlet(record.dusun) })),
     pagination: { page: filters.page, pageSize: filters.pageSize, totalRecords, totalPages: Math.max(1, Math.ceil(totalRecords / filters.pageSize)) },
   }
+}
+
+/**
+ * Jalur ringkas untuk kartu ringkasan CMS. Jangan gunakan dashboard publik di
+ * sini: CMS hanya membutuhkan total jiwa, bukan catatan tabel, grafik, atau
+ * komposisi demografi yang jauh lebih mahal untuk dihitung.
+ */
+export async function getOfficialPopulationTotalForYear(year: number) {
+  const endInclusive = new Date(Date.UTC(year + 1, 0, 1) - 1)
+  const [events, balances] = await Promise.all([
+    prisma.populationEvent.findMany({
+      where: { eventDate: { lte: endInclusive } },
+      select: { eventDate: true, type: true, dusun: true },
+    }),
+    prisma.populationOpeningBalance.findMany({
+      where: { effectiveDate: { lte: endInclusive } },
+      select: { dusun: true, effectiveDate: true, totalPopulation: true },
+    }),
+  ])
+
+  const populationByHamlet = calculatePopulationByHamlet(
+    balances.map((balance) => ({ ...balance, dusun: normalizePopulationHamlet(balance.dusun) })),
+    events.map((event) => ({ ...event, dusun: normalizePopulationHamlet(event.dusun) })),
+  )
+  return populationByHamlet.reduce((total, hamlet) => total + hamlet.totalPopulation, 0)
 }
 
 export async function getPublicPopulationEventExport(filters: PopulationEventFilters) {
@@ -204,7 +237,7 @@ export function validatePopulationEventInput(payload: unknown) {
   return {
     eventDate,
     type,
-    dusun: requiredString(data.dusun, "Dusun"),
+    dusun: normalizePopulationHamlet(requiredString(data.dusun, "Dusun")),
     fullName: requiredString(data.fullName, "Nama lengkap"),
     nationalId: requiredString(data.nationalId, "NIK"),
     familyCardNumber: requiredString(data.familyCardNumber, "Nomor KK"),

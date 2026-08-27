@@ -1,6 +1,5 @@
 import { revalidatePath, revalidateTag } from "next/cache"
 
-import { getCurrentAdmin } from "@/lib/admin-auth"
 import { assertEventAfterOpeningBalance, validatePopulationEventInput } from "@/lib/population-events"
 import { prisma } from "@/app/lib/prisma"
 import { publishCmsUpdate } from "@/lib/pusher"
@@ -11,8 +10,10 @@ export const dynamic = "force-dynamic"
 
 function refreshed() {
   revalidateTag("home-data", "max")
+  revalidateTag("admin-dashboard", "max")
   revalidateTag("population-events", { expire: 0 })
   revalidatePath("/infografis")
+  revalidatePath("/admin")
 }
 
 export async function GET() {

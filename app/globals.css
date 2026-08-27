@@ -113,3 +113,15 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .disaster-ticker { animation: none; }
 }
+
+/* The admin main column is narrower than the viewport because of its fixed
+   sidebar. These breakpoints keep dashboard cards readable on laptops. */
+@media (min-width: 1024px) {
+  #main-content [aria-label="Ringkasan data CMS"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #main-content [aria-labelledby="perlu-ditindaklanjuti-title"] > div:last-child { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #main-content [aria-label="Akses cepat modul CMS"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1536px) {
+  #main-content [aria-label="Ringkasan data CMS"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}

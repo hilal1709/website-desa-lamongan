@@ -3,6 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { prisma } from "@/app/lib/prisma"
 import { populationAgeGroups, type PopulationAgeGroup, type PopulationDemographicCell } from "@/lib/population-calculations"
+import { normalizePopulationHamlet } from "@/lib/population-events"
 import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
   if (!(await getCurrentAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 })
   try {
     const body = await request.json() as Record<string, unknown>
-    const dusun = typeof body.dusun === "string" ? body.dusun.trim() : ""
+    const dusun = typeof body.dusun === "string" ? normalizePopulationHamlet(body.dusun) : ""
     const totalPopulation = Number(body.totalPopulation)
     const effectiveDate = dateValue(body.effectiveDate)
     if (!dusun || !Number.isInteger(totalPopulation) || totalPopulation < 0) throw new Error("Dusun dan jumlah penduduk wajib diisi.")
@@ -42,7 +43,9 @@ export async function POST(request: Request) {
 
     const balance = await prisma.populationOpeningBalance.upsert({ where: { dusun }, update: { effectiveDate, totalPopulation, demographics }, create: { dusun, effectiveDate, totalPopulation, demographics } })
     revalidateTag("population-events", { expire: 0 })
+    revalidateTag("admin-dashboard", { expire: 0 })
     revalidatePath("/infografis")
+    revalidatePath("/admin")
     await publishCmsUpdate("population")
     return Response.json(balance)
   } catch (error) {
@@ -62,7 +65,9 @@ export async function DELETE(request: Request) {
 
     await prisma.populationOpeningBalance.delete({ where: { id: balance.id } })
     revalidateTag("population-events", { expire: 0 })
+    revalidateTag("admin-dashboard", { expire: 0 })
     revalidatePath("/infografis")
+    revalidatePath("/admin")
     await publishCmsUpdate("population")
     return new Response(null, { status: 204 })
   } catch (error) {

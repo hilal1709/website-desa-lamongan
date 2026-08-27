@@ -1,0 +1,8 @@
+import { BarChart3 } from "@/components/admin/dashboard-icons"
+import { DashboardSectionHeading } from "@/components/admin/dashboard/section-heading"
+import { Card } from "@/components/ui/card"
+import type { AdminActivity } from "@/lib/admin-data"
+
+const colors = { amber: "bg-amber-500", emerald: "bg-emerald-600", sky: "bg-sky-600" }
+
+export function AdminActivityPanel({ activity = [] }: { activity?: AdminActivity[] }) { const maximum = Math.max(1, ...activity.map((item) => item.value)); return <section data-admin-reveal aria-labelledby="aktivitas-30-hari-title" className="mt-6"><Card className="rounded-[28px] p-5 shadow-sm sm:p-6"><DashboardSectionHeading eyebrow="Pantauan singkat" title="Aktivitas 30 hari terakhir" titleId="aktivitas-30-hari-title" trailing={<BarChart3 className="h-6 w-6 text-emerald-700" />} /><ul className="mt-6 grid gap-5 md:grid-cols-3">{activity.map((item) => <li key={item.key}><div className="flex items-end justify-between gap-3"><p className="text-sm font-semibold text-slate-600">{item.label}</p><data value={item.value} className="text-2xl font-black text-slate-950">{item.value}</data></div><div className="mt-3 h-3 overflow-hidden rounded-full bg-slate-100" role="img" aria-label={`${item.label}: ${item.value} dalam 30 hari terakhir`}><div data-admin-progress className={`h-full min-w-0 rounded-full ${colors[item.color]}`} style={{ width: `${(item.value / maximum) * 100}%`, transform: "scaleX(0)" }} /></div></li>)}</ul><p className="mt-5 text-xs leading-5 text-slate-500">Jumlah dihitung dari data yang dibuat atau diterbitkan dalam 30 hari terakhir.</p></Card></section> }

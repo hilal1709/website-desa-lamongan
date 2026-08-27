@@ -1,0 +1,9 @@
+import Link from "next/link"
+
+import { FileIcon, MessageIcon, NewsIcon, StoreIcon, UsersIcon } from "@/components/admin/dashboard-icons"
+import { CardContent } from "@/components/ui/card"
+import type { AdminMetric, AdminMetricKey } from "@/lib/admin-data"
+
+const metricStyles: Record<AdminMetricKey, { icon: typeof MessageIcon; tone: string }> = { complaints: { icon: MessageIcon, tone: "bg-amber-50 text-amber-700" }, population: { icon: UsersIcon, tone: "bg-violet-50 text-violet-700" }, content: { icon: NewsIcon, tone: "bg-emerald-50 text-emerald-700" }, umkm: { icon: StoreIcon, tone: "bg-sky-50 text-sky-700" }, services: { icon: FileIcon, tone: "bg-emerald-50 text-emerald-700" } }
+
+export function AdminMetricGrid({ metrics = [] }: { metrics?: AdminMetric[] }) { return <section data-admin-reveal aria-labelledby="ringkasan-cms-title" className="mt-5"><h2 id="ringkasan-cms-title" className="sr-only">Ringkasan data CMS</h2><ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">{metrics.map(({ key, value, label, detail, href }) => { const { icon: Icon, tone } = metricStyles[key]; return <li key={key}><Link data-admin-card href={href} className="block h-full rounded-2xl border border-slate-200/80 bg-white transition-shadow hover:shadow-lg"><CardContent className="p-5"><div className="flex items-start justify-between gap-3"><span data-admin-card-icon className={`grid h-11 w-11 place-items-center rounded-xl ${tone}`}><Icon className="h-5 w-5" /></span><span className="max-w-32 rounded-full bg-slate-100 px-2.5 py-1 text-right text-[11px] font-bold leading-4 text-slate-600">{detail}</span></div><dl className="mt-5"><dt className="sr-only">{label}</dt><dd className="text-3xl font-black tracking-tight text-slate-950">{value}</dd><dt className="mt-1 text-sm font-semibold text-slate-600">{label}</dt></dl></CardContent></Link></li> })}</ul></section> }

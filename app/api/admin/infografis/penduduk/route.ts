@@ -4,7 +4,7 @@ import { requireCmsPermission } from "@/lib/api-access"
 import { parseResidentInput, residentData } from "@/lib/residents"
 import { publishCmsUpdate } from "@/lib/pusher"
 
-function refreshed() { revalidateTag("home-data", "max"); revalidatePath("/infografis"); void publishCmsUpdate("population") }
+function refreshed() { revalidateTag("home-data", "max"); revalidateTag("admin-dashboard", "max"); revalidatePath("/infografis"); revalidatePath("/admin"); void publishCmsUpdate("population") }
 
 export async function GET(request: Request) {
   const access = await requireCmsPermission("INFOGRAPHICS"); if (access.response) return access.response

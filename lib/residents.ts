@@ -26,6 +26,18 @@ export function parseResidentInput(value: unknown): ResidentInput {
 
 export function residentData(data: ResidentInput) { return data satisfies Prisma.ResidentUncheckedCreateInput }
 
+export async function getPublicResidentProfile() {
+  const active = { isActive: true }
+  const [educations, occupations] = await Promise.all([
+    prisma.resident.groupBy({ by: ["education"], where: active, _count: { _all: true }, orderBy: { education: "asc" } }),
+    prisma.resident.groupBy({ by: ["occupation"], where: active, _count: { _all: true }, orderBy: { occupation: "asc" } }),
+  ])
+  return {
+    educations: educations.map((item) => ({ label: item.education, total: item._count._all })),
+    occupations: occupations.map((item) => ({ label: item.occupation, total: item._count._all })),
+  }
+}
+
 function ageOn(date: Date) { const today = new Date(); let age = today.getUTCFullYear() - date.getUTCFullYear(); const month = today.getUTCMonth() - date.getUTCMonth(); if (month < 0 || (month === 0 && today.getUTCDate() < date.getUTCDate())) age--; return age }
 function ageLabel(age: number) { if (age <= 5) return "0–5"; if (age <= 17) return "6–17"; if (age <= 35) return "18–35"; if (age <= 59) return "36–59"; return "60+" }
 

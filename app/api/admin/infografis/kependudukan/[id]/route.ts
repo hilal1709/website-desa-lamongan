@@ -9,8 +9,10 @@ export const dynamic = "force-dynamic"
 
 function refreshed() {
   revalidateTag("home-data", "max")
+  revalidateTag("admin-dashboard", "max")
   revalidateTag("population-events", { expire: 0 })
   revalidatePath("/infografis")
+  revalidatePath("/admin")
 }
 
 export async function PATCH(request: Request, context: RouteContext<"/api/admin/infografis/kependudukan/[id]">) {

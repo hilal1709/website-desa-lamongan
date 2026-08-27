@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma"
 import type { CmsNewsData } from "@/lib/news-cms"
+import { getOfficialPopulationTotalForYear } from "@/lib/population-events"
 import { unstable_cache } from "next/cache"
 
 export type AdminMetricKey = "complaints" | "population" | "content" | "umkm" | "services"
@@ -22,12 +23,13 @@ async function readAdminDashboardData(): Promise<{ metrics: AdminMetric[]; atten
     since.setDate(since.getDate() - 29)
     since.setHours(0, 0, 0, 0)
 
-    const [openComplaints, complaintCount, recentComplaintCount, population, businesses, openSubmissions, submissionCount, recentSubmissionCount, newsStore, pageStore] = await Promise.all([
+    const [openComplaints, complaintCount, recentComplaintCount, officialPopulation, legacyPopulation, businesses, openSubmissions, submissionCount, recentSubmissionCount, newsStore, pageStore] = await Promise.all([
       prisma.complaint.findMany({ where: { status: { notIn: ["Selesai", "Ditutup"] } }, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, title: true, category: true, location: true, status: true, createdAt: true } }),
       prisma.complaint.count({ where: { status: { notIn: ["Selesai", "Ditutup"] } } }),
       prisma.complaint.count({ where: { createdAt: { gte: since } } }),
-      // Older deployments may not have the optional Statistic table yet. Its
-      // absence must not hide operational data such as complaints.
+      getOfficialPopulationTotalForYear(new Date().getFullYear()),
+      // Keep this only as a fallback for legacy deployments that have not
+      // migrated their population records to the resident database.
       prisma.statistic.findFirst({ where: { label: { contains: "penduduk", mode: "insensitive" } }, orderBy: { order: "asc" }, select: { value: true, label: true } }).catch(() => null),
       prisma.umkm.count({ where: { isPublished: true } }),
       prisma.serviceSubmission.findMany({ where: { status: { notIn: ["SELESAI", "DITOLAK"] } }, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, trackingCode: true, status: true, createdAt: true, service: { select: { title: true } } } }),
@@ -42,8 +44,8 @@ async function readAdminDashboardData(): Promise<{ metrics: AdminMetric[]; atten
     const publishedArticles = articles.filter((article) => article.published)
     const drafts = articles.filter((article) => !article.published)
     const recentlyPublishedCount = publishedArticles.filter((article) => isInLastThirtyDays(article.publishedAt ?? article.createdAt, since)).length
-    const populationValue = population?.value?.trim() || "—"
-    const populationDetail = population ? population.label : "Belum ada statistik penduduk"
+    const populationValue = officialPopulation ? formatNumber(officialPopulation) : legacyPopulation?.value?.trim() || "—"
+    const populationDetail = officialPopulation ? "Data dasar dan peristiwa kependudukan" : legacyPopulation?.label || "Belum ada statistik penduduk"
     const attention: AdminAttentionGroup[] = [
       { key: "complaints", label: "Aduan aktif", description: "Laporan warga yang belum selesai.", count: complaintCount, href: "/admin/aduan", items: openComplaints.map((item) => ({ id: item.id, title: item.title, meta: `${item.category} · ${item.location} · ${formatDateTime(item.createdAt)}`, status: item.status })) },
       { key: "services", label: "Pengajuan aktif", description: "Pengajuan administrasi yang masih diproses.", count: submissionCount, href: "/admin/layanan", items: openSubmissions.map((item) => ({ id: item.id, title: item.service.title, meta: `${item.trackingCode} · ${formatDateTime(item.createdAt)}`, status: item.status.replaceAll("_", " ") })) },
@@ -75,5 +77,5 @@ async function readAdminDashboardData(): Promise<{ metrics: AdminMetric[]; atten
 
 // Version the cache key whenever the response shape changes. This avoids old
 // development or deployed cache entries being rendered with new dashboard UI.
-const getCachedAdminDashboardData = unstable_cache(readAdminDashboardData, ["admin-dashboard-v2"], { revalidate: 30, tags: ["admin-dashboard"] })
+const getCachedAdminDashboardData = unstable_cache(readAdminDashboardData, ["admin-dashboard-v4"], { revalidate: 60, tags: ["admin-dashboard"] })
 export async function getAdminDashboardData() { return getCachedAdminDashboardData() }
