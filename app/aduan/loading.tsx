@@ -37,8 +37,9 @@ export default function LoadingAduan() {
 
   return (
     <main ref={root} aria-busy="true" aria-live="polite" className="min-h-screen bg-slate-50/70">
-      <section className="relative -mt-[88px] flex min-h-[480px] items-center overflow-hidden bg-emerald-950 px-4 pb-12 pt-[144px] sm:min-h-[600px] sm:px-6 sm:pb-20 sm:pt-[168px] lg:min-h-[640px] lg:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(52,211,153,0.2),transparent_34%),linear-gradient(120deg,#06251e,#0a4632)]" />
+      <section className="relative -mt-[88px] flex min-h-[480px] items-center overflow-hidden bg-[#073c2d] px-4 pb-12 pt-[144px] sm:min-h-[600px] sm:px-6 sm:pb-20 sm:pt-[168px] lg:min-h-[640px] lg:px-8">
+        <span aria-hidden className="absolute -left-20 top-14 size-64 rounded-full bg-emerald-400/15 blur-3xl" />
+        <span aria-hidden className="absolute bottom-12 right-10 size-52 rounded-full bg-lime-200/10 blur-3xl" />
         <div className="aduan-loading-copy relative mx-auto w-full max-w-7xl">
           <p className="sr-only" role="status">Memuat halaman aduan</p>
           <div className="flex gap-2" aria-hidden="true"><span className="aduan-loading-dot size-3 rounded-full bg-emerald-300" /><span className="aduan-loading-dot size-3 rounded-full bg-emerald-300" /><span className="aduan-loading-dot size-3 rounded-full bg-emerald-300" /></div>
@@ -47,8 +48,8 @@ export default function LoadingAduan() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-7 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:gap-10">
-        <div className="aduan-loading-form relative overflow-hidden rounded-3xl border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-950/[0.06] sm:p-7">
+      <section className="mx-auto grid max-w-7xl gap-7 px-3 py-10 sm:px-6 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:gap-10 lg:px-8">
+        <div className="aduan-loading-form relative min-w-0 overflow-hidden rounded-3xl border border-emerald-100 bg-white p-4 shadow-xl shadow-emerald-950/[0.06] sm:p-7">
           <Skeleton className="aduan-loading-field h-8 w-48" />
           <Skeleton className="aduan-loading-field mt-3 h-5 max-w-sm" />
           <div className="mt-7 grid gap-5 sm:grid-cols-2">
@@ -56,14 +57,14 @@ export default function LoadingAduan() {
           </div>
           <div className="aduan-loading-field mt-5 space-y-2"><Skeleton className="h-4 w-36" /><Skeleton className="h-32 w-full" /></div>
           <Skeleton className="aduan-loading-field mt-6 h-12 w-36 bg-emerald-100" />
-          <span aria-hidden className="aduan-loading-shimmer absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+          <span aria-hidden className="aduan-loading-shimmer absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/35 blur-xl" />
         </div>
 
-        <div className="aduan-loading-history">
+        <div className="aduan-loading-history min-w-0">
           <Skeleton className="h-4 w-32 bg-emerald-100" />
           <Skeleton className="mt-3 h-8 w-52" />
           <div className="mt-5 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg shadow-slate-950/[0.04]">
-            {Array.from({ length: 3 }).map((_, index) => <div key={index} className={`aduan-loading-row relative flex gap-3 p-5 ${index > 0 ? "border-t border-slate-100" : ""}`}><Skeleton className="size-10 shrink-0 bg-emerald-100" /><div className="min-w-0 flex-1 space-y-2"><Skeleton className="h-5 w-3/4" /><Skeleton className="h-4 w-full" /></div><span aria-hidden className="aduan-loading-shimmer absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/80 to-transparent" /></div>)}
+            {Array.from({ length: 3 }).map((_, index) => <div key={index} className={`aduan-loading-row relative flex min-w-0 gap-3 p-4 sm:p-5 ${index > 0 ? "border-t border-slate-100" : ""}`}><Skeleton className="size-10 shrink-0 bg-emerald-100" /><div className="min-w-0 flex-1 space-y-2"><Skeleton className="h-5 w-3/4" /><Skeleton className="h-4 w-full" /></div><span aria-hidden className="aduan-loading-shimmer absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/35 blur-xl" /></div>)}
           </div>
         </div>
       </section>

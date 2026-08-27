@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { ComplaintJsonLd } from "@/components/aduan/complaint-json-ld"
 import { ComplaintPageContent } from "@/components/aduan/complaint-page-content"
 import { PageHero } from "@/components/ui/page-hero"
-import { getRecentComplaints } from "@/lib/complaints"
+import { getComplaintsPage } from "@/lib/complaints"
 import { getCmsPage } from "@/lib/cms-pages"
 
 export const dynamic = "force-dynamic"
@@ -23,16 +23,15 @@ export const metadata: Metadata = {
 }
 
 export default async function Aduan() {
-  const hero = await getCmsPage("aduan")
+  const [hero, complaintPage] = await Promise.all([getCmsPage("aduan"), getComplaintsPage()])
   const formSection = hero.sections.find((item) => item.key === "complaint-form")
   const historySection = hero.sections.find((item) => item.key === "complaint-history")
-  const complaints = await getRecentComplaints()
 
   return (
     <>
       <ComplaintJsonLd />
-      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} image={hero.image} imagePosition={hero.imagePosition} />
-      <ComplaintPageContent formSection={formSection} historyTitle={historySection?.title} complaints={complaints} />
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} image={hero.image} imagePosition={hero.imagePosition} overlayClassName="bg-[#071b1d]/75" />
+      <ComplaintPageContent formSection={formSection} historyTitle={historySection?.title} complaintPage={complaintPage} />
     </>
   )
 }

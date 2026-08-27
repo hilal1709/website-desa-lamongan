@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 
 import { prisma } from "@/app/lib/prisma"
 import { isComplaintCategory } from "@/lib/complaint-categories"
-import { getRecentComplaints } from "@/lib/complaints"
+import { getComplaintsPage } from "@/lib/complaints"
+import { COMPLAINT_PAGE_SIZE } from "@/lib/complaint-types"
 
 const maxLengths = { title: 120, category: 80, location: 160, contact: 80, description: 2000 }
 
@@ -11,9 +12,12 @@ function readField(value: unknown, field: keyof typeof maxLengths) {
   return typeof value === "string" ? value.trim().slice(0, maxLengths[field]) : ""
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const page = Number(searchParams.get("page"))
+  const pageSize = Number(searchParams.get("pageSize"))
   return NextResponse.json(
-    { complaints: await getRecentComplaints() },
+    await getComplaintsPage(Number.isFinite(page) ? page : 1, Number.isFinite(pageSize) ? pageSize : COMPLAINT_PAGE_SIZE),
     { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } },
   )
 }
