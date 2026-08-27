@@ -14,16 +14,24 @@ export async function PATCH(request: Request, context: RouteContext<"/api/cms/ar
   const id = await documentId(context)
   const body = await request.json() as Record<string, unknown>
   const title = typeof body.title === "string" ? body.title.trim().slice(0, 240) : ""
+  const detail = typeof body.detail === "string" ? body.detail.trim().slice(0, 2000) : ""
   const visibility = body.visibility === "PRIVATE" ? "PRIVATE" : body.visibility === "PUBLIC" ? "PUBLIC" : null
   if (!id || !title || !visibility) return NextResponse.json({ message: "Data arsip tidak valid." }, { status: 400 })
   try {
     const previous = await prisma.document.findUnique({ where: { id } })
     if (!previous) return NextResponse.json({ message: "Dokumen tidak ditemukan." }, { status: 404 })
-    const document = await prisma.document.update({ where: { id }, data: { title, visibility } })
-    refresh()
-    if (previous.visibility === "PUBLIC" || visibility === "PUBLIC") await publishCmsUpdate("pages")
+    const document = await prisma.document.update({ where: { id }, data: { title, detail: detail || null, visibility } })
+    try {
+      refresh()
+      if (previous.visibility === "PUBLIC" || visibility === "PUBLIC") await publishCmsUpdate("pages")
+    } catch (error) {
+      console.error("Archive cache refresh failed after update", error)
+    }
     return NextResponse.json({ document })
-  } catch { return NextResponse.json({ message: "Arsip belum dapat diperbarui." }, { status: 500 }) }
+  } catch (error) {
+    console.error("Archive update failed", error)
+    return NextResponse.json({ message: "Arsip belum dapat diperbarui." }, { status: 500 })
+  }
 }
 
 export async function DELETE(_: Request, context: RouteContext<"/api/cms/arsip/[id]">) {

@@ -39,6 +39,7 @@ export type DocumentSumAggregateOutputType = {
 export type DocumentMinAggregateOutputType = {
   id: number | null
   title: string | null
+  detail: string | null
   type: string | null
   size: string | null
   icon: string | null
@@ -54,6 +55,7 @@ export type DocumentMinAggregateOutputType = {
 export type DocumentMaxAggregateOutputType = {
   id: number | null
   title: string | null
+  detail: string | null
   type: string | null
   size: string | null
   icon: string | null
@@ -69,6 +71,7 @@ export type DocumentMaxAggregateOutputType = {
 export type DocumentCountAggregateOutputType = {
   id: number
   title: number
+  detail: number
   type: number
   size: number
   icon: number
@@ -96,6 +99,7 @@ export type DocumentSumAggregateInputType = {
 export type DocumentMinAggregateInputType = {
   id?: true
   title?: true
+  detail?: true
   type?: true
   size?: true
   icon?: true
@@ -111,6 +115,7 @@ export type DocumentMinAggregateInputType = {
 export type DocumentMaxAggregateInputType = {
   id?: true
   title?: true
+  detail?: true
   type?: true
   size?: true
   icon?: true
@@ -126,6 +131,7 @@ export type DocumentMaxAggregateInputType = {
 export type DocumentCountAggregateInputType = {
   id?: true
   title?: true
+  detail?: true
   type?: true
   size?: true
   icon?: true
@@ -228,6 +234,7 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type DocumentGroupByOutputType = {
   id: number
   title: string
+  detail: string | null
   type: string
   size: string
   icon: string
@@ -266,6 +273,7 @@ export type DocumentWhereInput = {
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   id?: Prisma.IntFilter<"Document"> | number
   title?: Prisma.StringFilter<"Document"> | string
+  detail?: Prisma.StringNullableFilter<"Document"> | string | null
   type?: Prisma.StringFilter<"Document"> | string
   size?: Prisma.StringFilter<"Document"> | string
   icon?: Prisma.StringFilter<"Document"> | string
@@ -281,6 +289,7 @@ export type DocumentWhereInput = {
 export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  detail?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
@@ -299,6 +308,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   title?: Prisma.StringFilter<"Document"> | string
+  detail?: Prisma.StringNullableFilter<"Document"> | string | null
   type?: Prisma.StringFilter<"Document"> | string
   size?: Prisma.StringFilter<"Document"> | string
   icon?: Prisma.StringFilter<"Document"> | string
@@ -314,6 +324,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
 export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  detail?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
@@ -337,6 +348,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Document"> | number
   title?: Prisma.StringWithAggregatesFilter<"Document"> | string
+  detail?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   type?: Prisma.StringWithAggregatesFilter<"Document"> | string
   size?: Prisma.StringWithAggregatesFilter<"Document"> | string
   icon?: Prisma.StringWithAggregatesFilter<"Document"> | string
@@ -351,6 +363,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
 
 export type DocumentCreateInput = {
   title: string
+  detail?: string | null
   type: string
   size: string
   icon: string
@@ -366,6 +379,7 @@ export type DocumentCreateInput = {
 export type DocumentUncheckedCreateInput = {
   id?: number
   title: string
+  detail?: string | null
   type: string
   size: string
   icon: string
@@ -380,6 +394,7 @@ export type DocumentUncheckedCreateInput = {
 
 export type DocumentUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
@@ -395,6 +410,7 @@ export type DocumentUpdateInput = {
 export type DocumentUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
@@ -410,6 +426,7 @@ export type DocumentUncheckedUpdateInput = {
 export type DocumentCreateManyInput = {
   id?: number
   title: string
+  detail?: string | null
   type: string
   size: string
   icon: string
@@ -424,6 +441,7 @@ export type DocumentCreateManyInput = {
 
 export type DocumentUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
@@ -439,6 +457,7 @@ export type DocumentUpdateManyMutationInput = {
 export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
@@ -454,6 +473,7 @@ export type DocumentUncheckedUpdateManyInput = {
 export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  detail?: Prisma.SortOrder
   type?: Prisma.SortOrder
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
@@ -474,6 +494,7 @@ export type DocumentAvgOrderByAggregateInput = {
 export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  detail?: Prisma.SortOrder
   type?: Prisma.SortOrder
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
@@ -489,6 +510,7 @@ export type DocumentMaxOrderByAggregateInput = {
 export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  detail?: Prisma.SortOrder
   type?: Prisma.SortOrder
   size?: Prisma.SortOrder
   icon?: Prisma.SortOrder
@@ -523,6 +545,7 @@ export type NullableIntFieldUpdateOperationsInput = {
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  detail?: boolean
   type?: boolean
   size?: boolean
   icon?: boolean
@@ -538,6 +561,7 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  detail?: boolean
   type?: boolean
   size?: boolean
   icon?: boolean
@@ -553,6 +577,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  detail?: boolean
   type?: boolean
   size?: boolean
   icon?: boolean
@@ -568,6 +593,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type DocumentSelectScalar = {
   id?: boolean
   title?: boolean
+  detail?: boolean
   type?: boolean
   size?: boolean
   icon?: boolean
@@ -580,7 +606,7 @@ export type DocumentSelectScalar = {
   uploadedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "type" | "size" | "icon" | "fileUrl" | "visibility" | "originalName" | "mimeType" | "byteSize" | "storagePath" | "uploadedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "detail" | "type" | "size" | "icon" | "fileUrl" | "visibility" | "originalName" | "mimeType" | "byteSize" | "storagePath" | "uploadedAt", ExtArgs["result"]["document"]>
 
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Document"
@@ -588,6 +614,7 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     title: string
+    detail: string | null
     type: string
     size: string
     icon: string
@@ -1023,6 +1050,7 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
 export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'Int'>
   readonly title: Prisma.FieldRef<"Document", 'String'>
+  readonly detail: Prisma.FieldRef<"Document", 'String'>
   readonly type: Prisma.FieldRef<"Document", 'String'>
   readonly size: Prisma.FieldRef<"Document", 'String'>
   readonly icon: Prisma.FieldRef<"Document", 'String'>

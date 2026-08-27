@@ -2,7 +2,6 @@ import Link from "next/link"
 import Image from "next/image"
 import type { NewsArticle } from "@/types"
 import { Card, CardContent } from "@/components/ui/card"
-import { NewsPreviewDialog } from "@/components/news/news-preview-dialog"
 import { NewsArrowUpRightIcon, NewsCalendarIcon, NewsTagIcon } from "@/components/news/news-icons"
 
 export function formatNewsDate(date: string) {
@@ -14,7 +13,6 @@ export function NewsCard({ article }: { article: NewsArticle }) {
 
   return (
     <Card className="news-card group relative h-full overflow-hidden rounded-2xl border-slate-200/80 transition duration-300 hover:-translate-y-1.5 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-950/10">
-      <NewsPreviewDialog article={article} />
       <Link href={articleHref} className="block" aria-label={`Baca berita: ${article.title}`}>
         <div className="relative aspect-[16/9] overflow-hidden bg-emerald-950">
           {article.image_url ? <Image src={article.image_url} alt={`Ilustrasi ${article.title}`} fill loading="lazy" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-105" /> : <div className="size-full bg-gradient-to-br from-emerald-900 to-emerald-700" />}

@@ -28,6 +28,7 @@ export async function POST(request: Request) {
   const formData = await request.formData()
   const file = formData.get("file")
   const title = typeof formData.get("title") === "string" ? String(formData.get("title")).trim().slice(0, 240) : ""
+  const detail = typeof formData.get("detail") === "string" ? String(formData.get("detail")).trim().slice(0, 2000) : ""
   const visibility = formData.get("visibility") === "PRIVATE" ? "PRIVATE" : "PUBLIC"
   if (!(file instanceof File)) return NextResponse.json({ message: "Pilih berkas yang akan diunggah." }, { status: 400 })
   const validation = validateArchiveFile(file)
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
   let storagePath = ""
   try {
     storagePath = await storeArchiveFile(file)
-    const document = await prisma.document.create({ data: { title, type: archiveType(file), size: formatFileSize(file.size), icon: "description", visibility, originalName: file.name.slice(0, 255), mimeType: file.type, byteSize: file.size, storagePath } })
+    const document = await prisma.document.create({ data: { title, detail: detail || null, type: archiveType(file), size: formatFileSize(file.size), icon: "description", visibility, originalName: file.name.slice(0, 255), mimeType: file.type, byteSize: file.size, storagePath } })
     refreshPublicArchive()
     if (visibility === "PUBLIC") await publishCmsUpdate("pages")
     return NextResponse.json({ document }, { status: 201 })

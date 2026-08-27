@@ -145,6 +145,7 @@ export type NewsScalarFieldEnum = (typeof NewsScalarFieldEnum)[keyof typeof News
 export const DocumentScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  detail: 'detail',
   type: 'type',
   size: 'size',
   icon: 'icon',

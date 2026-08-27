@@ -43,6 +43,7 @@ model News {
 model Document {
   id         Int      @id @default(autoincrement())
   title      String
+  detail     String?
   type       String
   size       String
   icon       String
