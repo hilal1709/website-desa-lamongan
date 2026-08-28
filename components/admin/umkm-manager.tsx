@@ -1,34 +1,24 @@
 "use client"
 
 
-import { BrowserlessSelect } from "@/components/ui/select"
-import { LegacyDatePicker } from "@/components/ui/date-picker"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
-import { Check, Pencil, Plus, Save, Trash2, X } from "lucide-react"
-import { CmsImageUpload } from "@/components/admin/cms-image-upload"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { Add01Icon, Cancel01Icon, CheckIcon, Delete01Icon, FloppyDiskIcon, PencilIcon } from "@hugeicons/core-free-icons"
 import { PaginationControls } from "@/components/ui/pagination-controls"
+import type { ApiBusiness, Business, Product, ProductForm, ProfileForm, Variant } from "@/components/admin/umkm/umkm-types"
+import { dateInput, emptyProduct, emptyProfile, makeSlug, normalizeBusiness, normalizeProduct, readResponse } from "@/components/admin/umkm/umkm-utils"
 
-type Variant = { name: string; price: number }
-type Product = { id: string; name: string; description: string; imageUrl: string; price: number; variants?: Variant[]; isAvailable: boolean }
-type Business = { id: string; name: string; slug: string; category: string; description: string; logoUrl: string; whatsapp: string; address: string | null; dusun: string; registeredAt: string; isPublished: boolean; products: Product[] }
-type ApiProduct = Omit<Product, "variants"> & { variants?: unknown }
-type ApiBusiness = Omit<Business, "dusun" | "registeredAt" | "products"> & { products: ApiProduct[]; dusun?: string | null; registeredAt?: string | Date | null; createdAt?: string | Date | null }
-type ProfileForm = Omit<Business, "id" | "products"> & { id?: string }
-type ProductForm = Omit<Product, "id"> & { id?: string }
+const LegacyDatePicker = dynamic(() => import("@/components/ui/date-picker").then((module) => module.LegacyDatePicker), { loading: () => <div className="mt-1.5 h-12 animate-pulse rounded-xl bg-slate-100" /> })
+const CmsImageUpload = dynamic(() => import("@/components/admin/cms-image-upload").then((module) => module.CmsImageUpload), { loading: () => <div className="h-24 animate-pulse rounded-2xl bg-emerald-50" /> })
 
 const input = "mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-800 outline-none transition focus:border-emerald-600 focus:bg-white"
-const today = () => new Date().toISOString().slice(0, 10)
-const dateInput = (value: unknown) => value instanceof Date ? value.toISOString().slice(0, 10) : typeof value === "string" && !Number.isNaN(Date.parse(value)) ? value.slice(0, 10) : today()
-const normalizeProduct = (product: ApiProduct): Product => ({ ...product, variants: Array.isArray(product.variants) ? (product.variants as unknown[]).flatMap((variant) => typeof variant === "string" ? [{ name: variant, price: product.price }] : variant && typeof variant === "object" && typeof (variant as Variant).name === "string" && Number.isFinite((variant as Variant).price) ? [{ name: (variant as Variant).name, price: (variant as Variant).price }] : []) : [] })
-const normalizeBusiness = (business: ApiBusiness): Business => ({ ...business, products: business.products.map(normalizeProduct), dusun: business.dusun?.trim() || "Belum ditentukan", registeredAt: dateInput(business.registeredAt ?? business.createdAt) })
-const emptyProfile = (): ProfileForm => ({ name: "", slug: "", category: "", description: "", logoUrl: "", whatsapp: "", address: "", dusun: "", registeredAt: today(), isPublished: true })
-const emptyProduct = (): ProductForm => ({ name: "", description: "", imageUrl: "", price: 0, variants: [], isAvailable: true })
-const makeSlug = (value: string) => value.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
-async function readResponse<T>(response: Response): Promise<T & { message?: string }> {
-  const body = await response.text()
-  if (!body) return { message: "Server tidak mengirim respons. Silakan coba lagi." } as T & { message?: string }
-  try { return JSON.parse(body) as T & { message?: string } } catch { return { message: "Respons server tidak valid. Silakan coba lagi." } as T & { message?: string } }
-}
+const Check = ({ className }: { className?: string }) => <HugeiconsIcon icon={CheckIcon} className={className} />
+const Pencil = ({ className }: { className?: string }) => <HugeiconsIcon icon={PencilIcon} className={className} />
+const Plus = ({ className }: { className?: string }) => <HugeiconsIcon icon={Add01Icon} className={className} />
+const Save = ({ className }: { className?: string }) => <HugeiconsIcon icon={FloppyDiskIcon} className={className} />
+const Trash2 = ({ className }: { className?: string }) => <HugeiconsIcon icon={Delete01Icon} className={className} />
+const X = ({ className }: { className?: string }) => <HugeiconsIcon icon={Cancel01Icon} className={className} />
 const notifyPublicUpdate = () => window.localStorage.setItem("cms-public-updated", `${Date.now()}`)
 
 export function UmkmManager({ initialBusinesses }: { initialBusinesses: ApiBusiness[] }) {
@@ -48,6 +38,10 @@ export function UmkmManager({ initialBusinesses }: { initialBusinesses: ApiBusin
     const timer = window.setTimeout(() => { void load() }, 0)
     return () => window.clearTimeout(timer)
   }, [initialBusinesses])
+  useEffect(() => {
+    if (!message) return
+    window.dispatchEvent(new CustomEvent("cms:notification", { detail: { message, tone: /gagal|tidak dapat/i.test(message) ? "error" : "success" } }))
+  }, [message])
   const current = creating ?? editing
   const setField = <K extends keyof ProfileForm>(field: K, value: ProfileForm[K]) => {
     if (creating) setCreating((current) => current ? { ...current, [field]: value } : current)
@@ -63,7 +57,7 @@ export function UmkmManager({ initialBusinesses }: { initialBusinesses: ApiBusin
     setCreating(null); setEditing(normalizeBusiness(data.business)); setMessage("Profil UMKM disimpan."); notifyPublicUpdate(); await load(false)
   }
   const removeBusiness = async (id: string) => {
-    if (!confirm("Hapus UMKM beserta seluruh produknya?")) return
+    if (document.documentElement.dataset.confirmedDelete !== "true") return
     const response = await fetch(`/api/cms/umkm?id=${id}`, { method: "DELETE" })
     if (response.ok) { setEditing(null); setMessage("UMKM dihapus."); notifyPublicUpdate(); await load(false) } else setMessage("UMKM gagal dihapus.")
   }
@@ -79,7 +73,7 @@ export function UmkmManager({ initialBusinesses }: { initialBusinesses: ApiBusin
     setEditing({ ...editing, products: next }); setProduct(null); setMessage("Produk disimpan."); notifyPublicUpdate(); await load(false)
   }
   const removeProduct = async (id: string) => {
-    if (!confirm("Hapus produk ini?")) return
+    if (document.documentElement.dataset.confirmedDelete !== "true") return
     const response = await fetch(`/api/cms/umkm/products?id=${id}`, { method: "DELETE" })
     if (response.ok && editing) { setEditing({ ...editing, products: editing.products.filter((item) => item.id !== id) }); setMessage("Produk dihapus."); notifyPublicUpdate(); await load(false) } else setMessage("Produk gagal dihapus.")
   }
@@ -94,7 +88,7 @@ export function UmkmManager({ initialBusinesses }: { initialBusinesses: ApiBusin
 function UmkmThumbnail({ src, name }: { src: string; name: string }) {
   const [failed, setFailed] = useState(false)
   if (!src || failed) return <div aria-label={`Logo ${name} belum tersedia`} className="grid size-11 shrink-0 place-items-center rounded-xl border border-emerald-100 bg-emerald-50 text-sm font-black text-emerald-800">{name.trim().slice(0, 1).toUpperCase() || "U"}</div>
-  return <img src={src} alt={`Logo ${name}`} onError={() => setFailed(true)} className="size-11 shrink-0 rounded-xl border border-slate-100 object-cover" />
+  return <img src={src} alt={`Logo ${name}`} loading="lazy" decoding="async" onError={() => setFailed(true)} className="size-11 shrink-0 rounded-xl border border-slate-100 object-cover" />
 }
 
 function VariantEditor({ variants, onChange }: { variants: Variant[]; onChange: (variants: Variant[]) => void }) {

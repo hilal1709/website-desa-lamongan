@@ -2,7 +2,7 @@ import { revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 
 import { prisma } from "@/app/lib/prisma"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { getCachedAdminUmkm } from "@/lib/admin-umkm-data"
 import { publishCmsUpdate } from "@/lib/pusher"
 import { requireCmsPermission } from "@/lib/api-access"
 
@@ -36,8 +36,8 @@ const databaseError = (error?: unknown) => {
 export async function GET() {
   if (!(await requireAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
   try {
-    const businesses = await prisma.umkm.findMany({ include: { products: { orderBy: { name: "asc" } } }, orderBy: { updatedAt: "desc" } })
-    return NextResponse.json({ businesses })
+    const businesses = await getCachedAdminUmkm()
+    return NextResponse.json({ businesses }, { headers: { "Cache-Control": "private, no-store" } })
   } catch (error) { return databaseError(error) }
 }
 

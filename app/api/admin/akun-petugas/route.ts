@@ -1,6 +1,7 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { hashPassword } from "@/lib/auth-password"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
   try {
     const data = staffInput(await request.json(), true)
     const staff = await prisma.adminUser.create({ data: { username: data.username, email: data.email, name: data.name, passwordHash: await hashPassword(data.password!), isActive: data.isActive, roles: { create: { roleId: "system-health-staff" } } }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })
+    await publishCmsUpdate("access")
     return Response.json(staff, { status: 201 })
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Akun petugas tidak dapat dibuat." }, { status: 400 })

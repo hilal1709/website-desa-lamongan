@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentHealthUser } from "@/lib/admin-auth"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -13,6 +14,7 @@ export async function DELETE(_: Request, context: RouteContext<"/api/kesehatan/s
       await tx.posyanduCheck.deleteMany({ where: { sessionId: id } })
       await tx.posyanduSession.delete({ where: { id } })
     })
+    await publishCmsUpdate("health-elderly")
     return new Response(null, { status: 204 })
   } catch {
     return Response.json({ error: "Sesi posyandu tidak ditemukan atau tidak dapat dihapus." }, { status: 404 })

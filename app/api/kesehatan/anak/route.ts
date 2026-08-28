@@ -2,6 +2,7 @@ import type { Prisma } from "@/generated/prisma/client"
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentHealthUser } from "@/lib/admin-auth"
 import { validateChildInput } from "@/lib/child-health"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 const pageSize = 9
@@ -19,6 +20,6 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   if (!(await getCurrentHealthUser())) return unauthorized()
-  try { return Response.json(await prisma.child.create({ data: validateChildInput(await request.json()), include: { checks: false } }), { status: 201 }) }
+  try { const child = await prisma.child.create({ data: validateChildInput(await request.json()), include: { checks: false } }); await publishCmsUpdate("health-child"); return Response.json(child, { status: 201 }) }
   catch (error) { return Response.json({ error: error instanceof Error ? error.message : "Data anak tidak valid." }, { status: 400 }) }
 }

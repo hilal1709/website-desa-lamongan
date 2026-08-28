@@ -1,6 +1,7 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { hashPassword } from "@/lib/auth-password"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -21,6 +22,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/admin/
     const isActive = typeof body.isActive === "boolean" ? body.isActive : true
     const staff = await prisma.adminUser.update({ where: { id }, data: { username, email, name, isActive, ...(password ? { passwordHash: await hashPassword(password) } : {}) }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })
     if (!isActive) await prisma.adminSession.deleteMany({ where: { userId: id } })
+    await publishCmsUpdate("access")
     return Response.json(staff)
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Akun petugas tidak dapat diperbarui." }, { status: 400 })

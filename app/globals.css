@@ -157,3 +157,29 @@ img {
   .elderly-health-manager [aria-label="Paginasi data lansia"] > div { display: grid; grid-template-columns: 1fr auto 1fr; width: 100%; gap: .4rem; }
   .elderly-health-manager [aria-label="Paginasi data lansia"] button { min-width: 0; padding-inline: .55rem; }
 }
+
+/* UMKM CMS: keep dense catalog controls comfortable on compact phones. */
+@media (max-width: 639px) {
+  [aria-labelledby="kelola-katalog-umkm-title"],
+  [aria-labelledby="kelola-katalog-umkm-title"] * { min-width: 0; }
+
+  [aria-labelledby="kelola-katalog-umkm-title"] > div > header { border-radius: 1.5rem; padding: 1.25rem; }
+  [aria-labelledby="kelola-katalog-umkm-title"] .grid[class*="grid-cols-3"] { grid-template-columns: 1fr; }
+
+  #katalog-umkm > div > section:first-child > div:first-child > button,
+  #katalog-umkm > div > section:first-child > div:first-child > div + button { width: 100%; }
+
+  #katalog-umkm .divide-y > div { flex-wrap: wrap; }
+  #katalog-umkm .divide-y > div > div:last-child { margin-left: auto; }
+
+  #katalog-umkm [aria-label^="Paginasi"] { align-items: stretch; padding-inline: 0.75rem; }
+  #katalog-umkm [aria-label^="Paginasi"] > p { text-align: center; }
+  #katalog-umkm [aria-label^="Paginasi"] > div { justify-content: center; }
+
+  #katalog-umkm [class~="grid-cols-[1fr_130px_auto]"] { grid-template-columns: 1fr; }
+  #katalog-umkm [class~="grid-cols-[1fr_130px_auto]"] button { min-height: 2.75rem; }
+
+  #katalog-umkm input,
+  #katalog-umkm textarea,
+  #katalog-umkm select { font-size: 16px; }
+}

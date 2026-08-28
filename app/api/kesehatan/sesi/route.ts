@@ -1,6 +1,7 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentHealthUser } from "@/lib/admin-auth"
 import { validatePosyanduSessionInput } from "@/lib/elderly-health"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -20,6 +21,7 @@ export async function POST(request: Request) {
   try {
     const data = validatePosyanduSessionInput(await request.json())
     const session = await prisma.posyanduSession.create({ data: { ...data, createdById: user.id }, include: { createdBy: { select: { name: true, username: true } }, _count: { select: { checks: true } } } })
+    await publishCmsUpdate("health-elderly")
     return Response.json(session, { status: 201 })
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Sesi posyandu tidak valid." }, { status: 400 })

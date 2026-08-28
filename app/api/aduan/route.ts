@@ -5,6 +5,7 @@ import { prisma } from "@/app/lib/prisma"
 import { isComplaintCategory } from "@/lib/complaint-categories"
 import { getComplaintsPage } from "@/lib/complaints"
 import { COMPLAINT_PAGE_SIZE } from "@/lib/complaint-types"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 const maxLengths = { title: 120, category: 80, location: 160, contact: 80, description: 2000 }
 
@@ -45,6 +46,7 @@ export async function POST(request: Request) {
 
   revalidateTag("complaints", "max")
   revalidateTag("admin-dashboard", "max")
+  await publishCmsUpdate("complaints")
 
   return NextResponse.json({ complaint: { ...complaint, createdAt: complaint.createdAt.toISOString(), respondedAt: complaint.respondedAt?.toISOString() ?? null } }, { status: 201 })
 }

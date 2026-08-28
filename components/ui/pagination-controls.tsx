@@ -1,7 +1,11 @@
 "use client"
 
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons"
 import { Button } from "@/components/ui/button"
+
+const ChevronLeft = () => <HugeiconsIcon icon={ArrowLeft01Icon} />
+const ChevronRight = () => <HugeiconsIcon icon={ArrowRight01Icon} />
 
 type PaginationControlsProps = {
   page: number

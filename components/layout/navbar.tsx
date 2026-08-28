@@ -27,6 +27,7 @@ const navigation = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const [openDesktopMenu, setOpenDesktopMenu] = useState<"profile" | "information" | null>(null)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const menuButtonRef = useRef<HTMLButtonElement>(null)
@@ -119,13 +120,21 @@ export function Navbar() {
               </Link>
             ))}
 
-            <div className="group relative">
-              <Link href="/profil" className={`${linkClass(profileActive)} flex items-center gap-1`} aria-haspopup="true">
+            <div
+              className="relative"
+              onMouseEnter={() => setOpenDesktopMenu("profile")}
+              onMouseLeave={() => setOpenDesktopMenu(null)}
+              onFocus={() => setOpenDesktopMenu("profile")}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setOpenDesktopMenu(null)
+              }}
+            >
+              <Link href="/profil" className={`${linkClass(profileActive)} flex items-center gap-1`} aria-expanded={openDesktopMenu === "profile"} aria-haspopup="true">
                 Profil Desa
-                <ChevronDown size={15} className="transition-transform duration-200 group-hover:rotate-180" />
+                <ChevronDown size={15} className={`transition-transform duration-200 ${openDesktopMenu === "profile" ? "rotate-180" : ""}`} />
               </Link>
 
-              <div className="invisible absolute left-1/2 top-[50px] w-64 -translate-x-1/2 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl shadow-slate-900/10 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div className={`${openDesktopMenu === "profile" ? "visible translate-y-0 opacity-100" : "invisible translate-y-2 opacity-0"} absolute left-1/2 top-[50px] w-64 -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-900/10 transition-all duration-200`}>
                 {profileLinks.map((item) => (
                   <Link
                     key={item.label}
@@ -142,13 +151,21 @@ export function Navbar() {
               </div>
             </div>
 
-            <div className="group relative">
-              <button className={`${linkClass(informationActive)} flex items-center gap-1`} aria-haspopup="true">
+            <div
+              className="relative"
+              onMouseEnter={() => setOpenDesktopMenu("information")}
+              onMouseLeave={() => setOpenDesktopMenu(null)}
+              onFocus={() => setOpenDesktopMenu("information")}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setOpenDesktopMenu(null)
+              }}
+            >
+              <button className={`${linkClass(informationActive)} flex items-center gap-1`} aria-expanded={openDesktopMenu === "information"} aria-haspopup="true">
                 Informasi
-                <ChevronDown size={15} className="transition-transform duration-200 group-hover:rotate-180" />
+                <ChevronDown size={15} className={`transition-transform duration-200 ${openDesktopMenu === "information" ? "rotate-180" : ""}`} />
               </button>
 
-              <div className="invisible absolute left-1/2 top-[50px] w-64 -translate-x-1/2 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-2xl shadow-slate-900/10 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div className={`${openDesktopMenu === "information" ? "visible translate-y-0 opacity-100" : "invisible translate-y-2 opacity-0"} absolute left-1/2 top-[50px] w-64 -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-900/10 transition-all duration-200`}>
                 {informationLinks.map((item) => (
                   <Link
                     key={item.label}

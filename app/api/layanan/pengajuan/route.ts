@@ -1,6 +1,7 @@
 import { randomBytes } from "crypto"
 import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
+import { publishCmsUpdate } from "@/lib/pusher"
 import { prisma } from "@/app/lib/prisma"
 import { storeServiceAttachment, validateAttachment } from "@/lib/service-attachments"
 import { normalizeWhatsapp } from "@/lib/village-services"
@@ -35,5 +36,6 @@ export async function POST(request: Request) {
   }
   revalidateTag("admin-dashboard", "max")
   revalidateTag("home-data", "max")
+  await publishCmsUpdate("services")
   return NextResponse.json({ trackingCode: submission.trackingCode, status: "Diajukan" }, { status: 201 })
 }

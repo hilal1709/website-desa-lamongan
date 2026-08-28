@@ -4,6 +4,7 @@ import { revalidateTag } from "next/cache"
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin, hasAdminRole } from "@/lib/admin-auth"
 import { isComplaintStatus } from "@/lib/complaint-status"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 function invalidateComplaints() {
   revalidateTag("complaints", "max")
@@ -26,6 +27,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/cms/ad
       data: { status, publicResponse: response || null, respondedAt: response ? new Date() : null },
     })
     invalidateComplaints()
+    await publishCmsUpdate("complaints")
     return NextResponse.json({ complaint: { ...complaint, createdAt: complaint.createdAt.toISOString(), updatedAt: complaint.updatedAt.toISOString(), respondedAt: complaint.respondedAt?.toISOString() ?? null } })
   } catch {
     return NextResponse.json({ message: "Aduan tidak ditemukan." }, { status: 404 })
@@ -40,6 +42,7 @@ export async function DELETE(_: Request, context: RouteContext<"/api/cms/aduan/[
   try {
     await prisma.complaint.delete({ where: { id } })
     invalidateComplaints()
+    await publishCmsUpdate("complaints")
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ message: "Aduan tidak ditemukan." }, { status: 404 })

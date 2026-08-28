@@ -2,7 +2,18 @@ import "server-only"
 
 import Pusher from "pusher"
 
-export type CmsUpdateTopic = "pages" | "news" | "umkm" | "disaster" | "population" | "settings"
+export type CmsUpdateTopic =
+  | "pages"
+  | "news"
+  | "umkm"
+  | "disaster"
+  | "population"
+  | "settings"
+  | "complaints"
+  | "services"
+  | "health-elderly"
+  | "health-child"
+  | "access"
 
 const appId = process.env.PUSHER_APP_ID
 const key = process.env.NEXT_PUBLIC_PUSHER_KEY

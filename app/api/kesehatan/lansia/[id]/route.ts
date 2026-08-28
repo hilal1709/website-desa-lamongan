@@ -1,6 +1,7 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentHealthUser } from "@/lib/admin-auth"
 import { validateElderlyUpdate } from "@/lib/elderly-health"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -23,6 +24,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/keseha
         include: { diseases: { orderBy: { startedAt: "desc" } } },
       })
     })
+    await publishCmsUpdate("health-elderly")
     return Response.json(elderly)
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "Data lansia tidak dapat diperbarui." }, { status: 400 })
@@ -40,6 +42,7 @@ export async function DELETE(_: Request, context: RouteContext<"/api/kesehatan/l
       await tx.elderlyDisease.deleteMany({ where: { elderlyId: id } })
       await tx.elderly.delete({ where: { id } })
     })
+    await publishCmsUpdate("health-elderly")
     return new Response(null, { status: 204 })
   } catch {
     return Response.json({ error: "Data lansia tidak ditemukan atau tidak dapat dihapus." }, { status: 404 })

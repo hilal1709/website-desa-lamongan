@@ -2,6 +2,7 @@ import { prisma } from "@/app/lib/prisma"
 import { requireCmsPermission } from "@/lib/api-access"
 import { cmsModules } from "@/lib/access-control"
 import { hashPassword } from "@/lib/auth-password"
+import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
     if (body.kind === "role") {
       const name = text(body.name, 80); if (!name) throw new Error("Nama peran wajib diisi.")
       const created = await prisma.role.create({ data: { name, description: text(body.description, 240) || null, permissions: { create: permissions(body.permissions) } }, include: { permissions: true, _count: { select: { users: true } } } })
+      await publishCmsUpdate("access")
       return Response.json({ role: created }, { status: 201 })
     }
     if (body.kind === "user") {
@@ -47,6 +49,7 @@ export async function POST(request: Request) {
       const roleIds = Array.isArray(body.roleIds) ? body.roleIds.filter((id): id is string => typeof id === "string") : []
       if (!username || !name || !/^\S+@\S+\.\S+$/.test(email) || password.length < 8) throw new Error("Data akun tidak valid; kata sandi minimal 8 karakter.")
       const user = await prisma.adminUser.create({ data: { username, email, name, passwordHash: await hashPassword(password), isActive: body.isActive !== false, roles: { create: roleIds.map((roleId) => ({ role: { connect: { id: roleId } } })) } }, select: { id: true, username: true } })
+      await publishCmsUpdate("access")
       return Response.json({ user }, { status: 201 })
     }
     throw new Error("Jenis data tidak valid.")
