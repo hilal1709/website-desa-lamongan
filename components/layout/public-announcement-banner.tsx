@@ -29,5 +29,5 @@ export function PublicAnnouncementBanner({ initialAnnouncement }: { initialAnnou
 
   const message = announcement?.trim()
   if (!message) return null
-  return <aside role="status" aria-label="Pengumuman desa" className="relative z-40 border-b border-emerald-200 bg-emerald-50 text-emerald-950"><div className="mx-auto flex max-w-[1400px] items-center gap-2 px-5 py-3 text-sm font-semibold"><Megaphone className="size-4 shrink-0 text-emerald-700" aria-hidden="true" /><div className="min-w-0 flex-1 overflow-hidden" aria-live="polite"><p className="announcement-ticker"><span>{message}</span><span aria-hidden="true" className="ml-12">{message}</span></p></div></div></aside>
+  return <aside role="status" aria-label="Pengumuman desa" className="relative z-40 border-b border-emerald-200 bg-emerald-50 text-emerald-950"><div className="mx-auto flex max-w-[1400px] items-center gap-2 px-5 py-3 text-sm font-semibold"><Megaphone className="size-4 shrink-0 text-emerald-700" aria-hidden="true" /><div className="min-w-0 flex-1 overflow-hidden" aria-live="polite"><p className="announcement-ticker">{message}</p></div></div></aside>
 }

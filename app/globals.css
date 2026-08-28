@@ -44,13 +44,13 @@ img {
 }
 
 @keyframes announcement-ticker {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
 }
 
 .announcement-ticker {
-  animation: announcement-ticker 22s linear infinite;
-  display: inline-flex;
+  animation: announcement-ticker 16s linear infinite;
+  display: inline-block;
   min-width: max-content;
   white-space: nowrap;
 }
