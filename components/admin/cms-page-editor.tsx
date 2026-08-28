@@ -34,13 +34,19 @@ function TextField({ field, value, onChange }: { field: Field | ItemField; value
   return <label className={`text-sm font-bold text-slate-700 ${multiline ? "md:col-span-2" : ""}`}>{label}{multiline ? <textarea value={value} onChange={(event) => onChange(event.target.value)} rows={3} className={inputClass} /> : <input value={value} onChange={(event) => onChange(event.target.value)} className={inputClass} />}</label>
 }
 
-export function CmsPageEditor() {
+export function CmsPageEditor({ initialPages }: { initialPages: CmsPageContent[] }) {
   const searchParams = useSearchParams()
-  const [pages, setPages] = useState<CmsPageContent[]>([])
+  const [pages, setPages] = useState<CmsPageContent[]>(initialPages)
   const [activeSlug, setActiveSlug] = useState("home")
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState("")
-  useEffect(() => { const controller = new AbortController(); void fetch("/api/cms/pages", { signal: controller.signal }).then((response) => response.json()).then((payload) => { if (!controller.signal.aborted) setPages(payload.pages ?? []) }).catch((error: unknown) => { if ((error as { name?: string }).name !== "AbortError") console.error("CMS pages could not be loaded", error) }); return () => controller.abort() }, [])
+  useEffect(() => {
+    // Hindari round-trip API setelah halaman terhidrasi; data CMS dikirim dari server.
+    if (initialPages.length) return
+    const controller = new AbortController()
+    void fetch("/api/cms/pages", { signal: controller.signal }).then((response) => response.json()).then((payload) => { if (!controller.signal.aborted) setPages(payload.pages ?? []) }).catch((error: unknown) => { if ((error as { name?: string }).name !== "AbortError") console.error("CMS pages could not be loaded", error) })
+    return () => controller.abort()
+  }, [initialPages])
   useEffect(() => { const slug = searchParams.get("halaman"); if (slug && pageSettings.some((item) => item.slug === slug)) setActiveSlug(slug) }, [searchParams])
   const visiblePages = useMemo(() => pageSettings.map((settings) => ({ settings, page: pages.find((page) => page.slug === settings.slug) })).filter((item): item is { settings: PageSettings; page: CmsPageContent } => Boolean(item.page)), [pages])
   const active = visiblePages.find((item) => item.settings.slug === activeSlug) ?? visiblePages[0]

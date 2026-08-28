@@ -1,8 +1,15 @@
 import { Store } from "lucide-react"
 import { LazyUmkmManager } from "@/components/admin/lazy-cms-editors"
+import { prisma } from "@/app/lib/prisma"
+import { getCurrentAdmin } from "@/lib/admin-auth"
+import { canAccess, firstPermittedCmsPath } from "@/lib/access-control"
+import { redirect } from "next/navigation"
 
 export const metadata = { title: "Kelola UMKM | Admin Kedungrejo" }
 
-export default function AdminUmkmPage() {
-  return <section aria-labelledby="kelola-katalog-umkm-title" className="min-h-screen bg-slate-50 px-1 py-4 sm:px-3 sm:py-8 lg:px-5 lg:py-10"><div className="mx-auto max-w-5xl"><header className="rounded-3xl bg-emerald-800 p-5 text-white shadow-lg shadow-emerald-900/15 sm:p-9"><span className="grid size-12 place-items-center rounded-2xl bg-white/15"><Store className="size-6" aria-hidden="true" /></span><h1 id="kelola-katalog-umkm-title" className="mt-5 text-2xl font-black sm:text-3xl">Kelola Katalog UMKM</h1><p className="mt-3 max-w-2xl text-sm leading-7 text-emerald-50">Input profil usaha, logo, produk, gambar, harga, dan nomor WhatsApp untuk ditampilkan di Infografis Desa.</p></header><section className="mt-5 sm:mt-7"><LazyUmkmManager /></section></div></section>
+export default async function AdminUmkmPage() {
+  const user = await getCurrentAdmin()
+  if (!user || !canAccess(user, "UMKM")) redirect(user ? firstPermittedCmsPath(user) ?? "/login" : "/login")
+  const businesses = await prisma.umkm.findMany({ include: { products: { orderBy: { name: "asc" } } }, orderBy: { updatedAt: "desc" } })
+  return <section aria-labelledby="kelola-katalog-umkm-title" className="min-h-screen bg-slate-50 px-1 py-4 sm:px-3 sm:py-8 lg:px-5 lg:py-10"><div className="mx-auto max-w-5xl"><header className="rounded-3xl bg-emerald-800 p-5 text-white shadow-lg shadow-emerald-900/15 sm:p-9"><span className="grid size-12 place-items-center rounded-2xl bg-white/15"><Store className="size-6" aria-hidden="true" /></span><h1 id="kelola-katalog-umkm-title" className="mt-5 text-2xl font-black sm:text-3xl">Kelola Katalog UMKM</h1><p className="mt-3 max-w-2xl text-sm leading-7 text-emerald-50">Input profil usaha, logo, produk, gambar, harga, dan nomor WhatsApp untuk ditampilkan di Infografis Desa.</p></header><section className="mt-5 sm:mt-7"><LazyUmkmManager initialBusinesses={businesses} /></section></div></section>
 }

@@ -1,5 +1,8 @@
 "use client"
 
+
+import { BrowserlessSelect } from "@/components/ui/select"
+import { LegacyDatePicker } from "@/components/ui/date-picker"
 import { useEffect, useMemo, useState } from "react"
 import { Bar, Line } from "react-chartjs-2"
 import { FileSpreadsheet, FileText, UsersRound } from "./infographic-icons"
@@ -121,9 +124,9 @@ export function PopulationEventsDashboard() {
 
     <div className="mt-5 grid gap-3 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
       <label className="text-xs font-bold text-slate-700">Tahun<input type="number" min="2000" max="2100" value={year} onChange={(event) => setFilter(setYear)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-sm" /></label>
-      <label className="text-xs font-bold text-slate-700">Bulan<select value={month} onChange={(event) => setFilter(setMonth)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="">Semua bulan</option>{months.map((item, index) => <option key={item} value={index + 1}>{item}</option>)}</select></label>
-      <label className="text-xs font-bold text-slate-700">Dusun<select value={dusun} onChange={(event) => setFilter(setDusun)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="">Semua dusun</option>{hamlets.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-      <label className="text-xs font-bold text-slate-700">Jenis peristiwa<select value={type} onChange={(event) => setFilter(setType)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="">Semua peristiwa</option>{eventTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
+      <label className="text-xs font-bold text-slate-700">Bulan<BrowserlessSelect value={month} onChange={(event) => setFilter(setMonth)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="">Semua bulan</option>{months.map((item, index) => <option key={item} value={index + 1}>{item}</option>)}</BrowserlessSelect></label>
+      <label className="text-xs font-bold text-slate-700">Dusun<BrowserlessSelect value={dusun} onChange={(event) => setFilter(setDusun)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="">Semua dusun</option>{hamlets.map((item) => <option key={item} value={item}>{item}</option>)}</BrowserlessSelect></label>
+      <label className="text-xs font-bold text-slate-700">Jenis peristiwa<BrowserlessSelect value={type} onChange={(event) => setFilter(setType)(event.target.value)} className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="">Semua peristiwa</option>{eventTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</BrowserlessSelect></label>
     </div>
 
     {message ? <p className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">{message}</p> : null}
@@ -144,3 +147,5 @@ export function PopulationEventsDashboard() {
 function PopulationEventsLoading() {
   return <section aria-busy="true" aria-live="polite" className="mt-5"><p className="sr-only" role="status">Memuat dinamika kependudukan</p><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{Array.from({ length: 8 }).map((_, index) => <article key={index} data-infographic-motion className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><span className="block h-3 w-28 animate-pulse rounded-full bg-slate-200" /><span className="mt-3 block h-8 w-16 animate-pulse rounded-lg bg-emerald-100" /></article>)}</div><div className="mt-6 grid gap-5 lg:grid-cols-2">{Array.from({ length: 2 }).map((_, index) => <article key={index} data-infographic-motion className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><span className="block h-5 w-48 animate-pulse rounded-lg bg-slate-200" /><span className="mt-5 block h-72 animate-pulse rounded-2xl bg-slate-100" /></article>)}</div><article data-infographic-motion className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"><span className="block h-5 w-72 max-w-full animate-pulse rounded-lg bg-slate-200" /><span className="mt-5 block h-96 animate-pulse rounded-2xl bg-slate-100" /></article></section>
 }
+
+

@@ -1,9 +1,12 @@
 import { ShieldAlert } from "lucide-react"
 import { AdminDisasterManager } from "@/components/bencana/admin-disaster-manager"
+import { prisma } from "@/app/lib/prisma"
 
 export const metadata = { title: "Kelola Status Bencana | Admin Kedungrejo" }
 
-export default function AdminBencanaPage() {
+export default async function AdminBencanaPage() {
+  const [setting, locations] = await Promise.all([prisma.disasterSetting.findUnique({ where: { id: 1 } }), prisma.disasterLocation.findMany({ orderBy: { updatedAt: "desc" } })])
+  const initialData = { setting: { override: (setting?.override ?? "auto") as "auto" | "aman" | "waspada" | "bahaya", announcement: setting?.announcement ?? null }, locations }
   return (
     <section aria-labelledby="kelola-bencana-status-peta-title" className="min-h-screen bg-slate-50 px-1 py-4 sm:px-3 sm:py-8 lg:px-5 lg:py-10">
       <div className="mx-auto max-w-4xl space-y-5 sm:space-y-7">
@@ -17,7 +20,7 @@ export default function AdminBencanaPage() {
           </p>
         </header>
 
-        <AdminDisasterManager />
+        <AdminDisasterManager initialData={initialData} />
       </div>
     </section>
   )

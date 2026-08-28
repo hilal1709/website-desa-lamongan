@@ -15,20 +15,28 @@ export async function GET(request: Request) {
   const sessionId = params.get("sessionId")?.trim()
   const search = params.get("search")?.trim()
   const dusun = params.get("dusun")?.trim()
+  const pageSize = 9
+  const requestedPage = Number.parseInt(params.get("page") ?? "1", 10)
+  const requestedSafePage = Number.isFinite(requestedPage) ? Math.max(requestedPage, 1) : 1
   const where: Prisma.ElderlyWhereInput = {
     ...(dusun ? { dusun } : {}),
     ...(search ? { fullName: { contains: search, mode: "insensitive" } } : {}),
   }
+  const totalItems = await prisma.elderly.count({ where })
+  const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1)
+  const page = Math.min(requestedSafePage, totalPages)
   const rows = await prisma.elderly.findMany({
     where,
     orderBy: [{ isActive: "desc" }, { fullName: "asc" }],
+    skip: (page - 1) * pageSize,
+    take: pageSize,
     include: {
       diseases: { orderBy: { startedAt: "desc" }, select: { id: true, diseaseName: true, normalizedName: true, startedAt: true, endedAt: true } },
       checks: sessionId ? { where: { sessionId }, select: { id: true, recordedAt: true, updatedAt: true, systolic: true, diastolic: true, weightKg: true, heightCm: true, bloodGlucoseMgDl: true, notes: true } } : false,
     },
   })
   const elderly = rows.map(({ diseases, checks, ...person }) => ({ ...person, checks: checks || [], diseases: diseases.filter((disease) => !disease.endedAt), diseaseHistory: diseases }))
-  return Response.json({ elderly })
+  return Response.json({ elderly, pagination: { page, pageSize, totalItems, totalPages } })
 }
 
 export async function POST(request: Request) {

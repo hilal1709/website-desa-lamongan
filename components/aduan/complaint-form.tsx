@@ -1,5 +1,8 @@
 "use client"
 
+
+import { BrowserlessSelect } from "@/components/ui/select"
+import { LegacyDatePicker } from "@/components/ui/date-picker"
 import type { FormEvent } from "react"
 
 import { ComplaintFileIcon, ComplaintLocationIcon, ComplaintMessageIcon, ComplaintSendIcon, ComplaintSparklesIcon } from "@/components/aduan/complaint-icons"
@@ -51,10 +54,10 @@ export function ComplaintForm({ section, isSubmitting, onSubmit }: ComplaintForm
                   <div key={name} className="complaint-field group min-w-0 text-sm font-bold text-slate-800">
                     <Label htmlFor={`complaint-${name}`} className="flex items-center gap-2"><Icon aria-hidden size={15} className="text-emerald-700 transition-transform duration-200 group-focus-within:scale-110" />{label}</Label>
                     {type === "select" ? (
-                      <select id={`complaint-${name}`} required name={name} defaultValue="" className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-base font-normal text-slate-900 outline-none transition hover:border-emerald-200 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100 sm:text-sm">
+                      <BrowserlessSelect id={`complaint-${name}`} required name={name} defaultValue="" className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-base font-normal text-slate-900 outline-none transition hover:border-emerald-200 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100 sm:text-sm">
                         <option value="" disabled>Pilih kategori aduan</option>
                         {COMPLAINT_CATEGORIES.map((item) => <option key={item} value={item}>{item}</option>)}
-                      </select>
+                      </BrowserlessSelect>
                     ) : (
                       <Input id={`complaint-${name}`} required name={name} type={type} inputMode={type === "tel" ? "tel" : "text"} autoComplete={name === "contact" ? "tel" : "off"} className="mt-2 text-base hover:border-emerald-200 sm:text-sm" placeholder={`Masukkan ${label.toLowerCase()}`} />
                     )}
@@ -78,3 +81,5 @@ export function ComplaintForm({ section, isSubmitting, onSubmit }: ComplaintForm
     </Card>
   )
 }
+
+

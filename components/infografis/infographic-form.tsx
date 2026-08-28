@@ -1,5 +1,8 @@
 "use client"
 
+
+import { BrowserlessSelect } from "@/components/ui/select"
+import { LegacyDatePicker } from "@/components/ui/date-picker"
 import { useEffect, useState } from "react"
 import {
   LoaderCircle,
@@ -232,7 +235,7 @@ export function InfographicForm() {
 
             <label className="text-xs font-extrabold text-slate-700">
               Pilih Wilayah Dusun
-              <select
+              <BrowserlessSelect
                 required
                 value={form.dusun}
                 onChange={(event) => setForm((current) => ({ ...current, dusun: event.target.value }))}
@@ -246,7 +249,7 @@ export function InfographicForm() {
                     {item}
                   </option>
                 ))}
-              </select>
+              </BrowserlessSelect>
             </label>
 
             <label className="text-xs font-extrabold text-slate-700">
@@ -328,3 +331,5 @@ export function InfographicForm() {
     </div>
   )
 }
+
+

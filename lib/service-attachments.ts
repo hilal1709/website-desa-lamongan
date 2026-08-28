@@ -7,6 +7,11 @@ const allowedTypes: Record<string, string> = { "application/pdf": ".pdf", "image
 export const MAX_SERVICE_ATTACHMENT_SIZE = 5 * 1024 * 1024
 const bucket = process.env.SUPABASE_SERVICE_ATTACHMENTS_BUCKET ?? "service-attachments"
 
+async function readLocalServiceAttachment(storagePath: string) {
+  const safePath = storagePath.split("/").map((part) => path.basename(part))
+  return { contents: await fs.readFile(path.join(process.cwd(), "storage", "service-attachments", ...safePath)) }
+}
+
 function client() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -41,9 +46,11 @@ export async function readServiceAttachment(storagePath: string) {
   const supabase = client()
   if (supabase) {
     const { data, error } = await supabase.storage.from(bucket).createSignedUrl(storagePath, 60)
-    if (error || !data.signedUrl) throw new Error("Berkas belum dapat diakses.")
-    return { signedUrl: data.signedUrl }
+    if (!error && data.signedUrl) return { signedUrl: data.signedUrl }
+
+    // Lampiran yang dibuat sebelum Supabase dikonfigurasi tersimpan secara lokal.
+    // Pertahankan aksesnya selama berkas lokal tersebut masih tersedia.
+    return readLocalServiceAttachment(storagePath)
   }
-  const safePath = storagePath.split("/").map((part) => path.basename(part))
-  return { contents: await fs.readFile(path.join(process.cwd(), "storage", "service-attachments", ...safePath)) }
+  return readLocalServiceAttachment(storagePath)
 }

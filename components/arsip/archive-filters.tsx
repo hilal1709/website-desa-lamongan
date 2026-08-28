@@ -1,5 +1,8 @@
 "use client"
 
+
+import { BrowserlessSelect } from "@/components/ui/select"
+import { LegacyDatePicker } from "@/components/ui/date-picker"
 import { HugeiconsIcon } from "@hugeicons/react"
 import Folder01Icon from "@hugeicons/core-free-icons/Folder01Icon"
 import Search01Icon from "@hugeicons/core-free-icons/Search01Icon"
@@ -27,12 +30,14 @@ export function ArchiveFilters({ categories, category, query, onCategoryChange, 
           <label className="flex min-h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-3 sm:rounded-2xl sm:px-4">
             <HugeiconsIcon icon={Folder01Icon} strokeWidth={1.8} aria-hidden="true" className="size-[19px] text-emerald-700" />
             <span className="sr-only">Filter kategori</span>
-            <select value={category} onChange={(event) => onCategoryChange(event.target.value)} className="w-full bg-transparent text-sm font-semibold text-slate-700 outline-none">
+            <BrowserlessSelect value={category} onChange={(event) => onCategoryChange(event.target.value)} className="w-full bg-transparent text-sm font-semibold text-slate-700 outline-none">
               {categories.map((item) => <option key={item}>{item}</option>)}
-            </select>
+            </BrowserlessSelect>
           </label>
         </form>
       </CardContent>
     </Card>
   )
 }
+
+
