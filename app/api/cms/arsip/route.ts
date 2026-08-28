@@ -2,6 +2,7 @@ import { revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
+import { getCachedAdminArchiveDocuments } from "@/lib/admin-archive-data"
 import { archiveType, deleteArchiveFile, formatFileSize, storeArchiveFile, validateArchiveFile } from "@/lib/archive-storage"
 import { publishCmsUpdate } from "@/lib/pusher"
 
@@ -14,11 +15,12 @@ function refreshPublicArchive() {
   revalidateTag("archive-documents", "max")
   revalidateTag("home-data", "max")
   revalidateTag("admin-dashboard", "max")
+  revalidateTag("admin-archive-documents", "max")
 }
 
 export async function GET() {
   if (!(await requireAdmin())) return NextResponse.json({ message: "Akses admin diperlukan." }, { status: 403 })
-  const documents = await prisma.document.findMany({ orderBy: { uploadedAt: "desc" } }).catch(() => null)
+  const documents = await getCachedAdminArchiveDocuments().catch(() => null)
   if (!documents) return NextResponse.json({ message: "Arsip belum dapat dimuat." }, { status: 500 })
   return NextResponse.json({ documents })
 }

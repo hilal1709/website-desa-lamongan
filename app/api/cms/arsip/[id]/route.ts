@@ -6,7 +6,7 @@ import { deleteArchiveFile } from "@/lib/archive-storage"
 import { publishCmsUpdate } from "@/lib/pusher"
 
 async function requireAdmin() { return (await getCurrentAdmin())?.isSuperAdmin === true }
-function refresh() { revalidateTag("archive-documents", "max"); revalidateTag("home-data", "max"); revalidateTag("admin-dashboard", "max") }
+function refresh() { revalidateTag("archive-documents", "max"); revalidateTag("home-data", "max"); revalidateTag("admin-dashboard", "max"); revalidateTag("admin-archive-documents", "max") }
 async function documentId(context: RouteContext<"/api/cms/arsip/[id]">) { const { id } = await context.params; const value = Number(id); return Number.isInteger(value) && value > 0 ? value : null }
 
 export async function PATCH(request: Request, context: RouteContext<"/api/cms/arsip/[id]">) {
