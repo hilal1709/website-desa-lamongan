@@ -13,7 +13,7 @@ export const LazyCmsPageEditor = dynamic(
 
 export const LazyNewsManager = dynamic(
   () => import("@/components/admin/news-manager").then((module) => module.NewsManager),
-  { loading: EditorFallback },
+  { ssr: false, loading: EditorFallback },
 )
 
 export const LazyUmkmManager = dynamic(

@@ -3,7 +3,6 @@
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
-import { gsap } from "gsap"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -59,10 +58,14 @@ export function BrowserlessSelect({ children, value, defaultValue, onChange, cla
   const [open, setOpen] = React.useState(false)
   const contentRef = React.useRef<HTMLDivElement>(null)
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (!open || !contentRef.current) return
-    const context = gsap.context(() => gsap.fromTo(contentRef.current, { autoAlpha: 0, y: -6, scale: 0.98 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.18, ease: "power2.out" }))
-    return () => context.revert()
+    let context: ReturnType<typeof import("gsap").default.context> | undefined
+    void import("gsap").then(({ default: gsap }) => {
+      if (!contentRef.current) return
+      context = gsap.context(() => gsap.fromTo(contentRef.current, { autoAlpha: 0, y: -6, scale: 0.98 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.18, ease: "power2.out" }))
+    })
+    return () => context?.revert()
   }, [open])
 
   const choose = (nextValue: string) => {
