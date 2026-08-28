@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server"
 import { revalidatePath, revalidateTag } from "next/cache"
-import { getFreshCmsPages, saveCmsPages, type CmsPageContent } from "@/lib/cms-pages"
+import { getCmsPages, saveCmsPages, type CmsPageContent } from "@/lib/cms-pages"
 import { publishCmsUpdate } from "@/lib/pusher"
 import { requireCmsPermission } from "@/lib/api-access"
 
 export async function GET() {
   const { response } = await requireCmsPermission("PAGE_CONTENT"); if (response) return response
-  return NextResponse.json({ pages: await getFreshCmsPages() })
+  return NextResponse.json({ pages: await getCmsPages() }, { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" } })
 }
 
 export async function PUT(request: Request) {

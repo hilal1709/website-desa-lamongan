@@ -183,3 +183,41 @@ img {
   #katalog-umkm textarea,
   #katalog-umkm select { font-size: 16px; }
 }
+
+/* CMS page editor: keep the dense authoring workspace comfortable on phones
+   while retaining its two-column workspace at larger breakpoints. */
+#tampilan-halaman,
+#tampilan-halaman [data-cms-panel],
+#tampilan-halaman [data-cms-section] {
+  min-width: 0;
+}
+
+@media (max-width: 639px) {
+  #tampilan-halaman > div { padding: 1rem; }
+
+  #tampilan-halaman aside > div {
+    display: flex;
+    gap: .65rem;
+    margin-inline: -.15rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding: .15rem .15rem .6rem;
+    scrollbar-width: thin;
+  }
+
+  #tampilan-halaman [data-cms-page-option] {
+    flex: 0 0 min(78vw, 19rem);
+    min-height: 8.5rem;
+  }
+
+  #tampilan-halaman [data-cms-panel] > header { padding: 1.25rem; }
+  #tampilan-halaman [data-cms-panel] > header [data-cms-action],
+  #tampilan-halaman [data-cms-panel] > aside [data-cms-action],
+  #tampilan-halaman > div > div > div > div:last-child > [data-cms-action] { width: 100%; }
+
+  #tampilan-halaman [data-cms-section] { padding: 1rem; }
+  #tampilan-halaman input,
+  #tampilan-halaman textarea { font-size: 16px; }
+
+  #tampilan-halaman code { flex-basis: 100%; }
+}

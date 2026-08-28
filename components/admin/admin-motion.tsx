@@ -1,11 +1,22 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
+import { CmsNoticeDialog } from "@/components/infografis/cms-notice-dialog"
 
 export function AdminMotion({ children }: { children: React.ReactNode }) {
   const root = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const [notice, setNotice] = useState<{ message: string; variant: "success" | "error" } | null>(null)
+
+  useEffect(() => {
+    const showNotice = (event: Event) => {
+      const detail = (event as CustomEvent<{ message?: string; variant?: "success" | "error" }>).detail
+      if (detail?.message) setNotice({ message: detail.message, variant: detail.variant === "error" ? "error" : "success" })
+    }
+    window.addEventListener("cms:notice", showNotice)
+    return () => window.removeEventListener("cms:notice", showNotice)
+  }, [])
 
   useEffect(() => {
     if (!root.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
@@ -51,5 +62,5 @@ export function AdminMotion({ children }: { children: React.ReactNode }) {
     return () => { cancelled = true; window.clearTimeout(timer); cleanups.forEach((cleanup) => cleanup()); context?.revert() }
   }, [pathname])
 
-  return <div ref={root}>{children}</div>
+  return <div ref={root}>{children}<CmsNoticeDialog notice={notice} onClose={() => setNotice(null)} /></div>
 }

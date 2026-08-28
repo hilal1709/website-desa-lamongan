@@ -8,7 +8,7 @@ function EditorFallback() {
 
 export const LazyCmsPageEditor = dynamic(
   () => import("@/components/admin/cms-page-editor").then((module) => module.CmsPageEditor),
-  { loading: EditorFallback },
+  { ssr: false, loading: EditorFallback },
 )
 
 export const LazyNewsManager = dynamic(

@@ -1,9 +1,11 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 
-/** Reloads an open CMS page when another device changes shared data. */
+/** Silently refreshes server-rendered CMS data after a shared update. */
 export function AdminContentSync() {
+  const router = useRouter()
   const refreshTimer = useRef<number | null>(null)
 
   useEffect(() => {
@@ -12,18 +14,15 @@ export function AdminContentSync() {
     let cancelled = false
     let disconnect: (() => void) | undefined
 
-    const reload = () => {
+    const refresh = () => {
       if (refreshTimer.current) window.clearTimeout(refreshTimer.current)
-      // Several CMS managers keep their own client state. A full reload makes
-      // the newest shared database state visible in every manager, not only
-      // in Server Components.
-      refreshTimer.current = window.setTimeout(() => window.location.reload(), 300)
+      refreshTimer.current = window.setTimeout(() => router.refresh(), 300)
     }
 
     // Fallback for deployments that have not configured Pusher yet.
-    const poll = !key || !cluster ? window.setInterval(reload, 30_000) : null
+    const poll = !key || !cluster ? window.setInterval(refresh, 30_000) : null
     const refreshWhenVisible = () => {
-      if (document.visibilityState === "visible" && (!key || !cluster)) reload()
+      if (document.visibilityState === "visible" && (!key || !cluster)) refresh()
     }
     window.addEventListener("visibilitychange", refreshWhenVisible)
 
@@ -32,7 +31,7 @@ export function AdminContentSync() {
         if (cancelled) return
         const pusher = new Pusher(key, { cluster })
         const channel = pusher.subscribe("cms-public")
-        channel.bind("content-updated", reload)
+        channel.bind("content-updated", refresh)
         disconnect = () => {
           pusher.unsubscribe("cms-public")
           pusher.disconnect()
@@ -47,7 +46,7 @@ export function AdminContentSync() {
       if (refreshTimer.current) window.clearTimeout(refreshTimer.current)
       disconnect?.()
     }
-  }, [])
+  }, [router])
 
   return null
 }

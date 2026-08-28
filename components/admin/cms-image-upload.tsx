@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Check, Copy, ImageUp, LoaderCircle } from "lucide-react"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { CheckIcon, Copy01Icon, Loading03Icon, Upload01Icon } from "@hugeicons/core-free-icons"
+
+const Check = ({ className }: { className?: string }) => <HugeiconsIcon icon={CheckIcon} className={className} aria-hidden="true" />
+const Copy = ({ className }: { className?: string }) => <HugeiconsIcon icon={Copy01Icon} className={className} aria-hidden="true" />
+const ImageUp = ({ className }: { className?: string }) => <HugeiconsIcon icon={Upload01Icon} className={className} aria-hidden="true" />
+const LoaderCircle = ({ className }: { className?: string }) => <HugeiconsIcon icon={Loading03Icon} className={className} aria-hidden="true" />
 
 export function CmsImageUpload({ onUploaded }: { onUploaded?: (url: string) => void }) {
   const [url, setUrl] = useState("")
@@ -18,12 +24,15 @@ export function CmsImageUpload({ onUploaded }: { onUploaded?: (url: string) => v
       const response = await fetch("/api/cms/uploads", { method: "POST", body: formData })
       const raw = await response.text()
       const payload = raw ? JSON.parse(raw) as { url?: string; message?: string } : {}
-      if (!response.ok || !payload.url) return setMessage(payload.message ?? "Gambar gagal diunggah.")
+      if (!response.ok || !payload.url) { const nextMessage = payload.message ?? "Gambar gagal diunggah."; setMessage(nextMessage); window.dispatchEvent(new CustomEvent("cms:notice", { detail: { message: nextMessage, variant: "error" } })); return }
       setUrl(payload.url)
       setMessage("Gambar siap digunakan.")
+      window.dispatchEvent(new CustomEvent("cms:notice", { detail: { message: "Gambar berhasil diunggah dan siap digunakan.", variant: "success" } }))
       onUploaded?.(payload.url)
     } catch {
-      setMessage("Respons upload tidak dapat dibaca. Silakan coba lagi.")
+      const nextMessage = "Respons upload tidak dapat dibaca. Silakan coba lagi."
+      setMessage(nextMessage)
+      window.dispatchEvent(new CustomEvent("cms:notice", { detail: { message: nextMessage, variant: "error" } }))
     } finally {
       setUploading(false)
     }
