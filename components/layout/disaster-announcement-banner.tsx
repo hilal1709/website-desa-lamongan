@@ -41,6 +41,6 @@ export function DisasterAnnouncementBanner({ initialSetting }: { initialSetting:
   const Icon = emergency || warning ? AlertTriangle : Megaphone
 
   return <aside role={emergency ? "alert" : "status"} aria-label="Pengumuman bencana desa" className={`relative z-40 overflow-hidden ${tone}`}>
-    <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-2.5 sm:px-6"><span className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/20"><Icon className="size-4" aria-hidden="true" /></span><p className="shrink-0 text-xs font-black uppercase tracking-[.12em]">{statusLabel[override]}</p><div className="min-w-0 flex-1 overflow-hidden" aria-live="polite"><p className="disaster-ticker inline-block whitespace-nowrap text-sm font-bold">{announcement}<span className="mx-12 opacity-70">•</span>{announcement}</p></div></div>
+    <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-2.5 sm:px-6"><span className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/20"><Icon className="size-4" aria-hidden="true" /></span><p className="shrink-0 text-xs font-black uppercase tracking-[.12em]">{statusLabel[override]}</p><div className="min-w-0 flex-1 overflow-hidden" aria-live="polite"><p className="announcement-ticker text-sm font-bold"><span>{announcement}</span><span aria-hidden="true" className="ml-12">{announcement}</span></p></div></div>
   </aside>
 }

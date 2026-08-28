@@ -21,6 +21,17 @@ export function AdminMotion({ children }: { children: React.ReactNode }) {
         gsap.to("[data-admin-orb]", { x: 22, y: 14, scale: 1.14, duration: 3.8, repeat: -1, yoyo: true, ease: "sine.inOut" })
         gsap.to("[data-admin-orb-secondary]", { x: -16, y: -10, scale: 1.08, duration: 4.6, repeat: -1, yoyo: true, ease: "sine.inOut" })
         gsap.to("[data-admin-progress]", { scaleX: 1, duration: 0.9, stagger: 0.1, ease: "power3.out", transformOrigin: "left center" })
+        if (pathname === "/admin/umkm") {
+          const umkmStats = gsap.utils.toArray<HTMLElement>("[aria-labelledby='kelola-katalog-umkm-title'] [data-admin-reveal]", root.current)
+          const catalogControls = gsap.utils.toArray<HTMLElement>("#katalog-umkm button", root.current)
+          gsap.fromTo(umkmStats, { autoAlpha: 0, y: 22, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.09, ease: "back.out(1.45)" })
+          catalogControls.forEach((control) => {
+            const enter = () => gsap.to(control, { y: -2, scale: 1.03, duration: 0.18, ease: "power2.out", overwrite: "auto" })
+            const leave = () => gsap.to(control, { y: 0, scale: 1, duration: 0.24, ease: "power2.out", overwrite: "auto" })
+            control.addEventListener("mouseenter", enter); control.addEventListener("mouseleave", leave)
+            cleanups.push(() => { control.removeEventListener("mouseenter", enter); control.removeEventListener("mouseleave", leave) })
+          })
+        }
         cards.forEach((card) => {
           const icon = card.querySelector("[data-admin-card-icon]")
           const arrow = card.querySelector("[data-admin-card-arrow]")

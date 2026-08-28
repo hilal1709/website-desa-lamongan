@@ -43,13 +43,16 @@ img {
   background: rgba(21, 128, 61, 0.16);
 }
 
-@keyframes disaster-ticker {
+@keyframes announcement-ticker {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-.disaster-ticker {
-  animation: disaster-ticker 18s linear infinite;
+.announcement-ticker {
+  animation: announcement-ticker 22s linear infinite;
+  display: inline-flex;
+  min-width: max-content;
+  white-space: nowrap;
 }
 
 /* Keep UMKM chart bars in a single solid colour. */
@@ -111,7 +114,7 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .disaster-ticker { animation: none; }
+  .announcement-ticker { animation: none; }
 }
 
 /* The admin main column is narrower than the viewport because of its fixed

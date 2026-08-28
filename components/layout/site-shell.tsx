@@ -31,9 +31,11 @@ export function SiteShell({ children, disasterSetting, siteSettings }: { childre
       <ScrollToTop />
       <PublicContentSync />
       <InstallAppPrompt />
-      <Navbar />
-      <DisasterAnnouncementBanner initialSetting={disasterSetting} />
-      <PublicAnnouncementBanner initialAnnouncement={siteSettings.publicAnnouncement} />
+      <div className="sticky top-0 z-50">
+        <Navbar />
+        <DisasterAnnouncementBanner initialSetting={disasterSetting} />
+        <PublicAnnouncementBanner initialAnnouncement={siteSettings.publicAnnouncement} />
+      </div>
       <main className="min-h-screen bg-[#f3f7f3]">{children}</main>
       <Footer settings={siteSettings} />
     </>

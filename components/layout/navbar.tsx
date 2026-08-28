@@ -87,7 +87,7 @@ export function Navbar() {
   }
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300`}>
+    <header className="relative z-50 transition-all duration-300">
       <div className="bg-transparent px-4 pb-0 pt-4">
       <div className="mx-auto max-w-[1400px]">
         <div

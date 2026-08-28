@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Plus, Save, ShieldCheck, Trash2, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Toast } from "@/components/ui/toast"
@@ -12,11 +12,10 @@ type User = { id: string; username: string; email: string; name: string | null; 
 const emptyRole = () => ({ name: "", description: "", permissions: [] as Permission[] })
 const emptyUser = () => ({ username: "", email: "", name: "", password: "", roleIds: [] as string[], isActive: true })
 
-export function AccessManager() {
-  const [modules, setModules] = useState<Module[]>([]), [roles, setRoles] = useState<Role[]>([]), [users, setUsers] = useState<User[]>([])
+export function AccessManager({ initialData }: { initialData: { modules: Module[]; roles: Role[]; users: User[] } }) {
+  const [modules, setModules] = useState<Module[]>(initialData.modules), [roles, setRoles] = useState<Role[]>(initialData.roles), [users, setUsers] = useState<User[]>(initialData.users)
   const [roleForm, setRoleForm] = useState(emptyRole), [userForm, setUserForm] = useState(emptyUser), [editingUserId, setEditingUserId] = useState<string | null>(null), [message, setMessage] = useState<{ message: string; variant: "success" | "error" } | null>(null), [busy, setBusy] = useState(false)
   const load = async () => { const response = await fetch("/api/admin/access", { cache: "no-store" }); const data = await response.json(); if (!response.ok) throw new Error(data.error); setModules(data.modules); setRoles(data.roles); setUsers(data.users) }
-  useEffect(() => { void load().catch((error: unknown) => setMessage({ message: error instanceof Error ? error.message : "Data gagal dimuat.", variant: "error" })) }, [])
   const save = async (kind: "role" | "user") => { setBusy(true); try { const body = kind === "role" ? { kind, ...roleForm, permissions: modules.map((module) => roleForm.permissions.find((item) => item.module === module.id) ?? { module: module.id, canView: false, canCreate: false, canUpdate: false, canDelete: false }) } : { kind, ...userForm }; const editing = kind === "user" && editingUserId; const response = await fetch(editing ? `/api/admin/access/${editing}` : "/api/admin/access", { method: editing ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); if (kind === "role") setRoleForm(emptyRole()); else { setUserForm(emptyUser()); setEditingUserId(null) } await load(); setMessage({ message: kind === "role" ? "Peran berhasil dibuat." : editing ? "Akun berhasil diperbarui." : "Akun berhasil dibuat.", variant: "success" }) } catch (error) { setMessage({ message: error instanceof Error ? error.message : "Penyimpanan gagal.", variant: "error" }) } finally { setBusy(false) } }
   const editUser = (user: User) => { setEditingUserId(user.id); setUserForm({ name: user.name ?? "", username: user.username, email: user.email, password: "", roleIds: user.roles.map((role) => role.roleId), isActive: user.isActive }); window.scrollTo({ top: 0, behavior: "smooth" }) }
   const remove = async (kind: "role" | "user", id: string, name: string) => { if (!window.confirm(`Hapus ${kind === "role" ? "peran" : "akun"} ${name}? Tindakan ini tidak dapat dibatalkan.`)) return; setBusy(true); try { const response = await fetch(`/api/admin/access/${id}?kind=${kind}`, { method: "DELETE" }); if (!response.ok) { const data = await response.json(); throw new Error(data.error) } await load(); setMessage({ message: `${kind === "role" ? "Peran" : "Akun"} berhasil dihapus.`, variant: "success" }) } catch (error) { setMessage({ message: error instanceof Error ? error.message : "Data tidak dapat dihapus.", variant: "error" }) } finally { setBusy(false) } }
