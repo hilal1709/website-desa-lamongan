@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   const active = params.get("active") !== "false"
   try {
     const residents = await prisma.resident.findMany({ where: { isActive: active, ...(query ? { OR: [{ fullName: { contains: query, mode: "insensitive" } }, { nationalId: { contains: query } }, { familyCardNumber: { contains: query } }] } : {}) }, orderBy: { fullName: "asc" }, take: 200 })
-    return Response.json({ residents })
+    return Response.json({ residents }, { headers: { "Cache-Control": "private, max-age=20, stale-while-revalidate=40" } })
   } catch {
     return Response.json({ message: "Basis data penduduk belum siap. Terapkan migrasi data penduduk terlebih dahulu." }, { status: 503 })
   }

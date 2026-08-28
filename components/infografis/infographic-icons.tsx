@@ -19,6 +19,17 @@ import Store01Icon from "@hugeicons/core-free-icons/Store01Icon"
 import Tag01Icon from "@hugeicons/core-free-icons/Tag01Icon"
 import UserGroupIcon from "@hugeicons/core-free-icons/UserGroupIcon"
 import UserMultipleIcon from "@hugeicons/core-free-icons/UserMultipleIcon"
+import Add01Icon from "@hugeicons/core-free-icons/Add01Icon"
+import AlertCircleIcon from "@hugeicons/core-free-icons/AlertCircleIcon"
+import Cancel01Icon from "@hugeicons/core-free-icons/Cancel01Icon"
+import CheckmarkCircle01Icon from "@hugeicons/core-free-icons/CheckmarkCircle01Icon"
+import DatabaseIcon from "@hugeicons/core-free-icons/DatabaseIcon"
+import Download01Icon from "@hugeicons/core-free-icons/Download01Icon"
+import PencilIcon from "@hugeicons/core-free-icons/PencilIcon"
+import SaveIcon from "@hugeicons/core-free-icons/SaveIcon"
+import TrashIcon from "@hugeicons/core-free-icons/TrashIcon"
+import Upload01Icon from "@hugeicons/core-free-icons/Upload01Icon"
+import UserAdd01Icon from "@hugeicons/core-free-icons/UserAdd01Icon"
 
 type IconProps = ComponentProps<typeof HugeiconsIcon>
 const makeIcon = (definition: IconSvgElement) => forwardRef<SVGSVGElement, IconProps>(function InfographicIcon({ icon: _icon, strokeWidth = 1.8, ...props }, ref) { void _icon; return <HugeiconsIcon ref={ref} icon={definition} strokeWidth={strokeWidth} aria-hidden="true" focusable="false" {...props} /> }) as unknown as LucideIcon
@@ -45,3 +56,14 @@ export const TrendingUp = makeIcon(ChartIncreaseIcon)
 export const UserCheck = makeIcon(UserMultipleIcon)
 export const Users = makeIcon(UserGroupIcon)
 export const UsersRound = makeIcon(UserGroupIcon)
+export const AlertTriangle = makeIcon(AlertCircleIcon)
+export const CheckCircle2 = makeIcon(CheckmarkCircle01Icon)
+export const Database = makeIcon(DatabaseIcon)
+export const Download = makeIcon(Download01Icon)
+export const Pencil = makeIcon(PencilIcon)
+export const Plus = makeIcon(Add01Icon)
+export const Save = makeIcon(SaveIcon)
+export const Trash2 = makeIcon(TrashIcon)
+export const Upload = makeIcon(Upload01Icon)
+export const UserPlus = makeIcon(UserAdd01Icon)
+export const X = makeIcon(Cancel01Icon)

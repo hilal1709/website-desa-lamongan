@@ -22,7 +22,7 @@ export async function GET() {
     prisma.populationEvent.findMany({ orderBy: [{ eventDate: "desc" }, { createdAt: "desc" }], take: 100 }),
     prisma.populationOpeningBalance.findMany({ orderBy: { dusun: "asc" } }),
   ])
-  return Response.json({ events, balances })
+  return Response.json({ events, balances }, { headers: { "Cache-Control": "private, max-age=20, stale-while-revalidate=40" } })
 }
 
 export async function POST(request: Request) {
