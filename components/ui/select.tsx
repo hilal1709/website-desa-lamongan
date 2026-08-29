@@ -52,7 +52,9 @@ type NativeLikeOption = React.ReactElement<{ value?: string | number; disabled?:
 export function BrowserlessSelect({ children, value, defaultValue, onChange, className, disabled, required, name }: Omit<React.ComponentProps<"select">, "onChange"> & { onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void }) {
   const options = React.Children.toArray(children).filter(React.isValidElement) as NativeLikeOption[]
   const optionValue = (option: NativeLikeOption) => String(option.props.value ?? option.props.children ?? "")
-  const currentValue = value ?? defaultValue
+  const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue)
+  const isControlled = value !== undefined
+  const currentValue = isControlled ? value : uncontrolledValue
   const selected = options.find((option) => optionValue(option) === String(currentValue))
   const placeholder = options.find((option) => option.props.value === "")?.props.children ?? "Pilih opsi"
   const [open, setOpen] = React.useState(false)
@@ -69,6 +71,7 @@ export function BrowserlessSelect({ children, value, defaultValue, onChange, cla
   }, [open])
 
   const choose = (nextValue: string) => {
+    if (!isControlled) setUncontrolledValue(nextValue)
     onChange?.({ target: { value: nextValue, name: name ?? "" } } as React.ChangeEvent<HTMLSelectElement>)
     setOpen(false)
   }
