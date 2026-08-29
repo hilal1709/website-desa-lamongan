@@ -80,15 +80,17 @@ export function NewsManager({ initialData }: { initialData: CmsNewsData }) {
     return () => context?.revert()
   }, [articlePage, query, status, data.articles.length])
 
+  const isEditorOpen = Boolean(article)
+
   useEffect(() => {
-    if (!article || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (!isEditorOpen || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     let context: ReturnType<typeof import("gsap").default.context> | undefined
     void import("gsap").then(({ default: gsap }) => {
       if (!editorRef.current) return
       context = gsap.context(() => gsap.fromTo(editorRef.current, { autoAlpha: 0, y: 24, scale: .97 }, { autoAlpha: 1, y: 0, scale: 1, duration: .34, ease: "power3.out" }))
     })
     return () => context?.revert()
-  }, [article])
+  }, [isEditorOpen])
 
   const save = async (next = data) => {
     setSaving(true)
