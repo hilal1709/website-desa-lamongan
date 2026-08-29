@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma"
+import { unstable_cache } from "next/cache"
 
 export type SiteSettings = {
   villageName: string; district: string; regency: string; province: string; officeAddress: string; phone: string; email: string; serviceHours: string
@@ -28,14 +29,17 @@ export const defaultSiteSettings: SiteSettings = {
   footerLinks: [{ label: "Profil Desa", href: "/profil" }, { label: "Berita Desa", href: "/berita" }, { label: "Layanan Publik", href: "/layanan" }, { label: "Data Desa", href: "/infografis" }],
 }
 
-export async function getSiteRedirects(): Promise<SiteRedirectRule[]> {
+async function readSiteRedirects(): Promise<SiteRedirectRule[]> {
   return prisma.siteRedirect.findMany({ select: { id: true, source: true, destination: true }, orderBy: { source: "asc" } })
 }
 
-export async function getSiteSettings(): Promise<SiteSettings> {
+async function readSiteSettings(): Promise<SiteSettings> {
   const setting = await prisma.siteSetting.findUnique({ where: { id: 1 } })
   if (!setting) return { ...defaultSiteSettings }
   const { id: _id, updatedAt: _updatedAt, ...data } = setting
   const rawLinks: unknown[] = Array.isArray(setting.footerLinks) ? setting.footerLinks : defaultSiteSettings.footerLinks
   return { ...data, footerLinks: rawLinks.filter((link): link is FooterLink => Boolean(link && typeof link === "object" && typeof (link as FooterLink).label === "string" && typeof (link as FooterLink).href === "string")) }
 }
+
+export const getSiteRedirects = unstable_cache(readSiteRedirects, ["site-redirects-v1"], { revalidate: 300, tags: ["site-settings"] })
+export const getSiteSettings = unstable_cache(readSiteSettings, ["site-settings-v1"], { revalidate: 300, tags: ["site-settings"] })

@@ -43,6 +43,22 @@ export function AdminMotion({ children }: { children: React.ReactNode }) {
             cleanups.push(() => { control.removeEventListener("mouseenter", enter); control.removeEventListener("mouseleave", leave) })
           })
         }
+        if (pathname === "/admin/pengaturan") {
+          const panels = gsap.utils.toArray<HTMLElement>("[data-settings-motion]", root.current)
+          const rows = gsap.utils.toArray<HTMLElement>("[data-settings-row]", root.current)
+          gsap.fromTo(panels, { autoAlpha: 0, y: 20, scale: 0.985 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.52, stagger: 0.08, ease: "power3.out", delay: 0.1 })
+          gsap.fromTo("[data-settings-stat]", { autoAlpha: 0, y: 12, scale: 0.88 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.38, stagger: 0.08, ease: "back.out(1.6)", delay: 0.34 })
+          gsap.fromTo("[data-settings-field]", { autoAlpha: 0, y: 9 }, { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.025, ease: "power2.out", delay: 0.28 })
+          gsap.to("[data-settings-orb]", { x: 20, y: 16, scale: 1.12, duration: 4.2, repeat: -1, yoyo: true, ease: "sine.inOut" })
+          gsap.to("[data-settings-orb-secondary]", { x: -18, y: -12, scale: 1.1, duration: 5.1, repeat: -1, yoyo: true, ease: "sine.inOut" })
+          ;[...panels, ...rows].forEach((item) => {
+            const icon = item.querySelector("[data-settings-icon]")
+            const enter = () => { gsap.to(item, { y: -3, duration: 0.22, ease: "power2.out", overwrite: "auto" }); if (icon) gsap.to(icon, { rotate: -7, scale: 1.08, duration: 0.22, overwrite: "auto" }) }
+            const leave = () => { gsap.to(item, { y: 0, duration: 0.3, ease: "power2.out", overwrite: "auto" }); if (icon) gsap.to(icon, { rotate: 0, scale: 1, duration: 0.28, overwrite: "auto" }) }
+            item.addEventListener("mouseenter", enter); item.addEventListener("mouseleave", leave)
+            cleanups.push(() => { item.removeEventListener("mouseenter", enter); item.removeEventListener("mouseleave", leave) })
+          })
+        }
         cards.forEach((card) => {
           const icon = card.querySelector("[data-admin-card-icon]")
           const arrow = card.querySelector("[data-admin-card-arrow]")

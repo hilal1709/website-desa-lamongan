@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
 import { requireCmsPermission } from "@/lib/api-access"
@@ -58,6 +58,7 @@ export async function PUT(request: Request) {
       if (redirectRows.length) await tx.siteRedirect.createMany({ data: redirectRows.map((row) => ({ source: row!.source!, destination: row!.destination! })) })
       return site
     })
+    revalidateTag("site-settings", { expire: 0 })
     revalidatePath("/", "layout")
     await publishCmsUpdate("settings")
     return NextResponse.json({ settings: (({ id: _id, updatedAt: _updatedAt, ...data }) => data)(saved), redirects: await getSiteRedirects() })
