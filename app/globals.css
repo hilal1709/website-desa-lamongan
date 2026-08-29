@@ -113,6 +113,31 @@ img {
   }
 }
 
+/* Account and access workspace: retain readable controls from compact phones
+   through tablets without constraining the desktop two-column workspace. */
+[data-access-manager] { min-width: 0; }
+
+@media (max-width: 639px) {
+  [data-access-manager] > div { min-width: 0; }
+  [data-access-manager] [data-access-panel] { border-radius: 1.25rem; }
+  [data-access-manager] [data-access-panel] > div { padding-inline: 1rem; }
+  [data-access-manager] input { font-size: 16px; }
+  [data-access-manager] [data-access-module] { min-width: 0; }
+  [data-access-manager] [data-access-module] > div > div:first-child { min-width: 0; }
+  [data-access-manager] [data-access-module] p { overflow-wrap: anywhere; }
+  [data-access-manager] [data-access-module] label { min-height: 2.5rem; justify-content: center; }
+  [data-access-manager] [data-access-module] article { min-width: 0; }
+  [data-access-manager] [aria-label^="Paginasi"] { align-items: stretch; padding: .75rem; }
+  [data-access-manager] [aria-label^="Paginasi"] > p { text-align: center; }
+  [data-access-manager] [aria-label^="Paginasi"] > div { justify-content: center; }
+  [data-access-manager] [aria-label^="Paginasi"] button { min-width: 0; }
+}
+
+@media (min-width: 640px) and (max-width: 1279px) {
+  [data-access-manager] [data-access-panel] > div { padding: 1.25rem; }
+  [data-access-manager] [data-access-module] > div > div:last-child { flex-wrap: wrap; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .announcement-ticker { animation: none; }
 }

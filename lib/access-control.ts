@@ -9,6 +9,26 @@ export const cmsModules = [
   ["COMPLAINTS", "Aduan", "/admin/aduan"], ["CMS_MODULES", "Modul CMS", "/admin/modul"], ["SETTINGS", "Pengaturan", "/admin/pengaturan"],
 ] as const satisfies readonly (readonly [CmsModule, string, string])[]
 
+type PermissionField = "canView" | "canCreate" | "canUpdate" | "canDelete"
+
+const moduleAccessConfig = {
+  DASHBOARD: { group: "Navigasi & ringkasan", description: "Beranda ringkasan operasional CMS.", actions: ["canView"] },
+  CMS_MODULES: { group: "Navigasi & ringkasan", description: "Halaman pintasan seluruh modul CMS.", actions: ["canView"] },
+  INFOGRAPHICS: { group: "Data kependudukan", description: "Data penduduk, peristiwa, dan infografis desa.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  ELDERLY_HEALTH: { group: "Data kependudukan", description: "Rekam medis lansia, anak, dan balita.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  UMKM: { group: "Ekonomi & kesiapsiagaan", description: "Profil usaha dan katalog produk UMKM.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  DISASTER_WEATHER: { group: "Ekonomi & kesiapsiagaan", description: "Status bencana, cuaca, dan titik peta.", actions: ["canView", "canUpdate"] },
+  PAGE_CONTENT: { group: "Publikasi desa", description: "Konten statis pada halaman publik.", actions: ["canView", "canUpdate"] },
+  NEWS: { group: "Publikasi desa", description: "Artikel dan kategori berita desa.", actions: ["canView", "canUpdate"] },
+  DOCUMENT_ARCHIVE: { group: "Publikasi desa", description: "Arsip dokumen publik maupun privat.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  SERVICE_CATALOG: { group: "Layanan warga", description: "Katalog layanan administrasi desa.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  SERVICE_SUBMISSIONS: { group: "Layanan warga", description: "Pengajuan layanan yang masuk dari warga.", actions: ["canView", "canUpdate"] },
+  COMPLAINTS: { group: "Layanan warga", description: "Aduan warga dan tindak lanjutnya.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  SETTINGS: { group: "Sistem", description: "Identitas desa, SEO, dan konfigurasi sistem.", actions: ["canView", "canUpdate"] },
+} as const satisfies Record<CmsModule, { group: string; description: string; actions: readonly PermissionField[] }>
+
+export const cmsAccessMatrix = cmsModules.map(([id, label]) => ({ id, label, ...moduleAccessConfig[id] }))
+
 export type PermissionAction = "view" | "create" | "update" | "delete"
 export type CurrentAdmin = {
   id: string; username: string; email: string; name: string | null; isActive: boolean; isSuperAdmin: boolean
