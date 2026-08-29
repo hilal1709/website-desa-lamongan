@@ -492,6 +492,7 @@ export const PopulationOpeningBalanceScalarFieldEnum = {
   dusun: 'dusun',
   effectiveDate: 'effectiveDate',
   totalPopulation: 'totalPopulation',
+  totalHouseholds: 'totalHouseholds',
   demographics: 'demographics',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

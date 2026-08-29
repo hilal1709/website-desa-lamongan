@@ -34,15 +34,17 @@ export async function POST(request: Request) {
     const body = await request.json() as Record<string, unknown>
     const dusun = typeof body.dusun === "string" ? normalizePopulationHamlet(body.dusun) : ""
     const totalPopulation = Number(body.totalPopulation)
+    const totalHouseholds = Number(body.totalHouseholds)
     const effectiveDate = dateValue(body.effectiveDate)
-    if (!dusun || !Number.isInteger(totalPopulation) || totalPopulation < 0) throw new Error("Dusun dan jumlah penduduk wajib diisi.")
+    if (!dusun || !Number.isInteger(totalPopulation) || totalPopulation < 0 || !Number.isInteger(totalHouseholds) || totalHouseholds < 0) throw new Error("Dusun, jumlah penduduk, dan jumlah KK wajib diisi.")
     const demographics = demographicsValue(body.demographics, totalPopulation)
 
     const earliestEvent = await prisma.populationEvent.findFirst({ where: { dusun }, orderBy: { eventDate: "asc" }, select: { eventDate: true } })
     if (earliestEvent && earliestEvent.eventDate < effectiveDate) throw new Error("Tanggal data dasar tidak boleh setelah catatan peristiwa yang sudah ada.")
 
-    const balance = await prisma.populationOpeningBalance.upsert({ where: { dusun }, update: { effectiveDate, totalPopulation, demographics }, create: { dusun, effectiveDate, totalPopulation, demographics } })
+    const balance = await prisma.populationOpeningBalance.upsert({ where: { dusun }, update: { effectiveDate, totalPopulation, totalHouseholds, demographics }, create: { dusun, effectiveDate, totalPopulation, totalHouseholds, demographics } })
     revalidateTag("population-events", { expire: 0 })
+    revalidateTag("home-data", { expire: 0 })
     revalidateTag("admin-dashboard", { expire: 0 })
     revalidatePath("/infografis")
     revalidatePath("/admin")
@@ -65,6 +67,7 @@ export async function DELETE(request: Request) {
 
     await prisma.populationOpeningBalance.delete({ where: { id: balance.id } })
     revalidateTag("population-events", { expire: 0 })
+    revalidateTag("home-data", { expire: 0 })
     revalidateTag("admin-dashboard", { expire: 0 })
     revalidatePath("/infografis")
     revalidatePath("/admin")

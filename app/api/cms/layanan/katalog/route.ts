@@ -21,10 +21,27 @@ export async function GET() {
 export async function POST(request: Request) {
   const access = await requireCmsPermission("SERVICE_CATALOG", "create"); if (access.response) return access.response
   const data = input(await request.json() as Record<string, unknown>); if (!data) return NextResponse.json({ message: "Lengkapi judul dan deskripsi layanan." }, { status: 400 })
-  try { const service = await prisma.villageService.create({ data: { ...data, requirements: { create: data.requirements.map((title, order) => ({ title, order })) } }, include: { requirements: true } }); revalidateTag("village-services", "max"); revalidateTag("home-data", "max"); revalidatePath("/layanan"); await publishCmsUpdate("pages"); return NextResponse.json({ service }, { status: 201 }) } catch { return NextResponse.json({ message: "Slug layanan sudah digunakan." }, { status: 409 }) }
+  try { const service = await prisma.villageService.create({ data: { ...data, requirements: { create: data.requirements.map((title, order) => ({ title, order })) } }, include: { requirements: true } }); revalidateTag("village-services", "max"); revalidateTag("admin-service-catalog", "max"); revalidateTag("home-data", "max"); revalidatePath("/layanan"); await publishCmsUpdate("pages"); return NextResponse.json({ service }, { status: 201 }) } catch { return NextResponse.json({ message: "Slug layanan sudah digunakan." }, { status: 409 }) }
 }
 export async function PUT(request: Request) {
   const access = await requireCmsPermission("SERVICE_CATALOG", "update"); if (access.response) return access.response
   const body = await request.json() as Record<string, unknown>, id = clean(body.id, 80), data = input(body); if (!id || !data) return NextResponse.json({ message: "Data layanan tidak valid." }, { status: 400 })
-  try { const service = await prisma.villageService.update({ where: { id }, data: { ...data, requirements: { deleteMany: {}, create: data.requirements.map((title, order) => ({ title, order })) } }, include: { requirements: true } }); revalidateTag("village-services", "max"); revalidateTag("home-data", "max"); revalidatePath("/layanan"); await publishCmsUpdate("pages"); return NextResponse.json({ service }) } catch { return NextResponse.json({ message: "Layanan tidak dapat diperbarui." }, { status: 400 }) }
+  try { const service = await prisma.villageService.update({ where: { id }, data: { ...data, requirements: { deleteMany: {}, create: data.requirements.map((title, order) => ({ title, order })) } }, include: { requirements: true } }); revalidateTag("village-services", "max"); revalidateTag("admin-service-catalog", "max"); revalidateTag("home-data", "max"); revalidatePath("/layanan"); await publishCmsUpdate("pages"); return NextResponse.json({ service }) } catch { return NextResponse.json({ message: "Layanan tidak dapat diperbarui." }, { status: 400 }) }
+}
+export async function DELETE(request: Request) {
+  const access = await requireCmsPermission("SERVICE_CATALOG", "delete")
+  if (access.response) return access.response
+  const id = clean(new URL(request.url).searchParams.get("id"), 80)
+  if (!id) return NextResponse.json({ message: "Layanan tidak valid." }, { status: 400 })
+  const submissionCount = await prisma.serviceSubmission.count({ where: { serviceId: id } })
+  if (submissionCount) return NextResponse.json({ message: "Layanan tidak dapat dihapus karena sudah memiliki pengajuan warga." }, { status: 409 })
+  try {
+    await prisma.villageService.delete({ where: { id } })
+    revalidateTag("village-services", "max")
+    revalidateTag("admin-service-catalog", "max")
+    revalidateTag("home-data", "max")
+    revalidatePath("/layanan")
+    await publishCmsUpdate("pages")
+    return new NextResponse(null, { status: 204 })
+  } catch { return NextResponse.json({ message: "Layanan tidak dapat dihapus." }, { status: 400 }) }
 }

@@ -28,10 +28,12 @@ export type AggregatePopulationOpeningBalance = {
 
 export type PopulationOpeningBalanceAvgAggregateOutputType = {
   totalPopulation: number | null
+  totalHouseholds: number | null
 }
 
 export type PopulationOpeningBalanceSumAggregateOutputType = {
   totalPopulation: number | null
+  totalHouseholds: number | null
 }
 
 export type PopulationOpeningBalanceMinAggregateOutputType = {
@@ -39,6 +41,7 @@ export type PopulationOpeningBalanceMinAggregateOutputType = {
   dusun: string | null
   effectiveDate: Date | null
   totalPopulation: number | null
+  totalHouseholds: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +51,7 @@ export type PopulationOpeningBalanceMaxAggregateOutputType = {
   dusun: string | null
   effectiveDate: Date | null
   totalPopulation: number | null
+  totalHouseholds: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +61,7 @@ export type PopulationOpeningBalanceCountAggregateOutputType = {
   dusun: number
   effectiveDate: number
   totalPopulation: number
+  totalHouseholds: number
   demographics: number
   createdAt: number
   updatedAt: number
@@ -66,10 +71,12 @@ export type PopulationOpeningBalanceCountAggregateOutputType = {
 
 export type PopulationOpeningBalanceAvgAggregateInputType = {
   totalPopulation?: true
+  totalHouseholds?: true
 }
 
 export type PopulationOpeningBalanceSumAggregateInputType = {
   totalPopulation?: true
+  totalHouseholds?: true
 }
 
 export type PopulationOpeningBalanceMinAggregateInputType = {
@@ -77,6 +84,7 @@ export type PopulationOpeningBalanceMinAggregateInputType = {
   dusun?: true
   effectiveDate?: true
   totalPopulation?: true
+  totalHouseholds?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -86,6 +94,7 @@ export type PopulationOpeningBalanceMaxAggregateInputType = {
   dusun?: true
   effectiveDate?: true
   totalPopulation?: true
+  totalHouseholds?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,6 +104,7 @@ export type PopulationOpeningBalanceCountAggregateInputType = {
   dusun?: true
   effectiveDate?: true
   totalPopulation?: true
+  totalHouseholds?: true
   demographics?: true
   createdAt?: true
   updatedAt?: true
@@ -192,6 +202,7 @@ export type PopulationOpeningBalanceGroupByOutputType = {
   dusun: string
   effectiveDate: Date
   totalPopulation: number
+  totalHouseholds: number | null
   demographics: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
@@ -225,6 +236,7 @@ export type PopulationOpeningBalanceWhereInput = {
   dusun?: Prisma.StringFilter<"PopulationOpeningBalance"> | string
   effectiveDate?: Prisma.DateTimeFilter<"PopulationOpeningBalance"> | Date | string
   totalPopulation?: Prisma.IntFilter<"PopulationOpeningBalance"> | number
+  totalHouseholds?: Prisma.IntNullableFilter<"PopulationOpeningBalance"> | number | null
   demographics?: Prisma.JsonNullableFilter<"PopulationOpeningBalance">
   createdAt?: Prisma.DateTimeFilter<"PopulationOpeningBalance"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PopulationOpeningBalance"> | Date | string
@@ -235,6 +247,7 @@ export type PopulationOpeningBalanceOrderByWithRelationInput = {
   dusun?: Prisma.SortOrder
   effectiveDate?: Prisma.SortOrder
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrderInput | Prisma.SortOrder
   demographics?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -248,6 +261,7 @@ export type PopulationOpeningBalanceWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PopulationOpeningBalanceWhereInput | Prisma.PopulationOpeningBalanceWhereInput[]
   effectiveDate?: Prisma.DateTimeFilter<"PopulationOpeningBalance"> | Date | string
   totalPopulation?: Prisma.IntFilter<"PopulationOpeningBalance"> | number
+  totalHouseholds?: Prisma.IntNullableFilter<"PopulationOpeningBalance"> | number | null
   demographics?: Prisma.JsonNullableFilter<"PopulationOpeningBalance">
   createdAt?: Prisma.DateTimeFilter<"PopulationOpeningBalance"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PopulationOpeningBalance"> | Date | string
@@ -258,6 +272,7 @@ export type PopulationOpeningBalanceOrderByWithAggregationInput = {
   dusun?: Prisma.SortOrder
   effectiveDate?: Prisma.SortOrder
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrderInput | Prisma.SortOrder
   demographics?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -276,6 +291,7 @@ export type PopulationOpeningBalanceScalarWhereWithAggregatesInput = {
   dusun?: Prisma.StringWithAggregatesFilter<"PopulationOpeningBalance"> | string
   effectiveDate?: Prisma.DateTimeWithAggregatesFilter<"PopulationOpeningBalance"> | Date | string
   totalPopulation?: Prisma.IntWithAggregatesFilter<"PopulationOpeningBalance"> | number
+  totalHouseholds?: Prisma.IntNullableWithAggregatesFilter<"PopulationOpeningBalance"> | number | null
   demographics?: Prisma.JsonNullableWithAggregatesFilter<"PopulationOpeningBalance">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PopulationOpeningBalance"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PopulationOpeningBalance"> | Date | string
@@ -286,6 +302,7 @@ export type PopulationOpeningBalanceCreateInput = {
   dusun: string
   effectiveDate: Date | string
   totalPopulation: number
+  totalHouseholds?: number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -296,6 +313,7 @@ export type PopulationOpeningBalanceUncheckedCreateInput = {
   dusun: string
   effectiveDate: Date | string
   totalPopulation: number
+  totalHouseholds?: number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -306,6 +324,7 @@ export type PopulationOpeningBalanceUpdateInput = {
   dusun?: Prisma.StringFieldUpdateOperationsInput | string
   effectiveDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalPopulation?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHouseholds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -316,6 +335,7 @@ export type PopulationOpeningBalanceUncheckedUpdateInput = {
   dusun?: Prisma.StringFieldUpdateOperationsInput | string
   effectiveDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalPopulation?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHouseholds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -326,6 +346,7 @@ export type PopulationOpeningBalanceCreateManyInput = {
   dusun: string
   effectiveDate: Date | string
   totalPopulation: number
+  totalHouseholds?: number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -336,6 +357,7 @@ export type PopulationOpeningBalanceUpdateManyMutationInput = {
   dusun?: Prisma.StringFieldUpdateOperationsInput | string
   effectiveDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalPopulation?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHouseholds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -346,6 +368,7 @@ export type PopulationOpeningBalanceUncheckedUpdateManyInput = {
   dusun?: Prisma.StringFieldUpdateOperationsInput | string
   effectiveDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   totalPopulation?: Prisma.IntFieldUpdateOperationsInput | number
+  totalHouseholds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   demographics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -356,6 +379,7 @@ export type PopulationOpeningBalanceCountOrderByAggregateInput = {
   dusun?: Prisma.SortOrder
   effectiveDate?: Prisma.SortOrder
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrder
   demographics?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -363,6 +387,7 @@ export type PopulationOpeningBalanceCountOrderByAggregateInput = {
 
 export type PopulationOpeningBalanceAvgOrderByAggregateInput = {
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrder
 }
 
 export type PopulationOpeningBalanceMaxOrderByAggregateInput = {
@@ -370,6 +395,7 @@ export type PopulationOpeningBalanceMaxOrderByAggregateInput = {
   dusun?: Prisma.SortOrder
   effectiveDate?: Prisma.SortOrder
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -379,12 +405,14 @@ export type PopulationOpeningBalanceMinOrderByAggregateInput = {
   dusun?: Prisma.SortOrder
   effectiveDate?: Prisma.SortOrder
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type PopulationOpeningBalanceSumOrderByAggregateInput = {
   totalPopulation?: Prisma.SortOrder
+  totalHouseholds?: Prisma.SortOrder
 }
 
 
@@ -394,6 +422,7 @@ export type PopulationOpeningBalanceSelect<ExtArgs extends runtime.Types.Extensi
   dusun?: boolean
   effectiveDate?: boolean
   totalPopulation?: boolean
+  totalHouseholds?: boolean
   demographics?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -404,6 +433,7 @@ export type PopulationOpeningBalanceSelectCreateManyAndReturn<ExtArgs extends ru
   dusun?: boolean
   effectiveDate?: boolean
   totalPopulation?: boolean
+  totalHouseholds?: boolean
   demographics?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -414,6 +444,7 @@ export type PopulationOpeningBalanceSelectUpdateManyAndReturn<ExtArgs extends ru
   dusun?: boolean
   effectiveDate?: boolean
   totalPopulation?: boolean
+  totalHouseholds?: boolean
   demographics?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -424,12 +455,13 @@ export type PopulationOpeningBalanceSelectScalar = {
   dusun?: boolean
   effectiveDate?: boolean
   totalPopulation?: boolean
+  totalHouseholds?: boolean
   demographics?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PopulationOpeningBalanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "dusun" | "effectiveDate" | "totalPopulation" | "demographics" | "createdAt" | "updatedAt", ExtArgs["result"]["populationOpeningBalance"]>
+export type PopulationOpeningBalanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "dusun" | "effectiveDate" | "totalPopulation" | "totalHouseholds" | "demographics" | "createdAt" | "updatedAt", ExtArgs["result"]["populationOpeningBalance"]>
 
 export type $PopulationOpeningBalancePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PopulationOpeningBalance"
@@ -439,6 +471,7 @@ export type $PopulationOpeningBalancePayload<ExtArgs extends runtime.Types.Exten
     dusun: string
     effectiveDate: Date
     totalPopulation: number
+    totalHouseholds: number | null
     demographics: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
@@ -869,6 +902,7 @@ export interface PopulationOpeningBalanceFieldRefs {
   readonly dusun: Prisma.FieldRef<"PopulationOpeningBalance", 'String'>
   readonly effectiveDate: Prisma.FieldRef<"PopulationOpeningBalance", 'DateTime'>
   readonly totalPopulation: Prisma.FieldRef<"PopulationOpeningBalance", 'Int'>
+  readonly totalHouseholds: Prisma.FieldRef<"PopulationOpeningBalance", 'Int'>
   readonly demographics: Prisma.FieldRef<"PopulationOpeningBalance", 'Json'>
   readonly createdAt: Prisma.FieldRef<"PopulationOpeningBalance", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PopulationOpeningBalance", 'DateTime'>

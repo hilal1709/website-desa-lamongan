@@ -397,6 +397,7 @@ model PopulationOpeningBalance {
   dusun           String   @unique
   effectiveDate   DateTime
   totalPopulation Int
+  totalHouseholds Int?
   demographics    Json?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

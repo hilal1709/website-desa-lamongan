@@ -219,5 +219,28 @@ img {
   #tampilan-halaman input,
   #tampilan-halaman textarea { font-size: 16px; }
 
-  #tampilan-halaman code { flex-basis: 100%; }
+#tampilan-halaman code { flex-basis: 100%; }
+}
+
+/* Service CMS: preserve readable controls from compact phones through laptops. */
+#main-content:has([data-service-hero]) { min-width: 0; }
+
+@media (max-width: 639px) {
+  #main-content:has([data-service-hero]) > section > header { padding-inline: .25rem; }
+  [data-service-hero] { border-radius: 1.25rem; padding: 1.25rem; }
+  [data-service-hero] > div:first-of-type > button { width: 100%; }
+  #main-content:has([data-service-hero]) article[data-service-row] { min-width: 0; }
+  #main-content:has([data-service-hero]) article[data-service-row] form { grid-template-columns: minmax(0, 1fr); }
+  #main-content:has([data-service-hero]) article[data-service-row] details,
+  #main-content:has([data-service-hero]) article[data-service-row] p { overflow-wrap: anywhere; }
+  #main-content:has([data-service-hero]) [aria-label^="Paginasi"] { align-items: stretch; padding: .75rem; }
+  #main-content:has([data-service-hero]) [aria-label^="Paginasi"] > p { text-align: center; }
+  #main-content:has([data-service-hero]) [aria-label^="Paginasi"] > div { justify-content: center; }
+  #main-content:has([data-service-hero]) input,
+  #main-content:has([data-service-hero]) textarea,
+  #main-content:has([data-service-hero]) select { font-size: 16px; }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  #main-content:has([data-service-hero]) article[data-service-row] form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

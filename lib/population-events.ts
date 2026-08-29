@@ -173,15 +173,21 @@ export async function getPublicPopulationEventDashboard(filters: PopulationEvent
  * komposisi demografi yang jauh lebih mahal untuk dihitung.
  */
 export async function getOfficialPopulationTotalForYear(year: number) {
+  const summary = await getOfficialPopulationSummaryForYear(year)
+  return summary.totalPopulation
+}
+
+/** Angka resmi yang dipakai bersama oleh beranda dan infografis. */
+export async function getOfficialPopulationSummaryForYear(year: number) {
   const endInclusive = new Date(Date.UTC(year + 1, 0, 1) - 1)
   const [events, balances] = await Promise.all([
     prisma.populationEvent.findMany({
       where: { eventDate: { lte: endInclusive } },
-      select: { eventDate: true, type: true, dusun: true },
+      select: { eventDate: true, type: true, dusun: true, gender: true, birthDate: true },
     }),
     prisma.populationOpeningBalance.findMany({
       where: { effectiveDate: { lte: endInclusive } },
-      select: { dusun: true, effectiveDate: true, totalPopulation: true },
+      select: { dusun: true, effectiveDate: true, totalPopulation: true, totalHouseholds: true, demographics: true },
     }),
   ])
 
@@ -189,7 +195,21 @@ export async function getOfficialPopulationTotalForYear(year: number) {
     balances.map((balance) => ({ ...balance, dusun: normalizePopulationHamlet(balance.dusun) })),
     events.map((event) => ({ ...event, dusun: normalizePopulationHamlet(event.dusun) })),
   )
-  return populationByHamlet.reduce((total, hamlet) => total + hamlet.totalPopulation, 0)
+  const demographics = calculatePopulationDemographics(
+    balances.map((balance) => ({ ...balance, dusun: normalizePopulationHamlet(balance.dusun), demographics: demographicCells(balance.demographics) })),
+    events.map((event) => ({ ...event, dusun: normalizePopulationHamlet(event.dusun) })),
+    endInclusive,
+  )
+  return {
+    totalPopulation: populationByHamlet.reduce((total, hamlet) => total + hamlet.totalPopulation, 0),
+    hamletCount: populationByHamlet.length,
+    male: demographics.male,
+    female: demographics.female,
+    // KK hanya ditayangkan ketika semua dusun telah diisi dari data resmi.
+    totalHouseholds: balances.length > 0 && balances.every((balance) => Number.isInteger(balance.totalHouseholds))
+      ? balances.reduce((total, balance) => total + (balance.totalHouseholds ?? 0), 0)
+      : null,
+  }
 }
 
 export async function getPublicPopulationEventExport(filters: PopulationEventFilters) {

@@ -15,7 +15,7 @@ export interface HomePageModel {
   services: Service[]
   news: NewsItem[]
   documents: Awaited<ReturnType<typeof getHomeData>>["documents"]
-  residentSummary: { label: string; value: number }[]
+  residentSummary: { label: string; value: number | null }[]
 }
 
 export async function getHomePageModel(): Promise<HomePageModel> {

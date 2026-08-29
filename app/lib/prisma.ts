@@ -2,7 +2,7 @@ import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const prismaSchemaVersion = "20260827113000_add_document_detail"
+const prismaSchemaVersion = "20260829090000_add_population_opening_balance_households"
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient; prismaUsesTls?: boolean; prismaSchemaVersion?: string };
 const databaseUrl = process.env.DATABASE_URL ?? "";
 const usesTls = databaseUrl.includes("supabase.com") || databaseUrl.includes("sslmode=require");

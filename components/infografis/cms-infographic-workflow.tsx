@@ -11,9 +11,9 @@ type WorkflowStep = {
 }
 
 const workflow: readonly WorkflowStep[] = [
-  { number: "01", title: "Data dasar", description: "Tetapkan jumlah jiwa serta komposisi awal tiap dusun.", icon: Database },
+  { number: "01", title: "Data dasar", description: "Tetapkan jumlah jiwa, jumlah KK, dan komposisi awal tiap dusun.", icon: Database },
   { number: "02", title: "Peristiwa warga", description: "Catat kelahiran, kematian, dan perpindahan penduduk.", icon: BarChart3 },
-  { number: "03", title: "Profil visual", description: "Lengkapi pendidikan dan pekerjaan untuk grafik publik.", icon: UserCheck },
+  { number: "03", title: "Profil visual", description: "Lengkapi pendidikan dan pekerjaan tanpa mengubah total jiwa atau KK resmi.", icon: UserCheck },
 ]
 
 export function CmsInfographicWorkflow() {
