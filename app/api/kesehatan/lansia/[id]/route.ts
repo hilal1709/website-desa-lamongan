@@ -6,7 +6,7 @@ import { publishCmsUpdate } from "@/lib/pusher"
 export const dynamic = "force-dynamic"
 
 export async function PATCH(request: Request, context: RouteContext<"/api/kesehatan/lansia/[id]">) {
-  if (!(await getCurrentHealthUser())) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
+  if (!(await getCurrentHealthUser("update"))) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
   try {
     const { id } = await context.params
     const data = validateElderlyUpdate(await request.json())

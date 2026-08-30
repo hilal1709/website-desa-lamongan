@@ -11,7 +11,7 @@ function unauthorized() {
 }
 
 export async function GET(request: Request) {
-  if (!(await getCurrentHealthUser())) return unauthorized()
+  if (!(await getCurrentHealthUser("create"))) return unauthorized()
   const params = new URL(request.url).searchParams
   const sessionId = params.get("sessionId")?.trim()
   const search = params.get("search")?.trim()

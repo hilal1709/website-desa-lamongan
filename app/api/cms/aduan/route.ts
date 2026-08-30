@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server"
 
-import { getCurrentAdmin, hasAdminRole } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { getAdminComplaints } from "@/lib/admin-complaint-data"
 
 export async function GET(request: Request) {
-  const user = await getCurrentAdmin()
-  if (!hasAdminRole(user)) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("COMPLAINTS"); if (response) return response
 
   const { searchParams } = new URL(request.url)
   const status = searchParams.get("status")?.trim()

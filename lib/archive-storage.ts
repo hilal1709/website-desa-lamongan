@@ -2,6 +2,7 @@ import { randomUUID } from "crypto"
 import { promises as fs } from "fs"
 import path from "path"
 import { createClient } from "@supabase/supabase-js"
+import { scanForMalware } from "@/lib/malware-scan"
 
 const allowedTypes: Record<string, { extension: string; label: string }> = {
   "application/pdf": { extension: ".pdf", label: "PDF" },
@@ -28,6 +29,15 @@ export function validateArchiveFile(file: File) {
   return null
 }
 
+export async function validateArchiveFileContents(file: File) {
+  const bytes = new Uint8Array(await file.slice(0, 8).arrayBuffer())
+  const office = bytes[0] === 0x50 && bytes[1] === 0x4b
+  const valid = file.type === "application/pdf" ? bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46
+    : file.type === "application/msword" || file.type === "application/vnd.ms-excel" || file.type === "application/vnd.ms-powerpoint" ? bytes[0] === 0xd0 && bytes[1] === 0xcf && bytes[2] === 0x11 && bytes[3] === 0xe0
+    : office
+  return valid ? null : "Isi berkas tidak sesuai dengan tipe dokumen yang diizinkan."
+}
+
 export function archiveType(file: File) {
   return allowedTypes[file.type]?.label ?? "Dokumen"
 }
@@ -42,6 +52,7 @@ export async function storeArchiveFile(file: File) {
   if (!definition) throw new Error("Jenis berkas tidak didukung.")
   const storagePath = `archives/${randomUUID()}${definition.extension}`
   const contents = Buffer.from(await file.arrayBuffer())
+  await scanForMalware(contents, file.name)
   const supabase = client()
   if (supabase) {
     const { error } = await supabase.storage.from(archiveBucket).upload(storagePath, contents, { contentType: file.type, upsert: false })

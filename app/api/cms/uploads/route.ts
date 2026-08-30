@@ -3,7 +3,8 @@ import { promises as fs } from "fs"
 import path from "path"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
+import { scanForMalware } from "@/lib/malware-scan"
 
 const allowedTypes: Record<string, string> = {
   "image/jpeg": ".jpg",
@@ -21,7 +22,8 @@ function storageClient() {
 }
 
 export async function POST(request: Request) {
-  if (!(await getCurrentAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("PAGE_CONTENT", "update")
+  if (response) return response
   const formData = await request.formData()
   const file = formData.get("image")
 
@@ -33,11 +35,17 @@ export async function POST(request: Request) {
   }
 
   const filename = `${randomUUID()}${allowedTypes[file.type]}`
+  const contents = Buffer.from(await file.arrayBuffer())
+  try {
+    await scanForMalware(contents, file.name)
+  } catch (error) {
+    return NextResponse.json({ message: error instanceof Error ? error.message : "Gambar ditolak oleh pemindaian keamanan." }, { status: 422 })
+  }
   const cloudStorage = storageClient()
 
   if (cloudStorage) {
     const objectPath = `cms/${filename}`
-    const { error } = await cloudStorage.storage.from(storageBucket).upload(objectPath, Buffer.from(await file.arrayBuffer()), {
+    const { error } = await cloudStorage.storage.from(storageBucket).upload(objectPath, contents, {
       contentType: file.type,
       cacheControl: "31536000",
       upsert: false,
@@ -56,7 +64,7 @@ export async function POST(request: Request) {
 
   const directory = path.join(process.cwd(), "public", "uploads", "cms")
   await fs.mkdir(directory, { recursive: true })
-  await fs.writeFile(path.join(directory, filename), Buffer.from(await file.arrayBuffer()))
+  await fs.writeFile(path.join(directory, filename), contents)
 
   return NextResponse.json({ url: `/uploads/cms/${filename}` })
 }

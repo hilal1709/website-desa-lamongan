@@ -1,0 +1,2 @@
+ALTER TABLE "AdminUser" ADD COLUMN "mfaSecret" TEXT;
+ALTER TABLE "AdminUser" ADD COLUMN "mfaEnabledAt" TIMESTAMP(3);

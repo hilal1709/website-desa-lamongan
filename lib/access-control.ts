@@ -31,14 +31,14 @@ export const cmsAccessMatrix = cmsModules.map(([id, label]) => ({ id, label, ...
 
 export type PermissionAction = "view" | "create" | "update" | "delete"
 export type CurrentAdmin = {
-  id: string; username: string; email: string; name: string | null; isActive: boolean; isSuperAdmin: boolean
+  id: string; username: string; email: string; name: string | null; isActive: boolean; isSuperAdmin: boolean; mfaRequired?: boolean; mfaEnrollmentOverdue?: boolean
   roles: { role: { id: string; name: string; permissions: { module: CmsModule; canView: boolean; canCreate: boolean; canUpdate: boolean; canDelete: boolean }[] } }[]
 }
 
 const actionField = { view: "canView", create: "canCreate", update: "canUpdate", delete: "canDelete" } as const
 
 export function canAccess(user: CurrentAdmin | null | undefined, module: CmsModule, action: PermissionAction = "view") {
-  if (!user || !user.isActive) return false
+  if (!user || !user.isActive || user.mfaEnrollmentOverdue) return false
   if (user.isSuperAdmin) return true
   const field = actionField[action]
   return user.roles.some(({ role }) => role.permissions.some((permission) => permission.module === module && permission[field]))

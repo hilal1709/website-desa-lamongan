@@ -1,7 +1,9 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
-import { hashPassword } from "@/lib/auth-password"
+import { assertPasswordPolicy, hashPassword } from "@/lib/auth-password"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { audit } from "@/lib/audit-log"
+import { clientAddress } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
@@ -16,12 +18,13 @@ export async function PATCH(request: Request, context: RouteContext<"/api/admin/
     const name = typeof body.name === "string" ? body.name.trim() : ""
     const password = typeof body.password === "string" ? body.password : ""
     if (!username || !name || !/^\S+@\S+\.\S+$/.test(email)) throw new Error("Data petugas tidak valid.")
-    if (password && password.length < 8) throw new Error("Kata sandi minimal 8 karakter.")
+    if (password) assertPasswordPolicy(password)
     const target = await prisma.adminUser.findFirst({ where: { id, roles: { some: { roleId: "system-health-staff" } } }, select: { id: true } })
     if (!target) return Response.json({ error: "Akun petugas tidak ditemukan." }, { status: 404 })
     const isActive = typeof body.isActive === "boolean" ? body.isActive : true
     const staff = await prisma.adminUser.update({ where: { id }, data: { username, email, name, isActive, ...(password ? { passwordHash: await hashPassword(password) } : {}) }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })
-    if (!isActive) await prisma.adminSession.deleteMany({ where: { userId: id } })
+    if (!isActive || password) await prisma.adminSession.deleteMany({ where: { userId: id } })
+    await audit("STAFF_ACCOUNT_UPDATED", "ADMIN_USER", { actorId: current.id, targetId: id, ip: clientAddress(request.headers) })
     await publishCmsUpdate("access")
     return Response.json(staff)
   } catch (error) {

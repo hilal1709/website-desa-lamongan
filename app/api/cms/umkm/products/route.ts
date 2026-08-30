@@ -2,7 +2,7 @@ import { revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 
 import { prisma } from "@/app/lib/prisma"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { publishCmsUpdate } from "@/lib/pusher"
 
 const text = (value: unknown, length: number) => typeof value === "string" ? value.trim().slice(0, length) : ""
@@ -23,7 +23,6 @@ function productInput(body: Record<string, unknown>) {
   return { name, description, imageUrl, price, variants, isAvailable: body.isAvailable !== false }
 }
 
-async function authorized() { return Boolean(await getCurrentAdmin()) }
 const databaseError = (error?: unknown) => {
   console.error("Gagal menyimpan produk UMKM:", error)
   const detail = process.env.NODE_ENV === "development" && error instanceof Error ? error.message : ""
@@ -31,7 +30,7 @@ const databaseError = (error?: unknown) => {
 }
 
 export async function POST(request: Request) {
-  if (!(await authorized())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("UMKM", "create"); if (response) return response
   const body = await request.json() as Record<string, unknown>
   const umkmId = typeof body.umkmId === "string" ? body.umkmId : ""
   const input = productInput(body)
@@ -45,7 +44,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!(await authorized())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("UMKM", "update"); if (response) return response
   const body = await request.json() as Record<string, unknown>
   const id = typeof body.id === "string" ? body.id : ""
   const input = productInput(body)
@@ -62,7 +61,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!(await authorized())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("UMKM", "delete"); if (response) return response
   const id = new URL(request.url).searchParams.get("id")
   if (!id) return NextResponse.json({ message: "ID produk wajib diisi." }, { status: 400 })
   try {

@@ -1,15 +1,13 @@
 import { revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { getCachedAdminArchiveDocuments } from "@/lib/admin-archive-data"
-import { archiveType, deleteArchiveFile, formatFileSize, storeArchiveFile, validateArchiveFile } from "@/lib/archive-storage"
+import { archiveType, deleteArchiveFile, formatFileSize, storeArchiveFile, validateArchiveFile, validateArchiveFileContents } from "@/lib/archive-storage"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { audit } from "@/lib/audit-log"
+import { clientAddress } from "@/lib/rate-limit"
 
-async function requireAdmin() {
-  const user = await getCurrentAdmin()
-  return user?.isSuperAdmin === true
-}
 
 function refreshPublicArchive() {
   revalidateTag("archive-documents", "max")
@@ -19,21 +17,21 @@ function refreshPublicArchive() {
 }
 
 export async function GET() {
-  if (!(await requireAdmin())) return NextResponse.json({ message: "Akses admin diperlukan." }, { status: 403 })
+  const { response } = await requireCmsPermission("DOCUMENT_ARCHIVE"); if (response) return response
   const documents = await getCachedAdminArchiveDocuments().catch(() => null)
   if (!documents) return NextResponse.json({ message: "Arsip belum dapat dimuat." }, { status: 500 })
   return NextResponse.json({ documents })
 }
 
 export async function POST(request: Request) {
-  if (!(await requireAdmin())) return NextResponse.json({ message: "Akses admin diperlukan." }, { status: 403 })
+  const access = await requireCmsPermission("DOCUMENT_ARCHIVE", "create"); if (access.response) return access.response
   const formData = await request.formData()
   const file = formData.get("file")
   const title = typeof formData.get("title") === "string" ? String(formData.get("title")).trim().slice(0, 240) : ""
   const detail = typeof formData.get("detail") === "string" ? String(formData.get("detail")).trim().slice(0, 2000) : ""
   const visibility = formData.get("visibility") === "PRIVATE" ? "PRIVATE" : "PUBLIC"
   if (!(file instanceof File)) return NextResponse.json({ message: "Pilih berkas yang akan diunggah." }, { status: 400 })
-  const validation = validateArchiveFile(file)
+  const validation = validateArchiveFile(file) || await validateArchiveFileContents(file)
   if (validation) return NextResponse.json({ message: validation }, { status: 400 })
   if (!title) return NextResponse.json({ message: "Judul dokumen wajib diisi." }, { status: 400 })
 
@@ -41,6 +39,7 @@ export async function POST(request: Request) {
   try {
     storagePath = await storeArchiveFile(file)
     const document = await prisma.document.create({ data: { title, detail: detail || null, type: archiveType(file), size: formatFileSize(file.size), icon: "description", visibility, originalName: file.name.slice(0, 255), mimeType: file.type, byteSize: file.size, storagePath } })
+    await audit("ARCHIVE_CREATED", "DOCUMENT", { actorId: access.user!.id, targetId: String(document.id), ip: clientAddress(request.headers) })
     refreshPublicArchive()
     if (visibility === "PUBLIC") await publishCmsUpdate("pages")
     return NextResponse.json({ document }, { status: 201 })

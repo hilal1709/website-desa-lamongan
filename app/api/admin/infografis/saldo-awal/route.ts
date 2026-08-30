@@ -1,6 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache"
 
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { prisma } from "@/app/lib/prisma"
 import { populationAgeGroups, type PopulationAgeGroup, type PopulationDemographicCell } from "@/lib/population-calculations"
 import { normalizePopulationHamlet } from "@/lib/population-events"
@@ -29,7 +29,7 @@ function demographicsValue(value: unknown, totalPopulation: number) {
 }
 
 export async function POST(request: Request) {
-  if (!(await getCurrentAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 })
+  const access = await requireCmsPermission("INFOGRAPHICS", "create"); if (access.response) return access.response
   try {
     const body = await request.json() as Record<string, unknown>
     const dusun = typeof body.dusun === "string" ? normalizePopulationHamlet(body.dusun) : ""
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!(await getCurrentAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 })
+  const access = await requireCmsPermission("INFOGRAPHICS", "delete"); if (access.response) return access.response
   try {
     const id = new URL(request.url).searchParams.get("id")?.trim()
     if (!id) throw new Error("Data dasar tidak ditemukan.")

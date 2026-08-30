@@ -3,13 +3,15 @@ import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
 import { publishCmsUpdate } from "@/lib/pusher"
 import { prisma } from "@/app/lib/prisma"
-import { storeServiceAttachment, validateAttachment } from "@/lib/service-attachments"
+import { storeServiceAttachment, validateAttachment, validateAttachmentContents } from "@/lib/service-attachments"
 import { normalizeWhatsapp } from "@/lib/village-services"
+import { clientAddress, isRateLimited } from "@/lib/rate-limit"
 
 const text = (value: FormDataEntryValue | null, max: number) => typeof value === "string" ? value.trim().slice(0, max) : ""
 const trackingCode = () => `KDR-${new Date().getFullYear()}-${randomBytes(4).toString("hex").toUpperCase()}`
 
 export async function POST(request: Request) {
+  if (isRateLimited(`service-submission:${clientAddress(request.headers)}`, 5, 15 * 60 * 1000)) return NextResponse.json({ message: "Terlalu banyak pengajuan. Silakan coba lagi nanti." }, { status: 429, headers: { "Retry-After": "900" } })
   const form = await request.formData()
   const serviceId = text(form.get("serviceId"), 80)
   const fullName = text(form.get("fullName"), 120)
@@ -24,7 +26,8 @@ export async function POST(request: Request) {
 
   const files = form.getAll("attachments").filter((entry): entry is File => entry instanceof File && entry.size > 0)
   if (files.length < service.requirements.length) return NextResponse.json({ message: "Unggah semua berkas persyaratan yang wajib." }, { status: 400 })
-  for (const file of files) { const error = validateAttachment(file); if (error) return NextResponse.json({ message: error }, { status: 400 }) }
+  if (files.length > 10) return NextResponse.json({ message: "Maksimal 10 berkas dapat diunggah." }, { status: 400 })
+  for (const file of files) { const error = validateAttachment(file) || await validateAttachmentContents(file); if (error) return NextResponse.json({ message: error }, { status: 400 }) }
 
   const submission = await prisma.serviceSubmission.create({ data: { trackingCode: trackingCode(), serviceId, fullName, nationalId, address, whatsapp, purpose, history: { create: { status: "DIAJUKAN", note: "Pengajuan diterima dan menunggu verifikasi petugas." } } } })
   try {

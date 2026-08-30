@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { readServiceAttachment } from "@/lib/service-attachments"
 
 export async function GET(_request: Request, context: RouteContext<"/api/cms/layanan/pengajuan/[id]/lampiran/[attachmentId]">) {
-  if (!(await getCurrentAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("SERVICE_SUBMISSIONS")
+  if (response) return response
   const { id, attachmentId } = await context.params
   const attachment = await prisma.serviceAttachment.findFirst({ where: { id: attachmentId, submissionId: id } })
   if (!attachment) return NextResponse.json({ message: "Lampiran tidak ditemukan." }, { status: 404 })

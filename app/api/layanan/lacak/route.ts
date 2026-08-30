@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
 import { normalizeWhatsapp, STATUS_LABEL } from "@/lib/village-services"
+import { clientAddress, isRateLimited } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
+  if (isRateLimited(`service-tracking:${clientAddress(request.headers)}`, 20, 15 * 60 * 1000)) return NextResponse.json({ message: "Terlalu banyak pencarian. Silakan coba lagi nanti." }, { status: 429, headers: { "Retry-After": "900" } })
   const body = await request.json() as Record<string, unknown>
   const trackingCode = typeof body.trackingCode === "string" ? body.trackingCode.trim().toUpperCase().slice(0, 32) : ""
   const whatsapp = normalizeWhatsapp(typeof body.whatsapp === "string" ? body.whatsapp : "")

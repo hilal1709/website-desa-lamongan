@@ -1,6 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache"
 
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { assertEventAfterOpeningBalance, validatePopulationEventInput } from "@/lib/population-events"
 import { prisma } from "@/app/lib/prisma"
 import { publishCmsUpdate } from "@/lib/pusher"
@@ -16,7 +16,7 @@ function refreshed() {
 }
 
 export async function PATCH(request: Request, context: RouteContext<"/api/admin/infografis/kependudukan/[id]">) {
-  if (!(await getCurrentAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 })
+  const access = await requireCmsPermission("INFOGRAPHICS", "update"); if (access.response) return access.response
   try {
     const { id } = await context.params
     const data = validatePopulationEventInput(await request.json())
@@ -31,7 +31,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/admin/
 }
 
 export async function DELETE(_: Request, context: RouteContext<"/api/admin/infografis/kependudukan/[id]">) {
-  if (!(await getCurrentAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 })
+  const access = await requireCmsPermission("INFOGRAPHICS", "delete"); if (access.response) return access.response
   try {
     const { id } = await context.params
     await prisma.populationEvent.delete({ where: { id } })

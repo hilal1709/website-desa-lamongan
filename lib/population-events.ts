@@ -34,7 +34,6 @@ export type PublicPopulationEvent = {
   eventDate: string
   type: PopulationEventType
   typeLabel: string
-  fullName: string
   gender: string
   birthYear: number
   dusun: string
@@ -98,7 +97,6 @@ function toPublicRecord(record: {
   id: string
   eventDate: Date
   type: PopulationEventType
-  fullName: string
   gender: string
   birthDate: Date
   dusun: string
@@ -108,22 +106,26 @@ function toPublicRecord(record: {
     eventDate: record.eventDate.toISOString().slice(0, 10),
     type: record.type,
     typeLabel: populationEventLabels[record.type],
-    fullName: record.fullName,
     gender: record.gender,
     birthYear: record.birthDate.getUTCFullYear(),
     dusun: record.dusun,
   }
 }
 
+function toPrivateExportRecord(record: { eventDate: Date; type: PopulationEventType; fullName: string; gender: string; birthDate: Date; dusun: string }) {
+  return { eventDate: record.eventDate.toISOString().slice(0, 10), typeLabel: populationEventLabels[record.type], fullName: record.fullName, gender: record.gender, birthYear: record.birthDate.getUTCFullYear(), dusun: record.dusun }
+}
+
 const publicSelect = {
   id: true,
   eventDate: true,
   type: true,
-  fullName: true,
   gender: true,
   birthDate: true,
   dusun: true,
 } satisfies Prisma.PopulationEventSelect
+
+const privateExportSelect = { ...publicSelect, fullName: true } satisfies Prisma.PopulationEventSelect
 
 export async function getPublicPopulationEventDashboard(filters: PopulationEventFilters) {
   const where = whereForFilter(filters)
@@ -138,7 +140,7 @@ export async function getPublicPopulationEventDashboard(filters: PopulationEvent
   }
 
   const [records, totalRecords, rangeEvents, cumulativeEvents, balances] = await Promise.all([
-    prisma.populationEvent.findMany({ where, select: publicSelect, orderBy: [{ eventDate: "desc" }, { fullName: "asc" }], skip: (filters.page - 1) * filters.pageSize, take: filters.pageSize }),
+    prisma.populationEvent.findMany({ where, select: publicSelect, orderBy: [{ eventDate: "desc" }, { createdAt: "desc" }], skip: (filters.page - 1) * filters.pageSize, take: filters.pageSize }),
     prisma.populationEvent.count({ where }),
     prisma.populationEvent.findMany({ where, select: { eventDate: true, type: true, dusun: true } }),
     prisma.populationEvent.findMany({ where: cumulativeWhere, select: { eventDate: true, type: true, dusun: true, gender: true, birthDate: true } }),
@@ -215,10 +217,10 @@ export async function getOfficialPopulationSummaryForYear(year: number) {
 export async function getPublicPopulationEventExport(filters: PopulationEventFilters) {
   const records = await prisma.populationEvent.findMany({
     where: whereForFilter(filters),
-    select: publicSelect,
-    orderBy: [{ eventDate: "desc" }, { fullName: "asc" }],
+    select: privateExportSelect,
+    orderBy: [{ eventDate: "desc" }, { createdAt: "desc" }],
   })
-  return records.map(toPublicRecord)
+  return records.map(toPrivateExportRecord)
 }
 
 function requiredString(value: unknown, label: string) {

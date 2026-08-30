@@ -3,7 +3,7 @@ import { PrismaClient } from "../generated/prisma/client"
 import { PrismaPg } from "@prisma/adapter-pg"
 import { Pool } from "pg"
 
-import { hashPassword } from "../lib/auth-password"
+import { assertPasswordPolicy, hashPassword } from "../lib/auth-password"
 
 const username = process.env.ADMIN_USERNAME?.trim()
 const email = process.env.ADMIN_EMAIL?.trim().toLowerCase()
@@ -20,11 +20,12 @@ const adminPassword = password
 const prisma = new PrismaClient({ adapter: new PrismaPg(new Pool({ connectionString: process.env.DATABASE_URL })) })
 
 async function main() {
+  assertPasswordPolicy(adminPassword)
   const passwordHash = await hashPassword(adminPassword)
   await prisma.adminUser.upsert({
     where: { username: adminUsername },
     update: { email: adminEmail, passwordHash, isActive: true, isSuperAdmin: true },
-    create: { username: adminUsername, email: adminEmail, passwordHash, isSuperAdmin: true, roles: { create: { roleId: "system-administrator" } } },
+    create: { username: adminUsername, email: adminEmail, passwordHash, isSuperAdmin: true, mfaEnrollmentDeadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), roles: { create: { roleId: "system-administrator" } } },
   })
   console.log(`Admin ${adminUsername} siap digunakan.`)
 }

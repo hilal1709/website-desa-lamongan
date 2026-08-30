@@ -3,8 +3,10 @@ import { revalidateTag } from "next/cache"
 import { requireCmsPermission } from "@/lib/api-access"
 import { getCachedAdminAccessData } from "@/lib/admin-access-data"
 import { cmsAccessMatrix, cmsModules } from "@/lib/access-control"
-import { hashPassword } from "@/lib/auth-password"
+import { assertPasswordPolicy, hashPassword } from "@/lib/auth-password"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { audit } from "@/lib/audit-log"
+import { clientAddress } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
@@ -34,20 +36,23 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { response } = await superadmin(); if (response) return response
+  const access = await superadmin(); if (access.response) return access.response
   try {
     const body = await request.json() as Record<string, unknown>
     if (body.kind === "role") {
       const name = text(body.name, 80); if (!name) throw new Error("Nama peran wajib diisi.")
       const created = await prisma.role.create({ data: { name, description: text(body.description, 240) || null, permissions: { create: permissions(body.permissions) } }, include: { permissions: true, _count: { select: { users: true } } } })
+      await audit("ROLE_CREATED", "ROLE", { actorId: access.user!.id, targetId: created.id, ip: clientAddress(request.headers) })
       revalidateTag("admin-access", { expire: 0 }); await publishCmsUpdate("access")
       return Response.json({ role: created }, { status: 201 })
     }
     if (body.kind === "user") {
       const username = text(body.username, 80), email = text(body.email, 160).toLowerCase(), name = text(body.name, 120), password = typeof body.password === "string" ? body.password : ""
       const roleIds = Array.isArray(body.roleIds) ? body.roleIds.filter((id): id is string => typeof id === "string") : []
-      if (!username || !name || !/^\S+@\S+\.\S+$/.test(email) || password.length < 8) throw new Error("Data akun tidak valid; kata sandi minimal 8 karakter.")
+      if (!username || !name || !/^\S+@\S+\.\S+$/.test(email)) throw new Error("Data akun tidak valid.")
+      assertPasswordPolicy(password)
       const user = await prisma.adminUser.create({ data: { username, email, name, passwordHash: await hashPassword(password), isActive: body.isActive !== false, roles: { create: roleIds.map((roleId) => ({ role: { connect: { id: roleId } } })) } }, select: { id: true, username: true } })
+      await audit("ADMIN_ACCOUNT_CREATED", "ADMIN_USER", { actorId: access.user!.id, targetId: user.id, ip: clientAddress(request.headers) })
       revalidateTag("admin-access", { expire: 0 }); await publishCmsUpdate("access")
       return Response.json({ user }, { status: 201 })
     }

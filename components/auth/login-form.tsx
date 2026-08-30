@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, type RefObject } from "react"
-import { LoaderCircle, LockKeyhole, UserRound } from "lucide-react"
+import { LoaderCircle, LockKeyhole, ShieldCheck, UserRound } from "lucide-react"
 
 import { loginAdmin, type LoginState } from "@/app/login/actions"
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,14 @@ export function LoginForm({ submitButtonRef }: { submitButtonRef: RefObject<HTML
         <div className="relative">
           <UserRound aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <Input id="username" name="username" type="text" autoComplete="username" placeholder="Masukkan username atau email" className="pl-11" required />
+        </div>
+      </div>
+
+      <div className="login-form-item space-y-2">
+        <Label htmlFor="totpCode">Kode autentikator <span className="font-normal text-slate-500">(superadmin)</span></Label>
+        <div className="relative">
+          <ShieldCheck aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <Input id="totpCode" name="totpCode" autoComplete="one-time-code" maxLength={14} placeholder="6 digit atau recovery code" className="pl-11" />
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { publishCmsUpdate } from "@/lib/pusher"
 
 export const dynamic = "force-dynamic"
 export async function PATCH(request: Request, context: RouteContext<"/api/kesehatan/anak/[id]">) {
-  if (!(await getCurrentHealthUser())) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
+  if (!(await getCurrentHealthUser("update"))) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
   try { const { id } = await context.params; const child = await prisma.child.update({ where: { id }, data: validateChildUpdate(await request.json()) }); await publishCmsUpdate("health-child"); return Response.json(child) }
   catch (error) { return Response.json({ error: error instanceof Error ? error.message : "Data anak tidak dapat diperbarui." }, { status: 400 }) }
 }

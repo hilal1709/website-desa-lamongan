@@ -73,6 +73,11 @@ export type Complaint = Prisma.ComplaintModel
  */
 export type AdminUser = Prisma.AdminUserModel
 /**
+ * Model MfaRecoveryCode
+ * 
+ */
+export type MfaRecoveryCode = Prisma.MfaRecoveryCodeModel
+/**
  * Model Role
  * 
  */
@@ -117,6 +122,11 @@ export type ServiceSubmissionStatus = Prisma.ServiceSubmissionStatusModel
  * 
  */
 export type AdminSession = Prisma.AdminSessionModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
 /**
  * Model Elderly
  * 

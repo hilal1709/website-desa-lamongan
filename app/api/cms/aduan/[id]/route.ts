@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
 
 import { prisma } from "@/app/lib/prisma"
-import { getCurrentAdmin, hasAdminRole } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { isComplaintStatus } from "@/lib/complaint-status"
 import { publishCmsUpdate } from "@/lib/pusher"
 
@@ -12,8 +12,7 @@ function invalidateComplaints() {
 }
 
 export async function PATCH(request: Request, context: RouteContext<"/api/cms/aduan/[id]">) {
-  const user = await getCurrentAdmin()
-  if (!hasAdminRole(user)) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response: accessResponse } = await requireCmsPermission("COMPLAINTS", "update"); if (accessResponse) return accessResponse
 
   const { id } = await context.params
   const body = await request.json() as Record<string, unknown>
@@ -35,8 +34,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/cms/ad
 }
 
 export async function DELETE(_: Request, context: RouteContext<"/api/cms/aduan/[id]">) {
-  const user = await getCurrentAdmin()
-  if (!hasAdminRole(user)) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response: accessResponse } = await requireCmsPermission("COMPLAINTS", "delete"); if (accessResponse) return accessResponse
   const { id } = await context.params
 
   try {

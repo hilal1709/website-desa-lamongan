@@ -2,6 +2,7 @@ import { randomUUID } from "crypto"
 import { promises as fs } from "fs"
 import path from "path"
 import { createClient } from "@supabase/supabase-js"
+import { scanForMalware } from "@/lib/malware-scan"
 
 const allowedTypes: Record<string, string> = { "application/pdf": ".pdf", "image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp" }
 export const MAX_SERVICE_ATTACHMENT_SIZE = 5 * 1024 * 1024
@@ -24,11 +25,23 @@ export function validateAttachment(file: File) {
   return null
 }
 
+export async function validateAttachmentContents(file: File) {
+  const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer())
+  const has = (...values: number[]) => values.every((value, index) => bytes[index] === value)
+  const valid = file.type === "application/pdf" ? has(0x25, 0x50, 0x44, 0x46)
+    : file.type === "image/jpeg" ? has(0xff, 0xd8, 0xff)
+    : file.type === "image/png" ? has(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)
+    : file.type === "image/webp" ? has(0x52, 0x49, 0x46, 0x46) && bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50
+    : false
+  return valid ? null : "Isi berkas tidak sesuai dengan tipe yang diizinkan."
+}
+
 export async function storeServiceAttachment(file: File, submissionId: string) {
   const extension = allowedTypes[file.type]
   if (!extension) throw new Error("Jenis berkas tidak didukung.")
   const storagePath = `${submissionId}/${randomUUID()}${extension}`
   const contents = Buffer.from(await file.arrayBuffer())
+  await scanForMalware(contents, file.name)
   const supabase = client()
   if (supabase) {
     const { error } = await supabase.storage.from(bucket).upload(storagePath, contents, { contentType: file.type, upsert: false })

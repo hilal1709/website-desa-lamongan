@@ -6,7 +6,7 @@ import { publishCmsUpdate } from "@/lib/pusher"
 export const dynamic = "force-dynamic"
 
 export async function POST(request: Request) {
-  const user = await getCurrentHealthUser()
+  const user = await getCurrentHealthUser("update")
   if (!user) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
   try {
     const data = validatePosyanduCheckInput(await request.json())

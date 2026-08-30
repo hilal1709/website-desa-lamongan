@@ -1,7 +1,9 @@
 import { prisma } from "@/app/lib/prisma"
 import { getCurrentAdmin } from "@/lib/admin-auth"
-import { hashPassword } from "@/lib/auth-password"
+import { assertPasswordPolicy, hashPassword } from "@/lib/auth-password"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { audit } from "@/lib/audit-log"
+import { clientAddress } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
@@ -15,7 +17,7 @@ function staffInput(value: unknown, passwordRequired: boolean) {
   if (!username || username.length > 80) throw new Error("Nama pengguna wajib diisi.")
   if (!/^\S+@\S+\.\S+$/.test(email)) throw new Error("Email tidak valid.")
   if (!name || name.length > 120) throw new Error("Nama petugas wajib diisi.")
-  if ((passwordRequired || password) && password.length < 8) throw new Error("Kata sandi minimal 8 karakter.")
+  if (passwordRequired || password) assertPasswordPolicy(password)
   return { username, email, name, password: password || null, isActive: typeof data.isActive === "boolean" ? data.isActive : true }
 }
 
@@ -31,10 +33,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!(await requireAdmin())) return Response.json({ error: "Akses admin diperlukan." }, { status: 403 })
+  const current = await requireAdmin(); if (!current) return Response.json({ error: "Akses admin diperlukan." }, { status: 403 })
   try {
     const data = staffInput(await request.json(), true)
     const staff = await prisma.adminUser.create({ data: { username: data.username, email: data.email, name: data.name, passwordHash: await hashPassword(data.password!), isActive: data.isActive, roles: { create: { roleId: "system-health-staff" } } }, select: { id: true, username: true, email: true, name: true, isActive: true, createdAt: true, updatedAt: true } })
+    await audit("STAFF_ACCOUNT_CREATED", "ADMIN_USER", { actorId: current.id, targetId: staff.id, ip: clientAddress(request.headers) })
     await publishCmsUpdate("access")
     return Response.json(staff, { status: 201 })
   } catch (error) {

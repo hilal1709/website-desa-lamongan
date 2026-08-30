@@ -16,7 +16,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const user = await getCurrentHealthUser()
+  const user = await getCurrentHealthUser("create")
   if (!user) return Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
   try {
     const data = validatePosyanduSessionInput(await request.json())

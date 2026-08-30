@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Runtime traffic may use the pooler. Prisma migrations need the direct
+    // PostgreSQL connection when it is available.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });

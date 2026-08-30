@@ -138,16 +138,31 @@ model AdminUser {
   passwordHash String
   name         String?
   isSuperAdmin Boolean        @default(false)
+  mfaSecret    String?
+  mfaEnabledAt DateTime?
+  mfaEnrollmentDeadline DateTime?
   isActive     Boolean        @default(true)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   sessions     AdminSession[]
+  recoveryCodes MfaRecoveryCode[]
   roles        AdminUserRole[]
   createdPosyanduSessions PosyanduSession[] @relation("PosyanduSessionCreator")
   recordedPosyanduChecks  PosyanduCheck[]   @relation("PosyanduCheckRecorder")
   createdChildPosyanduSessions ChildPosyanduSession[] @relation("ChildPosyanduSessionCreator")
   recordedChildChecks ChildHealthCheck[] @relation("ChildHealthCheckRecorder")
   serviceStatusUpdates    ServiceSubmissionStatus[] @relation("ServiceStatusUpdater")
+}
+
+model MfaRecoveryCode {
+  id        String    @id @default(cuid())
+  userId    String
+  codeHash  String    @unique
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, usedAt])
 }
 
 model Role {
@@ -270,6 +285,20 @@ model AdminSession {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String
+  resource  String
+  targetId  String?
+  ipHash    String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actorId, createdAt])
+  @@index([resource, targetId])
 }
 
 model Elderly {

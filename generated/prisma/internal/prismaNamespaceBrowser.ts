@@ -62,6 +62,7 @@ export const ModelName = {
   SiteRedirect: 'SiteRedirect',
   Complaint: 'Complaint',
   AdminUser: 'AdminUser',
+  MfaRecoveryCode: 'MfaRecoveryCode',
   Role: 'Role',
   AdminUserRole: 'AdminUserRole',
   RolePermission: 'RolePermission',
@@ -71,6 +72,7 @@ export const ModelName = {
   ServiceAttachment: 'ServiceAttachment',
   ServiceSubmissionStatus: 'ServiceSubmissionStatus',
   AdminSession: 'AdminSession',
+  AuditLog: 'AuditLog',
   Elderly: 'Elderly',
   ElderlyDisease: 'ElderlyDisease',
   PosyanduSession: 'PosyanduSession',
@@ -257,12 +259,26 @@ export const AdminUserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   name: 'name',
   isSuperAdmin: 'isSuperAdmin',
+  mfaSecret: 'mfaSecret',
+  mfaEnabledAt: 'mfaEnabledAt',
+  mfaEnrollmentDeadline: 'mfaEnrollmentDeadline',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
+export const MfaRecoveryCodeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  codeHash: 'codeHash',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MfaRecoveryCodeScalarFieldEnum = (typeof MfaRecoveryCodeScalarFieldEnum)[keyof typeof MfaRecoveryCodeScalarFieldEnum]
 
 
 export const RoleScalarFieldEnum = {
@@ -377,6 +393,19 @@ export const AdminSessionScalarFieldEnum = {
 } as const
 
 export type AdminSessionScalarFieldEnum = (typeof AdminSessionScalarFieldEnum)[keyof typeof AdminSessionScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  resource: 'resource',
+  targetId: 'targetId',
+  ipHash: 'ipHash',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const ElderlyScalarFieldEnum = {

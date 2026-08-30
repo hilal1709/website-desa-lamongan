@@ -31,6 +31,9 @@ export type AdminUserMinAggregateOutputType = {
   passwordHash: string | null
   name: string | null
   isSuperAdmin: boolean | null
+  mfaSecret: string | null
+  mfaEnabledAt: Date | null
+  mfaEnrollmentDeadline: Date | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +46,9 @@ export type AdminUserMaxAggregateOutputType = {
   passwordHash: string | null
   name: string | null
   isSuperAdmin: boolean | null
+  mfaSecret: string | null
+  mfaEnabledAt: Date | null
+  mfaEnrollmentDeadline: Date | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +61,9 @@ export type AdminUserCountAggregateOutputType = {
   passwordHash: number
   name: number
   isSuperAdmin: number
+  mfaSecret: number
+  mfaEnabledAt: number
+  mfaEnrollmentDeadline: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -69,6 +78,9 @@ export type AdminUserMinAggregateInputType = {
   passwordHash?: true
   name?: true
   isSuperAdmin?: true
+  mfaSecret?: true
+  mfaEnabledAt?: true
+  mfaEnrollmentDeadline?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +93,9 @@ export type AdminUserMaxAggregateInputType = {
   passwordHash?: true
   name?: true
   isSuperAdmin?: true
+  mfaSecret?: true
+  mfaEnabledAt?: true
+  mfaEnrollmentDeadline?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +108,9 @@ export type AdminUserCountAggregateInputType = {
   passwordHash?: true
   name?: true
   isSuperAdmin?: true
+  mfaSecret?: true
+  mfaEnabledAt?: true
+  mfaEnrollmentDeadline?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -178,6 +196,9 @@ export type AdminUserGroupByOutputType = {
   passwordHash: string
   name: string | null
   isSuperAdmin: boolean
+  mfaSecret: string | null
+  mfaEnabledAt: Date | null
+  mfaEnrollmentDeadline: Date | null
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -211,10 +232,14 @@ export type AdminUserWhereInput = {
   passwordHash?: Prisma.StringFilter<"AdminUser"> | string
   name?: Prisma.StringNullableFilter<"AdminUser"> | string | null
   isSuperAdmin?: Prisma.BoolFilter<"AdminUser"> | boolean
+  mfaSecret?: Prisma.StringNullableFilter<"AdminUser"> | string | null
+  mfaEnabledAt?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
   isActive?: Prisma.BoolFilter<"AdminUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   sessions?: Prisma.AdminSessionListRelationFilter
+  recoveryCodes?: Prisma.MfaRecoveryCodeListRelationFilter
   roles?: Prisma.AdminUserRoleListRelationFilter
   createdPosyanduSessions?: Prisma.PosyanduSessionListRelationFilter
   recordedPosyanduChecks?: Prisma.PosyanduCheckListRelationFilter
@@ -230,10 +255,14 @@ export type AdminUserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
+  mfaSecret?: Prisma.SortOrderInput | Prisma.SortOrder
+  mfaEnabledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  mfaEnrollmentDeadline?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.AdminSessionOrderByRelationAggregateInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeOrderByRelationAggregateInput
   roles?: Prisma.AdminUserRoleOrderByRelationAggregateInput
   createdPosyanduSessions?: Prisma.PosyanduSessionOrderByRelationAggregateInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckOrderByRelationAggregateInput
@@ -252,10 +281,14 @@ export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"AdminUser"> | string
   name?: Prisma.StringNullableFilter<"AdminUser"> | string | null
   isSuperAdmin?: Prisma.BoolFilter<"AdminUser"> | boolean
+  mfaSecret?: Prisma.StringNullableFilter<"AdminUser"> | string | null
+  mfaEnabledAt?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
   isActive?: Prisma.BoolFilter<"AdminUser"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   sessions?: Prisma.AdminSessionListRelationFilter
+  recoveryCodes?: Prisma.MfaRecoveryCodeListRelationFilter
   roles?: Prisma.AdminUserRoleListRelationFilter
   createdPosyanduSessions?: Prisma.PosyanduSessionListRelationFilter
   recordedPosyanduChecks?: Prisma.PosyanduCheckListRelationFilter
@@ -271,6 +304,9 @@ export type AdminUserOrderByWithAggregationInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
+  mfaSecret?: Prisma.SortOrderInput | Prisma.SortOrder
+  mfaEnabledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  mfaEnrollmentDeadline?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -289,6 +325,9 @@ export type AdminUserScalarWhereWithAggregatesInput = {
   passwordHash?: Prisma.StringWithAggregatesFilter<"AdminUser"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"AdminUser"> | string | null
   isSuperAdmin?: Prisma.BoolWithAggregatesFilter<"AdminUser"> | boolean
+  mfaSecret?: Prisma.StringNullableWithAggregatesFilter<"AdminUser"> | string | null
+  mfaEnabledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AdminUser"> | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.DateTimeNullableWithAggregatesFilter<"AdminUser"> | Date | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"AdminUser"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
@@ -301,10 +340,14 @@ export type AdminUserCreateInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
@@ -320,10 +363,14 @@ export type AdminUserUncheckedCreateInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
@@ -339,10 +386,14 @@ export type AdminUserUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
@@ -358,10 +409,14 @@ export type AdminUserUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
@@ -377,6 +432,9 @@ export type AdminUserCreateManyInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -389,6 +447,9 @@ export type AdminUserUpdateManyMutationInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -401,6 +462,9 @@ export type AdminUserUncheckedUpdateManyInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -413,6 +477,9 @@ export type AdminUserCountOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
+  mfaSecret?: Prisma.SortOrder
+  mfaEnabledAt?: Prisma.SortOrder
+  mfaEnrollmentDeadline?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -425,6 +492,9 @@ export type AdminUserMaxOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
+  mfaSecret?: Prisma.SortOrder
+  mfaEnabledAt?: Prisma.SortOrder
+  mfaEnrollmentDeadline?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -437,6 +507,9 @@ export type AdminUserMinOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
+  mfaSecret?: Prisma.SortOrder
+  mfaEnabledAt?: Prisma.SortOrder
+  mfaEnrollmentDeadline?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -450,6 +523,20 @@ export type AdminUserScalarRelationFilter = {
 export type AdminUserNullableScalarRelationFilter = {
   is?: Prisma.AdminUserWhereInput | null
   isNot?: Prisma.AdminUserWhereInput | null
+}
+
+export type AdminUserCreateNestedOneWithoutRecoveryCodesInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRecoveryCodesInput, Prisma.AdminUserUncheckedCreateWithoutRecoveryCodesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRecoveryCodesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutRecoveryCodesNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRecoveryCodesInput, Prisma.AdminUserUncheckedCreateWithoutRecoveryCodesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRecoveryCodesInput
+  upsert?: Prisma.AdminUserUpsertWithoutRecoveryCodesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutRecoveryCodesInput, Prisma.AdminUserUpdateWithoutRecoveryCodesInput>, Prisma.AdminUserUncheckedUpdateWithoutRecoveryCodesInput>
 }
 
 export type AdminUserCreateNestedOneWithoutRolesInput = {
@@ -552,6 +639,110 @@ export type AdminUserUpdateOneRequiredWithoutRecordedChildChecksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutRecordedChildChecksInput, Prisma.AdminUserUpdateWithoutRecordedChildChecksInput>, Prisma.AdminUserUncheckedUpdateWithoutRecordedChildChecksInput>
 }
 
+export type AdminUserCreateWithoutRecoveryCodesInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckCreateNestedManyWithoutRecordedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserUncheckedCreateWithoutRecoveryCodesInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  name?: string | null
+  isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedCreateNestedManyWithoutRecordedByInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedCreateNestedManyWithoutUpdatedByInput
+}
+
+export type AdminUserCreateOrConnectWithoutRecoveryCodesInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutRecoveryCodesInput, Prisma.AdminUserUncheckedCreateWithoutRecoveryCodesInput>
+}
+
+export type AdminUserUpsertWithoutRecoveryCodesInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutRecoveryCodesInput, Prisma.AdminUserUncheckedUpdateWithoutRecoveryCodesInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutRecoveryCodesInput, Prisma.AdminUserUncheckedCreateWithoutRecoveryCodesInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutRecoveryCodesInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutRecoveryCodesInput, Prisma.AdminUserUncheckedUpdateWithoutRecoveryCodesInput>
+}
+
+export type AdminUserUpdateWithoutRecoveryCodesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutRecoveryCodesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
+  createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordedChildChecks?: Prisma.ChildHealthCheckUncheckedUpdateManyWithoutRecordedByNestedInput
+  serviceStatusUpdates?: Prisma.ServiceSubmissionStatusUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
 export type AdminUserCreateWithoutRolesInput = {
   id?: string
   username: string
@@ -559,10 +750,14 @@ export type AdminUserCreateWithoutRolesInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
@@ -577,10 +772,14 @@ export type AdminUserUncheckedCreateWithoutRolesInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -611,10 +810,14 @@ export type AdminUserUpdateWithoutRolesInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
@@ -629,10 +832,14 @@ export type AdminUserUncheckedUpdateWithoutRolesInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -647,10 +854,14 @@ export type AdminUserCreateWithoutServiceStatusUpdatesInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
@@ -665,10 +876,14 @@ export type AdminUserUncheckedCreateWithoutServiceStatusUpdatesInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
@@ -699,10 +914,14 @@ export type AdminUserUpdateWithoutServiceStatusUpdatesInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
@@ -717,10 +936,14 @@ export type AdminUserUncheckedUpdateWithoutServiceStatusUpdatesInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
@@ -735,9 +958,13 @@ export type AdminUserCreateWithoutSessionsInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
@@ -753,9 +980,13 @@ export type AdminUserUncheckedCreateWithoutSessionsInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
@@ -787,9 +1018,13 @@ export type AdminUserUpdateWithoutSessionsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
@@ -805,9 +1040,13 @@ export type AdminUserUncheckedUpdateWithoutSessionsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
@@ -823,10 +1062,14 @@ export type AdminUserCreateWithoutCreatedPosyanduSessionsInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
@@ -841,10 +1084,14 @@ export type AdminUserUncheckedCreateWithoutCreatedPosyanduSessionsInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -875,10 +1122,14 @@ export type AdminUserUpdateWithoutCreatedPosyanduSessionsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
@@ -893,10 +1144,14 @@ export type AdminUserUncheckedUpdateWithoutCreatedPosyanduSessionsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -911,10 +1166,14 @@ export type AdminUserCreateWithoutRecordedPosyanduChecksInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionCreateNestedManyWithoutCreatedByInput
@@ -929,10 +1188,14 @@ export type AdminUserUncheckedCreateWithoutRecordedPosyanduChecksInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -963,10 +1226,14 @@ export type AdminUserUpdateWithoutRecordedPosyanduChecksInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUpdateManyWithoutCreatedByNestedInput
@@ -981,10 +1248,14 @@ export type AdminUserUncheckedUpdateWithoutRecordedPosyanduChecksInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   createdChildPosyanduSessions?: Prisma.ChildPosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -999,10 +1270,14 @@ export type AdminUserCreateWithoutCreatedChildPosyanduSessionsInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
@@ -1017,10 +1292,14 @@ export type AdminUserUncheckedCreateWithoutCreatedChildPosyanduSessionsInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
@@ -1051,10 +1330,14 @@ export type AdminUserUpdateWithoutCreatedChildPosyanduSessionsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
@@ -1069,10 +1352,14 @@ export type AdminUserUncheckedUpdateWithoutCreatedChildPosyanduSessionsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
@@ -1087,10 +1374,14 @@ export type AdminUserCreateWithoutRecordedChildChecksInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckCreateNestedManyWithoutRecordedByInput
@@ -1105,10 +1396,14 @@ export type AdminUserUncheckedCreateWithoutRecordedChildChecksInput = {
   passwordHash: string
   name?: string | null
   isSuperAdmin?: boolean
+  mfaSecret?: string | null
+  mfaEnabledAt?: Date | string | null
+  mfaEnrollmentDeadline?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.AdminSessionUncheckedCreateNestedManyWithoutUserInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.AdminUserRoleUncheckedCreateNestedManyWithoutUserInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedCreateNestedManyWithoutCreatedByInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedCreateNestedManyWithoutRecordedByInput
@@ -1139,10 +1434,14 @@ export type AdminUserUpdateWithoutRecordedChildChecksInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUpdateManyWithoutRecordedByNestedInput
@@ -1157,10 +1456,14 @@ export type AdminUserUncheckedUpdateWithoutRecordedChildChecksInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mfaSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mfaEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mfaEnrollmentDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.AdminSessionUncheckedUpdateManyWithoutUserNestedInput
+  recoveryCodes?: Prisma.MfaRecoveryCodeUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.AdminUserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdPosyanduSessions?: Prisma.PosyanduSessionUncheckedUpdateManyWithoutCreatedByNestedInput
   recordedPosyanduChecks?: Prisma.PosyanduCheckUncheckedUpdateManyWithoutRecordedByNestedInput
@@ -1175,6 +1478,7 @@ export type AdminUserUncheckedUpdateWithoutRecordedChildChecksInput = {
 
 export type AdminUserCountOutputType = {
   sessions: number
+  recoveryCodes: number
   roles: number
   createdPosyanduSessions: number
   recordedPosyanduChecks: number
@@ -1185,6 +1489,7 @@ export type AdminUserCountOutputType = {
 
 export type AdminUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | AdminUserCountOutputTypeCountSessionsArgs
+  recoveryCodes?: boolean | AdminUserCountOutputTypeCountRecoveryCodesArgs
   roles?: boolean | AdminUserCountOutputTypeCountRolesArgs
   createdPosyanduSessions?: boolean | AdminUserCountOutputTypeCountCreatedPosyanduSessionsArgs
   recordedPosyanduChecks?: boolean | AdminUserCountOutputTypeCountRecordedPosyanduChecksArgs
@@ -1208,6 +1513,13 @@ export type AdminUserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ex
  */
 export type AdminUserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AdminSessionWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountRecoveryCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MfaRecoveryCodeWhereInput
 }
 
 /**
@@ -1260,10 +1572,14 @@ export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   passwordHash?: boolean
   name?: boolean
   isSuperAdmin?: boolean
+  mfaSecret?: boolean
+  mfaEnabledAt?: boolean
+  mfaEnrollmentDeadline?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sessions?: boolean | Prisma.AdminUser$sessionsArgs<ExtArgs>
+  recoveryCodes?: boolean | Prisma.AdminUser$recoveryCodesArgs<ExtArgs>
   roles?: boolean | Prisma.AdminUser$rolesArgs<ExtArgs>
   createdPosyanduSessions?: boolean | Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs>
   recordedPosyanduChecks?: boolean | Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs>
@@ -1280,6 +1596,9 @@ export type AdminUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   passwordHash?: boolean
   name?: boolean
   isSuperAdmin?: boolean
+  mfaSecret?: boolean
+  mfaEnabledAt?: boolean
+  mfaEnrollmentDeadline?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1292,6 +1611,9 @@ export type AdminUserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   passwordHash?: boolean
   name?: boolean
   isSuperAdmin?: boolean
+  mfaSecret?: boolean
+  mfaEnabledAt?: boolean
+  mfaEnrollmentDeadline?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1304,14 +1626,18 @@ export type AdminUserSelectScalar = {
   passwordHash?: boolean
   name?: boolean
   isSuperAdmin?: boolean
+  mfaSecret?: boolean
+  mfaEnabledAt?: boolean
+  mfaEnrollmentDeadline?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "name" | "isSuperAdmin" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
+export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "name" | "isSuperAdmin" | "mfaSecret" | "mfaEnabledAt" | "mfaEnrollmentDeadline" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
 export type AdminUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.AdminUser$sessionsArgs<ExtArgs>
+  recoveryCodes?: boolean | Prisma.AdminUser$recoveryCodesArgs<ExtArgs>
   roles?: boolean | Prisma.AdminUser$rolesArgs<ExtArgs>
   createdPosyanduSessions?: boolean | Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs>
   recordedPosyanduChecks?: boolean | Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs>
@@ -1327,6 +1653,7 @@ export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "AdminUser"
   objects: {
     sessions: Prisma.$AdminSessionPayload<ExtArgs>[]
+    recoveryCodes: Prisma.$MfaRecoveryCodePayload<ExtArgs>[]
     roles: Prisma.$AdminUserRolePayload<ExtArgs>[]
     createdPosyanduSessions: Prisma.$PosyanduSessionPayload<ExtArgs>[]
     recordedPosyanduChecks: Prisma.$PosyanduCheckPayload<ExtArgs>[]
@@ -1341,6 +1668,9 @@ export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     passwordHash: string
     name: string | null
     isSuperAdmin: boolean
+    mfaSecret: string | null
+    mfaEnabledAt: Date | null
+    mfaEnrollmentDeadline: Date | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1739,6 +2069,7 @@ readonly fields: AdminUserFieldRefs;
 export interface Prisma__AdminUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sessions<T extends Prisma.AdminUser$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recoveryCodes<T extends Prisma.AdminUser$recoveryCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$recoveryCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MfaRecoveryCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   roles<T extends Prisma.AdminUser$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminUserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdPosyanduSessions<T extends Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$createdPosyanduSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PosyanduSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recordedPosyanduChecks<T extends Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$recordedPosyanduChecksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PosyanduCheckPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1780,6 +2111,9 @@ export interface AdminUserFieldRefs {
   readonly passwordHash: Prisma.FieldRef<"AdminUser", 'String'>
   readonly name: Prisma.FieldRef<"AdminUser", 'String'>
   readonly isSuperAdmin: Prisma.FieldRef<"AdminUser", 'Boolean'>
+  readonly mfaSecret: Prisma.FieldRef<"AdminUser", 'String'>
+  readonly mfaEnabledAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
+  readonly mfaEnrollmentDeadline: Prisma.FieldRef<"AdminUser", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"AdminUser", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
@@ -2197,6 +2531,30 @@ export type AdminUser$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AdminSessionScalarFieldEnum | Prisma.AdminSessionScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.recoveryCodes
+ */
+export type AdminUser$recoveryCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MfaRecoveryCode
+   */
+  select?: Prisma.MfaRecoveryCodeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MfaRecoveryCode
+   */
+  omit?: Prisma.MfaRecoveryCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MfaRecoveryCodeInclude<ExtArgs> | null
+  where?: Prisma.MfaRecoveryCodeWhereInput
+  orderBy?: Prisma.MfaRecoveryCodeOrderByWithRelationInput | Prisma.MfaRecoveryCodeOrderByWithRelationInput[]
+  cursor?: Prisma.MfaRecoveryCodeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MfaRecoveryCodeScalarFieldEnum | Prisma.MfaRecoveryCodeScalarFieldEnum[]
 }
 
 /**

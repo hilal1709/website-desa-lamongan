@@ -3,6 +3,8 @@ import { prisma } from "@/app/lib/prisma"
 import { requireCmsPermission } from "@/lib/api-access"
 import { parseResidentInput, residentData } from "@/lib/residents"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { audit } from "@/lib/audit-log"
+import { clientAddress } from "@/lib/rate-limit"
 
 function refreshed() { revalidateTag("home-data", "max"); revalidateTag("admin-dashboard", "max"); revalidatePath("/infografis"); revalidatePath("/admin"); void publishCmsUpdate("population") }
 
@@ -21,6 +23,6 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const access = await requireCmsPermission("INFOGRAPHICS", "create"); if (access.response) return access.response
-  try { const resident = await prisma.resident.create({ data: residentData(parseResidentInput(await request.json())) }); refreshed(); return Response.json({ resident }, { status: 201 }) }
+  try { const resident = await prisma.resident.create({ data: residentData(parseResidentInput(await request.json())) }); await audit("RESIDENT_CREATED", "RESIDENT", { actorId: access.user!.id, targetId: resident.id, ip: clientAddress(request.headers) }); refreshed(); return Response.json({ resident }, { status: 201 }) }
   catch (error) { return Response.json({ message: error instanceof Error ? error.message : "Data penduduk tidak valid." }, { status: 400 }) }
 }

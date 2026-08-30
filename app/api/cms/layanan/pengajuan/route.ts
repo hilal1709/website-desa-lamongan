@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/app/lib/prisma"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { requireCmsPermission } from "@/lib/api-access"
 import { STATUS_LABEL } from "@/lib/village-services"
 
 export async function GET(request: Request) {
-  if (!(await getCurrentAdmin())) return NextResponse.json({ message: "Silakan masuk sebagai admin." }, { status: 401 })
+  const { response } = await requireCmsPermission("SERVICE_SUBMISSIONS")
+  if (response) return response
   const url = new URL(request.url), status = url.searchParams.get("status"), serviceId = url.searchParams.get("serviceId"), search = url.searchParams.get("search")?.trim()
   const submissions = await prisma.serviceSubmission.findMany({
     where: { ...(status ? { status: status as never } : {}), ...(serviceId ? { serviceId } : {}), ...(search ? { OR: [{ fullName: { contains: search, mode: "insensitive" } }, { trackingCode: { contains: search, mode: "insensitive" } }] } : {}) },

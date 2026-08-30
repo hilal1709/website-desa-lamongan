@@ -9,7 +9,7 @@ const pageSize = 9
 const unauthorized = () => Response.json({ error: "Silakan masuk untuk mengakses data kesehatan." }, { status: 401 })
 
 export async function GET(request: Request) {
-  if (!(await getCurrentHealthUser())) return unauthorized()
+  if (!(await getCurrentHealthUser("create"))) return unauthorized()
   const params = new URL(request.url).searchParams
   const sessionId = params.get("sessionId")?.trim(); const search = params.get("search")?.trim(); const dusun = params.get("dusun")?.trim(); const all = params.get("all") === "true"; const requestedPage = Number.parseInt(params.get("page") ?? "1", 10); const safeRequestedPage = Number.isFinite(requestedPage) ? Math.max(requestedPage, 1) : 1
   const where: Prisma.ChildWhereInput = { ...(dusun ? { dusun } : {}), ...(search ? { fullName: { contains: search, mode: "insensitive" } } : {}) }

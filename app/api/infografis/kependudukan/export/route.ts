@@ -1,5 +1,8 @@
 import { createXlsx } from "@/lib/xlsx-export"
 import { getPublicPopulationEventExport, parsePopulationFilters } from "@/lib/population-events"
+import { requireCmsPermission } from "@/lib/api-access"
+import { audit } from "@/lib/audit-log"
+import { clientAddress } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
@@ -10,6 +13,8 @@ function csvCell(value: string | number) {
 }
 
 export async function GET(request: Request) {
+  const access = await requireCmsPermission("INFOGRAPHICS", "update")
+  if (access.response) return access.response
   try {
     const filters = parsePopulationFilters(new URL(request.url).searchParams)
     const format = new URL(request.url).searchParams.get("format") === "xlsx" ? "xlsx" : "csv"
@@ -17,6 +22,7 @@ export async function GET(request: Request) {
     const rows = [headers, ...records.map((record) => [record.eventDate, record.typeLabel, record.fullName, record.gender, record.birthYear, record.dusun])]
     const suffix = `${filters.year}${filters.month ? `-${String(filters.month).padStart(2, "0")}` : ""}`
     const filename = `detail-peristiwa-kependudukan-${suffix}.${format}`
+    await audit("POPULATION_EVENT_EXPORT_DOWNLOADED", "POPULATION_EVENT", { actorId: access.user!.id, targetId: filename, ip: clientAddress(request.headers) })
 
     if (format === "xlsx") {
       return new Response(createXlsx(rows), {

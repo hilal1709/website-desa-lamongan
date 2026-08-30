@@ -6,6 +6,7 @@ import { isComplaintCategory } from "@/lib/complaint-categories"
 import { getComplaintsPage } from "@/lib/complaints"
 import { COMPLAINT_PAGE_SIZE } from "@/lib/complaint-types"
 import { publishCmsUpdate } from "@/lib/pusher"
+import { clientAddress, isRateLimited } from "@/lib/rate-limit"
 
 const maxLengths = { title: 120, category: 80, location: 160, contact: 80, description: 2000 }
 
@@ -24,6 +25,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (isRateLimited(`complaint:${clientAddress(request.headers)}`, 10, 15 * 60 * 1000)) return NextResponse.json({ message: "Terlalu banyak pengiriman. Silakan coba lagi nanti." }, { status: 429, headers: { "Retry-After": "900" } })
   const body = await request.json() as Record<string, unknown>
   const title = readField(body.title, "title")
   const category = readField(body.category, "category")
