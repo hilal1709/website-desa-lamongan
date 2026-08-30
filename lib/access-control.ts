@@ -31,7 +31,7 @@ export const cmsAccessMatrix = cmsModules.map(([id, label]) => ({ id, label, ...
 
 export type PermissionAction = "view" | "create" | "update" | "delete"
 export type CurrentAdmin = {
-  id: string; username: string; email: string; name: string | null; isActive: boolean; isSuperAdmin: boolean; mfaRequired?: boolean; mfaEnrollmentOverdue?: boolean
+  id: string; username: string; email: string; name: string | null; isActive: boolean; isSuperAdmin: boolean; mfaRequired?: boolean; mfaEnrollmentOverdue?: boolean; mfaEnabled?: boolean; mfaEnabledAt?: string | null; mfaEnrollmentDeadline?: string | null
   roles: { role: { id: string; name: string; permissions: { module: CmsModule; canView: boolean; canCreate: boolean; canUpdate: boolean; canDelete: boolean }[] } }[]
 }
 

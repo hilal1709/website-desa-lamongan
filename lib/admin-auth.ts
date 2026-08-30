@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from "crypto"
 import { cookies } from "next/headers"
+import { cache } from "react"
 
 import { prisma } from "@/app/lib/prisma"
 import { verifyPassword } from "@/lib/auth-password"
@@ -68,7 +69,7 @@ export async function getCurrentAdmin(options: { allowMfaEnrollment?: boolean } 
 
   const session = await prisma.adminSession.findUnique({
     where: { tokenHash: hashToken(token) },
-    include: { user: { select: { id: true, username: true, email: true, name: true, isSuperAdmin: true, isActive: true, mfaSecret: true, mfaEnrollmentDeadline: true, roles: { include: { role: { include: { permissions: true } } } } } } },
+    include: { user: { select: { id: true, username: true, email: true, name: true, isSuperAdmin: true, isActive: true, mfaSecret: true, mfaEnabledAt: true, mfaEnrollmentDeadline: true, roles: { include: { role: { include: { permissions: true } } } } } } },
   })
 
   if (!session || session.expiresAt <= new Date() || !session.user.isActive) {
@@ -80,8 +81,12 @@ export async function getCurrentAdmin(options: { allowMfaEnrollment?: boolean } 
   const mfaRequired = session.user.isSuperAdmin || session.user.roles.some(({ role }) => role.permissions.some((permission) => sensitiveModules.has(permission.module) && (permission.canView || permission.canCreate || permission.canUpdate || permission.canDelete)))
   const enrollmentOverdue = mfaRequired && !session.user.mfaSecret && (!session.user.mfaEnrollmentDeadline || session.user.mfaEnrollmentDeadline <= new Date())
   if (enrollmentOverdue && !options.allowMfaEnrollment) return null
-  return { id: session.user.id, username: session.user.username, email: session.user.email, name: session.user.name, isSuperAdmin: session.user.isSuperAdmin, isActive: session.user.isActive, roles: session.user.roles, mfaRequired, mfaEnrollmentOverdue: enrollmentOverdue } as CurrentAdmin
+  return { id: session.user.id, username: session.user.username, email: session.user.email, name: session.user.name, isSuperAdmin: session.user.isSuperAdmin, isActive: session.user.isActive, roles: session.user.roles, mfaRequired, mfaEnrollmentOverdue: enrollmentOverdue, mfaEnabled: Boolean(session.user.mfaSecret), mfaEnabledAt: session.user.mfaEnabledAt?.toISOString() ?? null, mfaEnrollmentDeadline: session.user.mfaEnrollmentDeadline?.toISOString() ?? null } as CurrentAdmin
 }
+
+// React.cache only lives for the current server render. It avoids querying the same
+// authenticated session again when the admin layout and a protected page need it.
+export const getMfaEnrollmentAdmin = cache(() => getCurrentAdmin({ allowMfaEnrollment: true }))
 
 export async function getCurrentHealthUser(action: PermissionAction = "view") {
   const user = await getCurrentAdmin()

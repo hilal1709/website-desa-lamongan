@@ -1,7 +1,7 @@
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import { AdminMotion } from "@/components/admin/admin-motion"
 import { AdminContentSync } from "@/components/admin/admin-content-sync"
-import { getCurrentAdmin } from "@/lib/admin-auth"
+import { getMfaEnrollmentAdmin } from "@/lib/admin-auth"
 import { redirect } from "next/navigation"
 import { firstPermittedCmsPath } from "@/lib/access-control"
 import type { Metadata } from "next"
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const user = await getCurrentAdmin({ allowMfaEnrollment: true })
+  const user = await getMfaEnrollmentAdmin()
   if (!user) redirect("/login")
   if (user.mfaEnrollmentOverdue) return <AdminMotion><div className="mx-auto min-h-screen max-w-2xl bg-[#eef5ef] px-4 py-10"><MfaSecurityManager /></div></AdminMotion>
   const destination = firstPermittedCmsPath(user)
