@@ -23,20 +23,18 @@ function permissions(value: unknown) {
   })
 }
 
-async function superadmin() {
-  const result = await requireCmsPermission("SETTINGS", "delete")
-  if (result.response) return result
-  return result.user?.isSuperAdmin ? result : { user: null, response: Response.json({ error: "Hanya superadmin yang dapat mengelola akun dan peran." }, { status: 403 }) }
+async function accountAccess(action: "view" | "create" | "update" | "delete") {
+  return requireCmsPermission("ACCOUNT_ACCESS", action)
 }
 
 export async function GET() {
-  const { response } = await superadmin(); if (response) return response
+  const { response } = await accountAccess("view"); if (response) return response
   const { users, roles } = await getCachedAdminAccessData()
   return Response.json({ modules: cmsAccessMatrix, users, roles })
 }
 
 export async function POST(request: Request) {
-  const access = await superadmin(); if (access.response) return access.response
+  const access = await accountAccess("create"); if (access.response) return access.response
   try {
     const body = await request.json() as Record<string, unknown>
     if (body.kind === "role") {

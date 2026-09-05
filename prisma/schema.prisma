@@ -504,6 +504,9 @@ enum CmsModule {
   COMPLAINTS
   CMS_MODULES
   SETTINGS
+  ACCOUNT_ACCESS
+  ACCOUNT_SECURITY
+  AUDIT_LOG
 }
 
 enum DocumentVisibility {

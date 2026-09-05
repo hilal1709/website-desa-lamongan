@@ -7,6 +7,7 @@ export const cmsModules = [
   ["NEWS", "Berita", "/admin/berita"], ["DOCUMENT_ARCHIVE", "Arsip Dokumen", "/admin/arsip"],
   ["SERVICE_CATALOG", "Katalog Layanan", "/admin/layanan"], ["SERVICE_SUBMISSIONS", "Pengajuan Layanan", "/admin/layanan"],
   ["COMPLAINTS", "Aduan", "/admin/aduan"], ["CMS_MODULES", "Modul CMS", "/admin/modul"], ["SETTINGS", "Pengaturan", "/admin/pengaturan"],
+  ["ACCOUNT_ACCESS", "Akun & Hak Akses", "/admin/akses"], ["ACCOUNT_SECURITY", "Keamanan akun", "/admin/keamanan"], ["AUDIT_LOG", "Audit Log", "/admin/audit-log"],
 ] as const satisfies readonly (readonly [CmsModule, string, string])[]
 
 type PermissionField = "canView" | "canCreate" | "canUpdate" | "canDelete"
@@ -25,6 +26,9 @@ const moduleAccessConfig = {
   SERVICE_SUBMISSIONS: { group: "Layanan warga", description: "Pengajuan layanan yang masuk dari warga.", actions: ["canView", "canUpdate"] },
   COMPLAINTS: { group: "Layanan warga", description: "Aduan warga dan tindak lanjutnya.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
   SETTINGS: { group: "Sistem", description: "Identitas desa, SEO, dan konfigurasi sistem.", actions: ["canView", "canUpdate"] },
+  ACCOUNT_ACCESS: { group: "Sistem", description: "Akun petugas, peran, dan izin akses CMS.", actions: ["canView", "canCreate", "canUpdate", "canDelete"] },
+  ACCOUNT_SECURITY: { group: "Sistem", description: "Verifikasi dua langkah untuk akun sendiri.", actions: ["canView"] },
+  AUDIT_LOG: { group: "Sistem", description: "Riwayat aktivitas dan keamanan CMS.", actions: ["canView"] },
 } as const satisfies Record<CmsModule, { group: string; description: string; actions: readonly PermissionField[] }>
 
 export const cmsAccessMatrix = cmsModules.map(([id, label]) => ({ id, label, ...moduleAccessConfig[id] }))

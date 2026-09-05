@@ -8,14 +8,12 @@ import { clientAddress } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
-async function superadmin() {
-  const result = await requireCmsPermission("SETTINGS", "delete")
-  if (result.response) return result
-  return result.user?.isSuperAdmin ? result : { user: null, response: Response.json({ error: "Hanya superadmin yang dapat mengelola akun dan peran." }, { status: 403 }) }
+async function accountAccess(action: "update" | "delete") {
+  return requireCmsPermission("ACCOUNT_ACCESS", action)
 }
 
 export async function PATCH(request: Request, context: RouteContext<"/api/admin/access/[id]">) {
-  const access = await superadmin(); if (access.response) return access.response
+  const access = await accountAccess("update"); if (access.response) return access.response
   try {
     const { id } = await context.params; const body = await request.json() as Record<string, unknown>
     if (body.kind === "role") {
@@ -26,7 +24,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/admin/
     }
     if (body.kind === "user") {
       const target = await prisma.adminUser.findUniqueOrThrow({ where: { id }, select: { isSuperAdmin: true } })
-      if (target.isSuperAdmin && body.isActive === false) throw new Error("Akun superadmin tidak dapat dinonaktifkan.")
+      if (target.isSuperAdmin) throw new Error("Akun superadmin hanya dapat dikelola oleh superadmin.")
       const roleIds = Array.isArray(body.roleIds) ? body.roleIds.filter((roleId): roleId is string => typeof roleId === "string") : []
       const password = typeof body.password === "string" ? body.password : ""
       if (password) assertPasswordPolicy(password)
@@ -38,7 +36,7 @@ export async function PATCH(request: Request, context: RouteContext<"/api/admin/
 }
 
 export async function DELETE(request: Request, context: RouteContext<"/api/admin/access/[id]">) {
-  const access = await superadmin(); if (access.response) return access.response
+  const access = await accountAccess("delete"); if (access.response) return access.response
   const { id } = await context.params; const kind = new URL(request.url).searchParams.get("kind")
   if (kind === "role") { const role = await prisma.role.findUnique({ where: { id }, include: { _count: { select: { users: true } } } }); if (!role) return Response.json({ error: "Peran tidak ditemukan." }, { status: 404 }); if (role.isSystem || role._count.users) return Response.json({ error: "Peran sistem atau peran yang masih dipakai tidak dapat dihapus." }, { status: 400 }); await prisma.role.delete({ where: { id } }); await audit("ROLE_DELETED", "ROLE", { actorId: access.user!.id, targetId: id, ip: clientAddress(request.headers) }); revalidateTag("admin-access", { expire: 0 }); await publishCmsUpdate("access"); return new Response(null, { status: 204 }) }
   const user = await prisma.adminUser.findUnique({ where: { id } }); if (!user) return Response.json({ error: "Akun tidak ditemukan." }, { status: 404 }); if (user.isSuperAdmin) return Response.json({ error: "Akun superadmin tidak dapat dihapus." }, { status: 400 }); await prisma.adminUser.delete({ where: { id } }); await audit("ADMIN_ACCOUNT_DELETED", "ADMIN_USER", { actorId: access.user!.id, targetId: id, ip: clientAddress(request.headers) }); revalidateTag("admin-access", { expire: 0 }); await publishCmsUpdate("access"); return new Response(null, { status: 204 })

@@ -3,7 +3,7 @@ import dynamic from "next/dynamic"
 import { AdminPageHeader } from "@/components/admin/admin-page-header"
 import { getCurrentAdmin } from "@/lib/admin-auth"
 import { getCachedAdminAccessData } from "@/lib/admin-access-data"
-import { cmsAccessMatrix } from "@/lib/access-control"
+import { canAccess, cmsAccessMatrix, firstPermittedCmsPath } from "@/lib/access-control"
 import { createAdminMetadata } from "@/lib/admin-metadata"
 
 const AccessManager = dynamic(() => import("@/components/admin/access-manager").then((module) => module.AccessManager), {
@@ -14,7 +14,7 @@ export const metadata = createAdminMetadata("Akun & Hak Akses", "Kelola akun pet
 
 export default async function AccessPage() {
   const user = await getCurrentAdmin()
-  if (!user?.isSuperAdmin) redirect("/admin")
+  if (!user || !canAccess(user, "ACCOUNT_ACCESS")) redirect(user ? firstPermittedCmsPath(user) ?? "/login" : "/login")
   const { users, roles } = await getCachedAdminAccessData()
   const initialData = { modules: cmsAccessMatrix, roles, users }
   return <section aria-labelledby="akun-hak-akses-title" className="py-1 sm:py-2"><AdminPageHeader eyebrow="Keamanan CMS" title="Akun & Hak Akses" description="Kelola pengguna, peran kustom, dan izin setiap modul." /><div className="mt-5 sm:mt-6"><AccessManager initialData={initialData} /></div></section>
